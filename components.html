@@ -238,6 +238,61 @@
             <p class="spec-line">50px &times; 5px &middot; aqua #14BADB &middot; 15px margin-bottom &middot; above H2 &middot; content pages and documents only &middot; never on dashboards &middot; never directly below a header band</p>
           </div>
 
+          <h3 class="subhead">Imagery</h3>
+          <p class="palette-note">Three ways to place a photograph, and the scrim that makes type safe on any of them. The library has forty-eight images and, until now, no guidance on where one goes &mdash; which is why every photograph on this site has only ever appeared inside the page that catalogues them.</p>
+
+          <div class="spec">
+            <div class="spec-demo spec-demo--flush">
+              <div class="img-hero">
+                <img class="img-hero-media" src="assets/images/shortlist/adobe-272840231.webp" alt="" loading="lazy" />
+                <div class="img-hero-body">
+                  <span class="img-hero-eyebrow">Agriculture</span>
+                  <h4 class="img-hero-title">Yield data, in the field where it is used</h4>
+                  <p class="img-hero-sub">Reversed type sits in the bottom third, where the scrim is at full strength.</p>
+                </div>
+              </div>
+            </div>
+            <p class="spec-line"><strong>Full-bleed hero</strong> &middot; 21:9 desktop, 4:3 phone &middot; scrim <code>#182449</code> 0.88&rarr;0 bottom-up &middot; type inside the bottom 38% &middot; one per page</p>
+          </div>
+
+          <div class="spec">
+            <div class="spec-demo spec-demo--flush">
+              <div class="img-split">
+                <img class="img-split-media" src="assets/images/shortlist/adobe-733406892.webp" alt="" loading="lazy" />
+                <div class="img-split-body">
+                  <span class="demo-card-eyebrow">Delivery</span>
+                  <h4 class="demo-card-title">Working sessions, not status calls</h4>
+                  <p class="demo-card-body">Type on its own ground, so the photograph never has to carry contrast. This is the safe default &mdash; reach for it before the hero.</p>
+                </div>
+              </div>
+            </div>
+            <p class="spec-line"><strong>Split</strong> &middot; 1:1 columns, image either side &middot; stacks under 720px, image first &middot; no scrim needed &middot; the workhorse</p>
+          </div>
+
+          <div class="spec">
+            <div class="spec-demo spec-demo--flush">
+              <div class="img-band">
+                <img class="img-band-media" src="assets/images/shortlist/adobe-1896913397.webp" alt="" loading="lazy" />
+                <p class="img-band-line">A section break, not a statement.</p>
+              </div>
+            </div>
+            <p class="spec-line"><strong>Band</strong> &middot; 5:1, full width &middot; scrim flat 0.72 &middot; one line of type, centred &middot; use to change subject, never to decorate</p>
+          </div>
+
+          <div class="token-table-scroll u-mt-md" tabindex="0" role="region" aria-label="Type-over-image rules, scrollable">
+            <table class="table">
+              <thead><tr><th>Rule</th><th>Why</th></tr></thead>
+              <tbody>
+                <tr><td>Always a scrim, never a hope</td><td>A photograph is not a background colour &mdash; the same frame that holds white type today holds none of it after a crop or a swap. <code>rgba(24, 36, 73, 0.72)</code> is the floor, and it is chosen rather than guessed: against a pure white photograph it still composites to <code>#59617C</code>, which is <strong>6.1:1</strong> against white. Any image, any crop, always passes AA.</td></tr>
+                <tr><td>Type in the bottom third</td><td>The gradient runs 0.88 at the bottom to nothing at 78%. Above that line the scrim is doing too little to promise anything, so that is where the picture lives and the words do not.</td></tr>
+                <tr><td>White, or Sky &mdash; never Aqua</td><td>Reversed type is <code>#FFFFFF</code>, or <code>#BDE4F1</code> for a secondary line. Aqua fails contrast as text on the palette page and it fails here too, scrim or no scrim.</td></tr>
+                <tr><td>Pick the image for its quiet area</td><td>The same test the backgrounds family already uses. A frame with a busy bottom third cannot take this treatment however good it is &mdash; crop it, or use Split instead.</td></tr>
+                <tr><td>Split before hero</td><td>Type on its own ground is always more legible than type on a picture. The hero is for the one moment a page needs to be loud; if two sections want it, neither gets it.</td></tr>
+                <tr><td>Never a photograph behind body copy</td><td>These three patterns take a heading and at most one line. A paragraph over an image is unreadable at any scrim strength, and the fix is a tinted panel, not a darker overlay.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
           <h3 class="subhead">Layout</h3>
           <p class="palette-note">The measurements a page is built on. Worth knowing even if you never open a stylesheet: section padding is why a deck and the website feel like the same company.</p>
           <div class="token-table-scroll" tabindex="0" role="region" aria-label="Layout tokens, scrollable">
