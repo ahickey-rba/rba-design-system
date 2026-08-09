@@ -263,6 +263,18 @@
       margin: 0;
       padding: 0 var(--space-7);
     }
+    /* The icon and image libraries are the two places on the site where the content is
+       a BOARD rather than a column of prose. 1080px is the right cap for reading and
+       the wrong one for comparing: it left a 27" screen showing eight icons a row with
+       half the desk empty, and the whole job of both pages is scanning many things at
+       once. So the scope that wraps each toolbar-plus-grid drops the cap and takes
+       whatever the main column has.
+
+       Only these two. Everything else on the site is text, and text set to 2000px is
+       unreadable — the cap is doing real work everywhere it stays. */
+    .lib-scope {
+      max-width: none;
+    }
 
     /* Skip link — first focusable element; visible only on keyboard focus */
     .skip-link {
@@ -656,6 +668,17 @@
       }
     }
     .hero > .container { position: relative; }
+    /* The hero copy is indented past the page's own left edge — 60px on top of the
+       container's 32px. It is the one deliberate misalignment on the site: everything
+       below this band starts at 32px, and the offset is what makes the hero read as a
+       cover rather than as the first section.
+
+       Only from tablet up. At phone widths the container is most of the screen and
+       92px of left padding would push "One Brand. Every Build." into four lines
+       against the mark. */
+    @media (min-width: 768px) {
+      .hero > .container { padding-left: calc(var(--space-7) + 60px); }
+    }
     /* Libre Caslon, per the canonical source: colors_and_type.css defines .hero-display
        as the serif at 100px/110%/-3% and comments that the hero is "only place Libre
        Caslon is used". An earlier pass set this to Montserrat on the reasoning that a
@@ -1423,13 +1446,19 @@
        they be big enough to read at a glance. The card is a link to Adobe Stock,
        since that is the only place the actual image can be seen until one is
        licensed. */
+    /* auto-fill rather than a fixed three, so the board GAINS columns on a wide screen
+       instead of stretching three cards to fill it. 320px is chosen to reproduce the
+       old layout exactly at the container's former 1080px cap — three across — and to
+       go to four around 1400px and five around 1750px.
+
+       This replaced explicit breakpoints at 1180 and 720. Those were doing what
+       auto-fill does on its own, and they actively fought the full-width board: a
+       hard "repeat(2)" below 1180px overrides any amount of available space. */
     .shot-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: var(--space-5);
     }
-    @media (max-width: 1180px) { .shot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (max-width: 720px)  { .shot-grid { grid-template-columns: 1fr; } }
 
     .shot-card {
       display: flex;
