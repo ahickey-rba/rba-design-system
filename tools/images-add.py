@@ -263,8 +263,10 @@ def main():
     ap.add_argument('--replace', metavar='FILE',
                     help='take this entry\'s place and delete its file')
     ap.add_argument('--title', help='set the title (the CDN route cannot read one)')
-    ap.add_argument('--status', default='undecided',
-                    help='undecided (default), keep, cut, licensed')
+    # There was a --status here, defaulting to "undecided", and it outlived the
+    # decision system it belonged to by long enough to be the last thing writing
+    # that field. Nothing reads "status" — not images-sync.py, not app.js — so
+    # every import was quietly putting a dead key back into the source of truth.
     ap.add_argument('--no-sync', action='store_true', help='skip regenerating the page')
     args = ap.parse_args()
 
@@ -313,7 +315,7 @@ def main():
 
         lib['items'].insert(at, {
             'source': info['source'], 'id': info['id'], 'file': fname, 'cat': cat,
-            'status': args.status, 'title': info['title'],
+            'title': info['title'],
             # Left EMPTY when unknown rather than falling back to the service
             # name. Filling it with "Adobe Stock" made --review count the
             # service as a photographer and report a concentration that was
