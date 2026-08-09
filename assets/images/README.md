@@ -31,52 +31,52 @@ Everything goes through `library.json` and then one command:
 | | |
 |---|---|
 | **Swap** | Replace the file in `shortlist/`. Same source and id, nothing else changes. Different service, change `source`, `id`, `file` and `url`. |
-| **Delete** | Remove the entry and the file. **Ranks are not stored**, so nothing renumbers — the images below simply move up. |
+| **Delete** | `--remove <file>` drops the entry and deletes the file. **Ranks are not stored**, so nothing renumbers — the images below simply move up. |
 | **Add** | Drop `<source>-<id>.<ext>` into `shortlist/`, run `--adopt`, fill in the TODOs. |
 | **Reorder** | Move the entry up or down its category in the array. Rank and priority follow. |
-| **Decide** | Set `"status"` to `keep`, `cut` or `licensed`. Omit it and the image is `undecided`. |
 | **Want** | Add an entry with **no `file` key** — a candidate you have shortlisted but not downloaded. |
 
-### Decisions and wanted entries
+### Wanted entries
 
-These are two different things and the library keeps them apart on purpose.
-**Status is a judgement about the picture. Staging is a fact about the filesystem.**
-Conflating them would make "downloaded, looked at, rejected" impossible to say.
+A **wanted** entry has no `file` key, and it is the only staging state the library
+has. You found six things worth a look in one browsing session and will download
+them later; before this the library could not express that, so those candidates
+lived in somebody's notes and got lost. The card renders a dashed frame reading
+*not downloaded yet* — visibly different from a named file that will not load,
+which is a fault rather than a task.
 
-- `undecided` — the default, and where everything starts. No badge on the card.
-- `keep` — earns its place.
-- `cut` — rejected. The card leaves the grid entirely and only comes back under
-  the "Cut" filter. The entry stays in this file, because *knowing something was
-  considered and rejected* is what stops it being proposed again in six months.
-- `licensed` — bought. Warns if nothing is staged, since a licensed image should
-  have its clean file in `shortlist/`.
+That distinction is enforced rather than decorative. `file` is the one field an
+entry may omit: leave it out and `--check` is happy, but name a file that is not
+in `shortlist/` and it is an error, because the page would ship a card pointing at
+nothing. `--prune` drops the second kind and deliberately leaves the first alone.
 
-A **wanted** entry has no `file`. You found six things worth a look in one browsing
-session and will download them later; before this the library could not express
-that, so those candidates lived in somebody's notes and got lost. The card renders
-a dashed frame reading *not downloaded yet* — visibly different from a named file
-that will not load, which is a fault rather than a task.
+**There is no decision state.** An earlier version of this file documented a
+`"status"` of `keep` / `cut` / `licensed`, a badge on each card and a filter above
+the grid that turned the page into a queue. All of it was tried and taken out —
+every part of it read as clutter on a page whose job is comparing photographs, and
+nothing reads `"status"` today. Removing an image now means removing it.
 
-The decision filter in the toolbar is the point of all this: **"Undecided (46)"**
-turns the page from a gallery into a queue.
-
-### Retiring what has been cut
+### Removing an image
 
 ```bash
-./tools/images-sync.py --retire --dry-run    # list what would go
-./tools/images-sync.py --retire              # delete the files
+./tools/images-sync.py --remove adobe-1904000970.webp
+./tools/images-sync.py --remove adobe-1904000970.webp adobe-1904000971.webp
 ```
+
+Takes one or more filenames — an entry's `id` works too — and deletes both the
+entry and the file outright, then revalidates and rewrites the manifest in the same
+run. **Nothing is archived.**
 
 A library only improves if things leave it, and the first things that should leave
 are unlicensed comps already ruled out — they cannot be used, they are the bulk of
 what this repo publishes, and once the decision is made they are dead weight on a
 public URL.
 
-`--retire` deletes the staged file for anything marked `cut` **and keeps the
-entry**, which turns the row back into a wanted entry: the reasoning survives, and
-one download reverses it if the decision changes. It only touches `paid` comps —
-free and subscription images are licensed, cost nothing to keep, and might be
-wanted again.
+There was a `--retire` that emptied the file but kept the entry as a record of the
+rejection. It went with the rest of the decision machinery: if an image is out it
+is out, and a library you have to filter to see properly is not simpler than one
+with fewer things in it. The reasoning for a cut lives in the commit that made it,
+which is where the rest of this repo's history lives too.
 
 ```bash
 ./tools/images-sync.py --check    # drift, orphans, dangling entries. Writes nothing.

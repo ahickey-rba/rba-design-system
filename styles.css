@@ -2379,15 +2379,22 @@
     }
     .voice-list--banned { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-3); }
     /* Struck through, not just highlighted: the strike says "do not ship this word"
-       without needing the column heading to be in view. */
+       without needing the column heading to be in view.
+
+       The line has to lose that argument with the word, though. At 2px of solid
+       #C8252D across 13px type the rule was about a sixth of the font size and
+       landed straight on the x-height, so "synergy" and "empower" — the ones with
+       the most mid-height strokes — were genuinely hard to read. 1px at 70% keeps
+       it unmistakably a red strike and lets the letterforms through, which matters
+       because the reader has to recognise the word to avoid it. */
     .voice-banned {
       display: inline-block;
       font-family: var(--font-micro);
       font-size: 13px;
       color: var(--text);
       text-decoration: line-through;
-      text-decoration-color: var(--rba-red);
-      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(200, 37, 45, 0.7);
+      text-decoration-thickness: 1px;
     }
 
     /* md and below · the paired grids stack rather than squeeze */
@@ -2423,7 +2430,14 @@
     [data-theme="dark"] .btn-accent { color: var(--on-accent); }
     [data-theme="dark"] .voice-col { background: var(--surface-pill); }
     [data-theme="dark"] .voice-col--avoid { background: rgba(200, 37, 45, 0.12); }
-    [data-theme="dark"] .voice-banned { color: var(--text); }
+    /* The same 70% red goes muddy over the tinted panel on a near-black page, where
+       it is a dark line on a dark ground rather than a dark line on a light one.
+       Lifted toward the tint the panel already uses so it still reads as the strike
+       and not as a smudge. */
+    [data-theme="dark"] .voice-banned {
+      color: var(--text);
+      text-decoration-color: rgba(232, 106, 112, 0.75);
+    }
 
     /* ---------- Reference layouts ---------- */
     .kit-grid {
