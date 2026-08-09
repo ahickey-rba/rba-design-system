@@ -893,38 +893,6 @@
       color: var(--text-muted);
     }
 
-    /* ---------- Image treatment · duotone specimens ----------
-       The two duotones, shown on one real library photograph so the spec is a thing
-       you can look at rather than a pair of hex values to imagine. The filters
-       themselves live in an SVG <defs> on images.html — a CSS filter cannot express a
-       per-channel transfer function, and approximating one with sepia/hue-rotate is
-       how you get a duotone that is close on one image and wrong on the next. */
-    .treat-demo {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: var(--space-4);
-      margin: var(--space-5) 0 var(--space-4);
-    }
-    .treat-fig { margin: 0; }
-    .treat-img {
-      display: block;
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      object-fit: cover;
-      border-radius: var(--corner-radius-base);
-      background: var(--surface-pill);
-    }
-    .treat-img--deep { filter: url(#rba-duotone-deep); }
-    .treat-img--soft { filter: url(#rba-duotone-soft); }
-    .treat-fig figcaption {
-      margin-top: 8px;
-      font-family: var(--font-sans);
-      font-size: 12px;
-      line-height: 18px;
-      color: var(--text-muted);
-    }
-    .treat-fig figcaption strong { color: var(--text); }
-
     /* ---------- Color format switch ----------
        One segmented control governing every value in the Colors section. A
        connected set rather than five separate chips on purpose: .lib-filter-btn
