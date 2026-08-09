@@ -32,8 +32,7 @@
     "Data & AI in practice",
     "Industries in action",
     "Culture & careers",
-    "Backgrounds & texture",
-    "Duotone"
+    "Backgrounds & texture"
   ],
   "items": [
     {
@@ -661,84 +660,6 @@
       "use": "Data and AI section headers, hero panels",
       "crop": "Crop into the soft foreground. If type has to sit on the sharp blocks, pick another background.",
       "url": "https://stock.adobe.com/images/x/478334581"
-    },
-    {
-      "source": "adobe",
-      "id": "321550165-deep",
-      "file": "adobe-321550165-deep.webp",
-      "cat": "Duotone",
-      "title": "Glass tower from below, deep duotone — the grid reduced to structure and sky",
-      "by": "BullRun",
-      "dim": "7798 × 5201",
-      "why": "Architecture is what the deep duotone is best at: the grade throws away the incidental colour of a real building and leaves the geometry, and the sky at the top becomes a clean field rather than a photograph of weather.",
-      "use": "Covers, full-bleed section heads, anywhere a headline needs a structured ground",
-      "crop": "The pale upper third is the type area. Reversed white holds at any size on it.",
-      "url": "https://stock.adobe.com/images/x/321550165"
-    },
-    {
-      "source": "adobe",
-      "id": "1655941922-deep",
-      "file": "adobe-1655941922-deep.webp",
-      "cat": "Duotone",
-      "title": "Triangular glass panels, deep duotone — pure repeating pattern",
-      "by": "sandipruel",
-      "dim": "4500 × 3000",
-      "why": "The frame was already closer to a pattern than a photograph, and the grade finishes the job. Nothing here reads as a specific place, which is what makes it usable behind copy that is about something else.",
-      "use": "Repeating panels, card backs, dividers",
-      "crop": "Crops anywhere without losing the idea. Tile it if you need more width.",
-      "url": "https://stock.adobe.com/images/x/1655941922"
-    },
-    {
-      "source": "adobe",
-      "id": "1996885442-deep",
-      "file": "adobe-1996885442-deep.webp",
-      "cat": "Duotone",
-      "title": "Long-exposure interchange, deep duotone — motion as line work",
-      "by": "Jacqueline",
-      "dim": "6557 × 3660",
-      "why": "A real long exposure rather than a drawn overlay, which is the distinction the treatment rules care about: the light traces something that actually happened. The grade pulls the amber sodium out and leaves the movement.",
-      "use": "Transformation, migration, programme heroes",
-      "crop": "Dark upper left is the quiet area. Do not crop into the curve — the sweep is the subject.",
-      "url": "https://stock.adobe.com/images/x/1996885442"
-    },
-    {
-      "source": "adobe",
-      "id": "690464019-deep",
-      "file": "adobe-690464019-deep.webp",
-      "cat": "Duotone",
-      "title": "Developer at three screens, deep duotone — code as the light source",
-      "by": "InfiniteFlow",
-      "dim": "7952 × 5304",
-      "why": "The one dark documentary frame that gains rather than flattens: the screens were already the only light in the room, so the grade reads as intent instead of as a filter. Face is turned away, so the treatment does not abstract anyone.",
-      "use": "Engineering, platform work, technical capability pages",
-      "crop": "3:2 as shot. Keep at least two screens legible — the code is what makes it real.",
-      "url": "https://stock.adobe.com/images/x/690464019"
-    },
-    {
-      "source": "adobe",
-      "id": "272840231-soft",
-      "file": "adobe-272840231-soft.webp",
-      "cat": "Duotone",
-      "title": "Agronomist in a wheat field, soft duotone — figure against open sky",
-      "by": "scharfsinn86",
-      "dim": "9724 × 5304",
-      "why": "The single people-frame in the library that is genuinely better treated. A simple silhouette against a large bright sky is exactly what a two-stop grade wants, and it says agriculture without a drone, a dashboard or a hard hat.",
-      "use": "Industry heroes, sector pages, quote panels",
-      "crop": "The sky is a third of the frame and takes dark type directly. Crop from the right.",
-      "url": "https://stock.adobe.com/images/x/272840231"
-    },
-    {
-      "source": "adobe",
-      "id": "1708678408-soft",
-      "file": "adobe-1708678408-soft.webp",
-      "cat": "Duotone",
-      "title": "Briefing in a glass-walled room, soft duotone — daylight kept, colour removed",
-      "by": "Santi Nuñez/Stocksy",
-      "dim": "7008 × 4672",
-      "why": "Proof that the soft duotone is not just the deep one turned down: a bright room stays bright, and what goes is the competing colour of chairs, carpet and clothing. The room reads as one material.",
-      "use": "Light sections, document covers, anywhere reversed type is wrong",
-      "crop": "3:2. Dark type sits well on the glass at the right; avoid the screen.",
-      "url": "https://stock.adobe.com/images/x/1708678408"
     }
   ]
 }
