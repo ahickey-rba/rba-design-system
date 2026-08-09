@@ -259,10 +259,34 @@ The original fifty were saved by hand from Adobe Stock, because `curl` and
 not of a browser — see *Adobe Stock, without an API key* above, which is the
 cheaper route now. They are `.webp`, roughly 70 KB each, 3.5 MB for the set.
 
-**Worth deciding deliberately:** the comp licence covers internal evaluation, and
-this site is reachable publicly. If that matters, the fix is to keep `shortlist/`
-out of the deployed build rather than to remove it here — the cards degrade to
-labelled slots on their own when the files are absent.
+**This was an open question and it is now decided.** The comp licence covers
+evaluating an image, this site has no login, and the library has grown past
+ninety frames — so it was reviewed properly rather than left as a note.
+
+The exposure worth closing is not a colleague opening the board. It is a hundred
+unlicensed frames being crawled and served up in image search to people who never
+came here. So the board stays usable for anyone with the link, and stays out of
+the index:
+
+- `robots.txt` disallows `/assets/images/shortlist/` and `/images.html`
+- `images.html` carries `<meta name="robots" content="noindex, noimageindex, nofollow">`
+
+Both are required. `robots.txt` stops the crawl; the meta stops the listing. A
+page linked from elsewhere can still be indexed on the strength of those links
+if only the crawl is blocked, and `noimageindex` is the part that covers the
+pictures rather than the page.
+
+**What this does not do.** It reduces discovery, not liability — the files are
+still served to anyone with the URL, and noindex is a request that well-behaved
+crawlers honour. It is the strongest mitigation available on a host with no
+authentication.
+
+The alternative considered and rejected was dropping `shortlist/` from the
+deployed build. It removes the exposure completely and the cards degrade to
+labelled slots on their own, but it also makes the deployed board useless for
+the one thing it exists to do, which is compare photographs. If the risk
+assessment ever changes, that is the lever: one step in `deploy.yml` before
+`upload-pages-artifact`, and roughly 9.5&nbsp;MB stops shipping.
 
 ## Replacing a comp with the real thing
 
