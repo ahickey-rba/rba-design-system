@@ -1438,7 +1438,9 @@
       const search = scope.querySelector('.lib-search-input');
       const chips = scope.querySelector('.lib-filter');
       const count = scope.querySelector('.lib-count');
+      const styleChips = scope.querySelector('.lib-filter--style');
       let activeCat = 'all';
+      let activeStyle = 'all';
 
       if (chips) {
         const mk = (value, label, pressed) => {
@@ -1463,6 +1465,45 @@
           });
           apply();
         });
+      }
+
+      // Treatment, the second axis. Built from what the manifest actually contains
+      // rather than from the three names the schema allows, so the row only ever
+      // offers a filter that returns something — and disappears entirely on a
+      // library that is all documentary, which is what this one was until recently.
+      if (styleChips) {
+        const STYLE_LABEL = { documentary: 'As shot', treated: 'Treated', abstract: 'Abstract' };
+        const present = [];
+        ['documentary', 'treated', 'abstract'].forEach(s => {
+          const n = items.filter(it => (it.style || 'documentary') === s).length;
+          if (n) present.push([s, n]);
+        });
+        if (present.length > 1) {
+          const mk = (value, label, pressed) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'lib-filter-btn';
+            b.setAttribute('data-style', value);
+            b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+            b.textContent = label;
+            return b;
+          };
+          const lab = document.createElement('span');
+          lab.className = 'lib-filter-label';
+          lab.textContent = 'Treatment';
+          styleChips.appendChild(lab);
+          styleChips.appendChild(mk('all', 'Any', true));
+          present.forEach(([s, n]) => styleChips.appendChild(mk(s, STYLE_LABEL[s] + ' ' + n, false)));
+          styleChips.addEventListener('click', ev => {
+            const btn = ev.target.closest('.lib-filter-btn');
+            if (!btn) return;
+            activeStyle = btn.getAttribute('data-style');
+            styleChips.querySelectorAll('.lib-filter-btn').forEach(b => {
+              b.setAttribute('aria-pressed', String(b === btn));
+            });
+            apply();
+          });
+        }
       }
 
       // The correction vocabulary: every word the search could possibly match,
@@ -1507,7 +1548,10 @@
         let shown = 0;
         for (let i = 0; i < items.length; i++) {
           const it = items[i];
-          const inScope = activeCat === 'all' || it.cat === activeCat;
+          // Both axes must agree. They are independent, so this is an AND: "Industries"
+          // plus "Treated" means treated industry frames, not the union of the two.
+          const inScope = (activeCat === 'all' || it.cat === activeCat)
+                       && (activeStyle === 'all' || (it.style || 'documentary') === activeStyle);
           let tier = -1;
           if (inScope) {
             if (!terms.length) tier = 0;
