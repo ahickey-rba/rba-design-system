@@ -403,6 +403,12 @@ have looked at anything; the last two need the picture in front of you.
   markedly better than `filters[gentech]=0`, which only removes what a
   contributor declared. Downloads also select for images that have already
   survived other people's judgement.
+  **It over-corrects on people, though.** For architecture and texture, where
+  nothing dates, it is close to free. For anyone in shot it surfaces 2015–19
+  stock whose wardrobe, grading and posing are visibly old, which trades an AI
+  risk for a dated one. Both people-frames that survived this week's pass came
+  from mid-range ids found on relevance and screened by eye. Use the sort to
+  find the pre-AI band, not to pick within it.
 - **The id is a date.** Adobe ids run roughly sequential by upload, so their
   magnitude alone dates an asset before you open it. Under ~500 million is
   pre-2023 and effectively pre-AI; 2 billion and up is the contaminated cohort.
