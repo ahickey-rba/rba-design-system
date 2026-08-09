@@ -8,9 +8,10 @@
 
       http://localhost:3477/tools/save-previews.html
 
-  Fifty Adobe Stock previews have to be saved by hand, because Adobe blocks
-  scripted access and the alternative needs an API key. This makes that a rhythm
-  instead of a cross-referencing exercise: open, save, copy filename, next.
+  Saving fifty Adobe Stock previews by hand is the fallback, not the only way:
+  Adobe blocks curl and urllib, but not a browser, and images-fetch-previews.py
+  will do the whole set unattended given an API key. This makes the manual path a
+  rhythm instead of a cross-referencing exercise: open, save, copy filename, next.
 
   It reads the same manifest as the site, so it can never list something the
   shortlist doesn't have. It also PROBES for each file as it goes, so it doubles

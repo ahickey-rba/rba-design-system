@@ -171,13 +171,31 @@ no library edit.
 
 ### Adobe Stock, without an API key
 
-Adobe returns `403` to any scripted request for an item **page** — every user
-agent, every header combination, and the oembed endpoint. Its image **CDN** has no
-check at all: a plain GET with no user agent and no referer returns the
-watermarked comp.
+Adobe returns `403` to any request from `curl` or `urllib` for an item **page** —
+every user agent, every header combination, and the oembed endpoint. That is a
+TLS and JavaScript check rather than a header one, which is why swapping the
+user agent never helped and never will. Its image **CDN** has no check at all: a
+plain GET with no user agent and no referer returns the watermarked comp.
 
-So paste the image address rather than the page address. Right-click the preview
-on Adobe Stock, choose **Copy image address**, and give that to the importer:
+**A real browser is not blocked, and that is the part this file used to get
+wrong.** Driving an actual browser session at `stock.adobe.com/images/x/<id>`
+renders the whole page, signed out, and the four fields the CDN route cannot
+supply are all sitting in it:
+
+| | |
+|---|---|
+| `by <name>` | the contributor, for the `by` field and `--review`'s concentration check |
+| `DIMENSIONS` | the real asset size — **not** the 1000px comp — which is the AI screen below |
+| `LICENSE TYPE` | `Standard or Extended` is subscription-covered; `Enhanced` is per-image |
+| the `1000_F_` `<img>` | the CDN preview address, without right-clicking anything |
+
+So the API key is optional rather than required, and the manual copy step is a
+convenience rather than the only way in. The tools themselves still use `urllib`
+and so still hit the 403 — the constraint is real *for them*. What changed is
+what a person, or an agent with a browser, has to type by hand.
+
+Either way, paste the image address rather than the page address. Right-click the
+preview on Adobe Stock and choose **Copy image address**, or read it off the DOM:
 
 ```bash
 ./tools/images-add.py --cat Technology --title "Two engineers at a whiteboard" \
@@ -236,9 +254,10 @@ comp with the watermark still across it.** That is the point: a comp exists to b
 reviewed, and this page is the review. It is not an image library, and nothing in
 `shortlist/` may be used in anything that ships.
 
-The files were saved by hand from Adobe Stock — the previews cannot be fetched
-programmatically, because automated requests to the asset pages return `403`. They
-are `.webp`, roughly 70 KB each, 3.5 MB for the set.
+The original fifty were saved by hand from Adobe Stock, because `curl` and
+`urllib` get `403` from the asset pages. That is still true of the scripts, but
+not of a browser — see *Adobe Stock, without an API key* above, which is the
+cheaper route now. They are `.webp`, roughly 70 KB each, 3.5 MB for the set.
 
 **Worth deciding deliberately:** the comp licence covers internal evaluation, and
 this site is reachable publicly. If that matters, the fix is to keep `shortlist/`
@@ -266,8 +285,9 @@ will tell you if you forget.
 If a card ever needs re-staging from scratch, `tools/save-previews.html` lists every
 candidate in shortlist order with its link, the exact filename to save as and a copy
 button, and probes the folder as you go so it doubles as a progress tracker.
-`tools/images-fetch-previews.py` does the same job in one pass given an Adobe Stock
-API key.
+`tools/images-fetch-previews.py` does the same job in one unattended pass given an
+Adobe Stock API key — worth it for the whole set, overkill for one image, where
+reading the fields off the page in a browser is quicker than getting a key.
 
 Frames are 3:2, which is what most of the set is shot at. **Portrait images will be
 cropped hard** — check any tall candidate in the grid before committing to it.
@@ -372,8 +392,21 @@ contact sheets. On generic business terms — *dashboard*, *analytics*, *AI*,
 with `filters[gentech]=0` applied. That filter only removes what the contributor
 declared, and undeclared generative work is now the bulk of the corpus.
 
-Two screens worked, in this order:
+Four screens work, in this order. The first two cost nothing and run before you
+have looked at anything; the last two need the picture in front of you.
 
+- **Sort by downloads, not relevance.** Add `&order=nb_downloads` to the search
+  URL. Relevance order on any business term returns ids in the 2.0–2.1 billion
+  range, which is the 2024–25 cohort; the same query sorted by downloads comes
+  back in the 121–384 million range, which is years before diffusion output
+  reached this catalogue. It is the single most effective filter found so far, and
+  markedly better than `filters[gentech]=0`, which only removes what a
+  contributor declared. Downloads also select for images that have already
+  survived other people's judgement.
+- **The id is a date.** Adobe ids run roughly sequential by upload, so their
+  magnitude alone dates an asset before you open it. Under ~500 million is
+  pre-2023 and effectively pre-AI; 2 billion and up is the contaminated cohort.
+  Free, and it works straight off a search-results grid.
 - **Pixel dimensions.** Camera files are large and irregular: 8736 × 4896,
   7087 × 3911, 6955 × 4637. Diffusion output is small and tidy, and lands on
   2752 × 1536, 2688 × 1536, or multiples of 64. Under ~4500px wide, or a height of

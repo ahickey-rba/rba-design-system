@@ -25,10 +25,11 @@ the label and asks you to fill in the licence line once.
 
 ADOBE STOCK, WITHOUT AN API KEY
 -------------------------------
-Adobe returns 403 to any scripted request for an item PAGE — every user agent,
-every header combination, and the oembed endpoint too. Its image CDN, however,
-has no check of any kind: a plain GET with no user agent and no referer returns
-the watermarked comp.
+Adobe returns 403 to any request THIS SCRIPT makes for an item PAGE — every user
+agent, every header combination, and the oembed endpoint too. It is a TLS and
+JavaScript check rather than a header one, so there is no user agent worth
+trying. Its image CDN, however, has no check of any kind: a plain GET with no
+user agent and no referer returns the watermarked comp.
 
 So paste the IMAGE address instead of the page address. On the Adobe Stock page,
 right-click the preview and choose "Copy image address":
@@ -39,6 +40,19 @@ right-click the preview and choose "Copy image address":
 The id is in that filename, so the entry and its link back to Adobe are rebuilt
 from it. Only the title has to be supplied, because the CDN serves an image and
 not a page to read one off.
+
+WHAT THE CDN ROUTE CANNOT GIVE YOU, AND WHERE TO GET IT
+-------------------------------------------------------
+Note what an entry added this way is missing, because --check will not catch any
+of it: "by" comes out EMPTY, and "dim" records the size of the 1000px COMP, not
+of the asset. That second one matters more than it looks — pixel dimensions are
+the AI screen the README leans on, and 1000 x 667 defeats it silently.
+
+A real browser is not blocked, even signed out, and the page carries all of it:
+"by <name>", DIMENSIONS, LICENSE TYPE, and the 1000_F_ <img> src. Open
+stock.adobe.com/images/x/<id>, read those four off it, and correct the entry by
+hand after importing. Until this script can do that itself, adding an Adobe image
+is a two-step job and the second step is easy to forget.
 
 REPLACING RATHER THAN ADDING
 ----------------------------
