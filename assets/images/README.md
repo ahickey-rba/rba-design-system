@@ -389,8 +389,20 @@ else is a substitute for reading it:
 This is the operational finding worth keeping. Sourcing ran ~180 candidates through
 contact sheets. On generic business terms — *dashboard*, *analytics*, *AI*,
 *business team* — **the great majority of first-page results were AI-generated**,
-with `filters[gentech]=0` applied. That filter only removes what the contributor
-declared, and undeclared generative work is now the bulk of the corpus.
+with `filters[gentech]=0` applied — **and that value is wrong and silently does
+nothing.** The parameter Adobe's own "Exclude Generative AI" control sets is
+`filters[gentech]=exclude`. With `=0` the search returns an unfiltered result set:
+tested on the same query, `=0` and no filter at all both returned 2,034 results,
+and six of six hand-picked "photographic-looking" results carried a **Generated
+with AI** disclosure on their asset pages.
+
+Switching to `=exclude` on that query took it from **2,034 results to 102**, and
+the median asset id from 2.09 billion to 659 million — from the 2024-25 generative
+cohort to real photography. So roughly 95% of that search space was generative, and
+the screen this file recommended had been passing all of it through.
+
+Even with the correct value the caveat below still applies — it removes only what
+the contributor declared — but it now removes something.
 
 Four screens work, in this order. The first two cost nothing and run before you
 have looked at anything; the last two need the picture in front of you.
@@ -400,8 +412,8 @@ have looked at anything; the last two need the picture in front of you.
   range, which is the 2024–25 cohort; the same query sorted by downloads comes
   back in the 121–384 million range, which is years before diffusion output
   reached this catalogue. It is the single most effective filter found so far, and
-  markedly better than `filters[gentech]=0`, which only removes what a
-  contributor declared. Downloads also select for images that have already
+  a useful complement to `filters[gentech]=exclude` — note the value, `=0` is
+  silently ignored — which removes only what a contributor declared. Downloads also select for images that have already
   survived other people's judgement.
   **It over-corrects on people, though.** For architecture and texture, where
   nothing dates, it is close to free. For anyone in shot it surfaces 2015–19
