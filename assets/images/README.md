@@ -35,26 +35,27 @@ Everything goes through `library.json` and then one command:
 | **Add** | Drop `<source>-<id>.<ext>` into `shortlist/`, run `--adopt`, fill in the TODOs. |
 | **Reorder** | Move the entry up or down its category in the array. Rank and priority follow. |
 | **Want** | Add an entry with **no `file` key** — a candidate you have shortlisted but not downloaded. |
-| **Treat** | Set `"style"` to `treated` or `abstract`. Omit it for documentary, which is most of the library. |
+| **Treat** | File it under **Signature & campaign**. Treatment is a family, not a flag — see below. |
 
-### Two axes: what it shows, and how it was made
+### Treated frames are a family, not a field
 
-`cat` is the subject. `style` is the treatment, and they are independent — a graded
-shot of a factory floor is still *Industries in action*.
+A `style` field was tried here — `documentary` / `treated` / `abstract` as a second
+axis, with its own filter row above the grid — and taken out again. Two filter rows
+that combine is a more precise model of the truth and a worse thing to stand in front
+of: the honest question a person arrives with is *show me the campaign imagery*, not
+*show me the intersection of a subject and a treatment*. One row of families answers
+that in one click.
 
-- `documentary` — a photograph, as shot. **The default; omit the key.**
-- `treated` — a photograph carrying a deliberate grade or graphic overlay.
-- `abstract` — no photographic subject at all: CGI, render, generative.
+So a deliberately graded or overlaid frame goes in **Signature & campaign**, the same
+way a render goes in *Abstract & hero graphics*. It costs the ability to say "treated
+Industries shot", which nothing has needed yet; the day something does, that is the
+day to reconsider, not before.
 
-Splitting by treatment instead would have given every subject family a shadow twin,
-and this library has already learned once that families with overlapping claims make
-the filter useless. The board carries a second filter row for it, built from what the
-manifest actually contains, so it lists `treated` only once something is.
-
-**The tier is what makes treatment safe.** "Use images as supplied" is still the rule
-for documentary work — a graded frame filed as documentary will one day sit beside an
-ungraded one in the same layout and read as a mistake. The full treatment spec, with
-both duotones shown on a real frame, is on the images page under *Treating an image*.
+**Filing it correctly is still what makes treatment safe.** "Use images as supplied"
+remains the rule everywhere else — a graded frame filed among documentary work will
+one day sit beside an ungraded one in the same layout and read as a mistake. The full
+treatment spec, with both duotones shown on a real frame, is on the images page under
+*Treating an image*.
 
 ### Wanted entries
 

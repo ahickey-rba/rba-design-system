@@ -74,19 +74,6 @@ ADOBE_OK = re.compile(r'^https://stock\.adobe\.com/images/[^/]+/\d+/?$')
 # somebody's notes and got lost.
 REQUIRED = ('source', 'id', 'title', 'cat', 'url')
 
-# HOW a frame is made, which is independent of WHAT it shows. A treated shot of a
-# factory is still Industries, so this is a second axis rather than more categories:
-# splitting by treatment would give every subject family a shadow twin, and this
-# library has already learned once that families with overlapping claims make the
-# filter useless.
-#
-#   documentary  a photograph, as shot. The default, and most of the library.
-#   treated      a photograph carrying a deliberate grade or graphic overlay.
-#   abstract     no photographic subject at all — CGI, render, generative.
-#
-# Omitted means documentary, the same convention "gen" uses: the common case costs
-# nothing to say and the file stays readable.
-STYLES = ('documentary', 'treated', 'abstract')
 
 STUB = {'title': 'TODO title', 'by': 'TODO contributor', 'dim': '',
         'why': 'TODO why this one', 'use': 'TODO where it is for', 'crop': '',
@@ -127,9 +114,6 @@ def validate(lib, files):
                         % (where, it['source']))
         if it.get('cat') and it['cat'] not in cats:
             errs.append('%s: category "%s" is not in "categories"' % (where, it['cat']))
-        if it.get('style') and it['style'] not in STYLES:
-            errs.append('%s: style "%s" is not one of %s — omit it for documentary'
-                        % (where, it['style'], '/'.join(STYLES)))
 
         key = (it.get('source'), it.get('id'))
         if key in seen:
@@ -191,9 +175,6 @@ def build(lib):
             'file': it.get('file', ''),
             'title': it['title'],
             'cat': it['cat'],
-            # Defaulted here rather than in the file, so 46 documentary entries do not
-            # each carry a line saying they are ordinary.
-            'style': it.get('style', 'documentary'),
             'rank': rank,
             'by': it.get('by', ''),
             'dim': it.get('dim', ''),
