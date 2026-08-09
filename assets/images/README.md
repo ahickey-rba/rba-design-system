@@ -46,8 +46,7 @@ of: the honest question a person arrives with is *show me the campaign imagery*,
 *show me the intersection of a subject and a treatment*. One row of families answers
 that in one click.
 
-So a deliberately graded or overlaid frame goes in **Signature & campaign**, the same
-way a render goes in *Abstract & hero graphics*. It costs the ability to say "treated
+So a deliberately graded or overlaid frame goes in **Signature & campaign**. It costs the ability to say "treated
 Industries shot", which nothing has needed yet; the day something does, that is the
 day to reconsider, not before.
 
