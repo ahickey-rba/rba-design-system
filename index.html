@@ -133,7 +133,7 @@
               <ul class="task-links">
                 <li><a href="templates.html">Open the PowerPoint master</a></li>
                 <li><a href="templates.html#kits">See what a finished deck looks like</a></li>
-                <li><a href="#colors">Copy a hex from the palette</a></li>
+                <li><a href="#colors">Copy a palette color &mdash; hex, RGB or CMYK</a></li>
                 <li><a href="#type">Check a type size or weight</a></li>
               </ul>
             </section>
@@ -172,7 +172,34 @@
         <div class="container">
           <div class="section-head">
             <h2 class="section-title">Colors</h2>
-            <p class="section-lede">The palette as published, with the two usage rules that come attached to it. Click any swatch to copy its hex.</p>
+            <p class="section-lede">The palette as published, with the two usage rules that come attached to it. Pick the format your tool wants, then click any swatch to copy it.</p>
+          </div>
+
+          <!-- One control for the whole section. Every value below — the two palette
+               cards, the chart series, the token table — is written in whichever format
+               is selected here, and clicking any of them copies that format.
+
+               A per-swatch dropdown was the obvious alternative and it is worse: the
+               question "what format do I need" is asked once per visit, not once per
+               colour, and sixteen dropdowns would have put a control on top of the
+               thing the board exists to show. One switch, and the whole page answers.
+
+               HEX is still what ships in the markup, so this degrades to the old
+               behaviour with JavaScript off.
+
+               The line underneath is not decoration. Five format names tell you what
+               each one IS; what a reader actually needs to know is which one to pick,
+               and for CMYK, what it is not. -->
+          <div class="format-switch">
+            <span class="format-switch-label" id="format-switch-label">Show and copy as</span>
+            <div class="format-switch-set" role="radiogroup" aria-labelledby="format-switch-label">
+              <button type="button" class="format-switch-btn" role="radio" aria-checked="true" tabindex="0" data-format="hex">HEX</button>
+              <button type="button" class="format-switch-btn" role="radio" aria-checked="false" tabindex="-1" data-format="rgb">RGB</button>
+              <button type="button" class="format-switch-btn" role="radio" aria-checked="false" tabindex="-1" data-format="hsl">HSL</button>
+              <button type="button" class="format-switch-btn" role="radio" aria-checked="false" tabindex="-1" data-format="cmyk">CMYK</button>
+              <button type="button" class="format-switch-btn" role="radio" aria-checked="false" tabindex="-1" data-format="var">CSS var</button>
+            </div>
+            <p class="format-switch-hint" aria-live="polite">What Figma, Office and most web tools expect.</p>
           </div>
 
           <div class="callout">
@@ -208,7 +235,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Brand Red</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#C8252D</span>
+                    <span class="palette-swatch-value">#C8252D</span>
                     <span class="palette-swatch-token">--rba-red</span>
                     <span class="palette-swatch-tag">logo only</span>
                   </span>
@@ -219,7 +246,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Primary</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#1D366D</span>
+                    <span class="palette-swatch-value">#1D366D</span>
                     <span class="palette-swatch-token">--midnight</span>
                     <span class="palette-swatch-tag">headings</span>
                   </span>
@@ -230,7 +257,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Action Blue</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#185FA5</span>
+                    <span class="palette-swatch-value">#185FA5</span>
                     <span class="palette-swatch-token">--action</span>
                     <span class="palette-swatch-tag">links, highlights</span>
                   </span>
@@ -241,7 +268,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Accent</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#0D8FA9</span>
+                    <span class="palette-swatch-value">#0D8FA9</span>
                     <span class="palette-swatch-token">--accent</span>
                     <span class="palette-swatch-tag">CTAs</span>
                   </span>
@@ -252,7 +279,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Aqua</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#14BADB</span>
+                    <span class="palette-swatch-value">#14BADB</span>
                     <span class="palette-swatch-token">--aqua</span>
                     <span class="palette-swatch-tag">decorative</span>
                   </span>
@@ -263,7 +290,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Navy Dark</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#182449</span>
+                    <span class="palette-swatch-value">#182449</span>
                     <span class="palette-swatch-token">--navy-dark</span>
                     <span class="palette-swatch-tag">dark bg</span>
                   </span>
@@ -274,7 +301,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">BG Dark</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#1A2332</span>
+                    <span class="palette-swatch-value">#1A2332</span>
                     <span class="palette-swatch-token">--bg-dark</span>
                     <span class="palette-swatch-tag">footer</span>
                   </span>
@@ -294,7 +321,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Soft Blue</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#8EC3DB</span>
+                    <span class="palette-swatch-value">#8EC3DB</span>
                     <span class="palette-swatch-token">--soft-blue</span>
                   </span>
                 </span>
@@ -304,7 +331,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Sky Blue</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#BDE4F1</span>
+                    <span class="palette-swatch-value">#BDE4F1</span>
                     <span class="palette-swatch-token">--sky-blue</span>
                   </span>
                 </span>
@@ -314,7 +341,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">White Blue</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#F5FAFC</span>
+                    <span class="palette-swatch-value">#F5FAFC</span>
                     <span class="palette-swatch-token">--white-blue</span>
                   </span>
                 </span>
@@ -324,7 +351,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Surface Alt</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#F5F5F5</span>
+                    <span class="palette-swatch-value">#F5F5F5</span>
                     <span class="palette-swatch-token">--white-grey</span>
                   </span>
                 </span>
@@ -334,7 +361,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Text</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#333333</span>
+                    <span class="palette-swatch-value">#333333</span>
                     <span class="palette-swatch-token">--black</span>
                     <span class="palette-swatch-tag">body</span>
                   </span>
@@ -345,7 +372,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Text Muted</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#666666</span>
+                    <span class="palette-swatch-value">#666666</span>
                     <span class="palette-swatch-token">--dark-grey</span>
                     <span class="palette-swatch-tag">meta</span>
                   </span>
@@ -356,7 +383,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Border Strong</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#AAAAAA</span>
+                    <span class="palette-swatch-value">#AAAAAA</span>
                     <span class="palette-swatch-token">--med-grey</span>
                   </span>
                 </span>
@@ -366,7 +393,7 @@
                 <span class="palette-swatch-text">
                   <span class="palette-swatch-name">Border</span>
                   <span class="palette-swatch-meta">
-                    <span class="palette-swatch-hex">#DDDDDD</span>
+                    <span class="palette-swatch-value">#DDDDDD</span>
                     <span class="palette-swatch-token">--light-grey</span>
                     <span class="palette-swatch-tag">cards</span>
                   </span>
@@ -476,7 +503,7 @@
                   <span class="viz-swatch-index" aria-hidden="true">01</span>
                 </span>
                 <span class="viz-swatch-name">Navy</span>
-                <span class="viz-swatch-meta"><span class="viz-swatch-hex">#1D366D</span> &middot; Solid</span>
+                <span class="viz-swatch-meta"><span class="viz-swatch-value">#1D366D</span> &middot; Solid</span>
                 <span class="viz-swatch-token"><code>--viz-1</code></span>
               </button>
             </li>
@@ -488,7 +515,7 @@
                   <span class="viz-swatch-index" aria-hidden="true">02</span>
                 </span>
                 <span class="viz-swatch-name">Steel blue</span>
-                <span class="viz-swatch-meta"><span class="viz-swatch-hex">#6B859C</span> &middot; 45°</span>
+                <span class="viz-swatch-meta"><span class="viz-swatch-value">#6B859C</span> &middot; 45°</span>
                 <span class="viz-swatch-token"><code>--viz-2</code></span>
               </button>
             </li>
@@ -500,7 +527,7 @@
                   <span class="viz-swatch-index" aria-hidden="true">03</span>
                 </span>
                 <span class="viz-swatch-name">Deep aqua</span>
-                <span class="viz-swatch-meta"><span class="viz-swatch-hex">#0A7A91</span> &middot; Horizontal</span>
+                <span class="viz-swatch-meta"><span class="viz-swatch-value">#0A7A91</span> &middot; Horizontal</span>
                 <span class="viz-swatch-token"><code>--viz-3</code></span>
               </button>
             </li>
@@ -512,7 +539,7 @@
                   <span class="viz-swatch-index" aria-hidden="true">04</span>
                 </span>
                 <span class="viz-swatch-name">Slate blue</span>
-                <span class="viz-swatch-meta"><span class="viz-swatch-hex">#4A7A99</span> &middot; Vertical</span>
+                <span class="viz-swatch-meta"><span class="viz-swatch-value">#4A7A99</span> &middot; Vertical</span>
                 <span class="viz-swatch-token"><code>--viz-4</code></span>
               </button>
             </li>
@@ -524,7 +551,7 @@
                   <span class="viz-swatch-index" aria-hidden="true">05</span>
                 </span>
                 <span class="viz-swatch-name">Dark teal</span>
-                <span class="viz-swatch-meta"><span class="viz-swatch-hex">#3B586F</span> &middot; Cross-hatch</span>
+                <span class="viz-swatch-meta"><span class="viz-swatch-value">#3B586F</span> &middot; Cross-hatch</span>
                 <span class="viz-swatch-token"><code>--viz-5</code></span>
               </button>
             </li>
@@ -536,7 +563,7 @@
                   <span class="viz-swatch-index" aria-hidden="true">06</span>
                 </span>
                 <span class="viz-swatch-name">Mid blue</span>
-                <span class="viz-swatch-meta"><span class="viz-swatch-hex">#5B8FA8</span> &middot; Small dots</span>
+                <span class="viz-swatch-meta"><span class="viz-swatch-value">#5B8FA8</span> &middot; Small dots</span>
                 <span class="viz-swatch-token"><code>--viz-6</code></span>
               </button>
             </li>
@@ -548,7 +575,7 @@
                   <span class="viz-swatch-index" aria-hidden="true">07</span>
                 </span>
                 <span class="viz-swatch-name">Royal blue</span>
-                <span class="viz-swatch-meta"><span class="viz-swatch-hex">#3178BF</span> &middot; 135°</span>
+                <span class="viz-swatch-meta"><span class="viz-swatch-value">#3178BF</span> &middot; 135°</span>
                 <span class="viz-swatch-token"><code>--viz-7</code></span>
               </button>
             </li>
@@ -560,7 +587,7 @@
                   <span class="viz-swatch-index" aria-hidden="true">08</span>
                 </span>
                 <span class="viz-swatch-name">Slate grey</span>
-                <span class="viz-swatch-meta"><span class="viz-swatch-hex">#4A5568</span> &middot; Large dots</span>
+                <span class="viz-swatch-meta"><span class="viz-swatch-value">#4A5568</span> &middot; Large dots</span>
                 <span class="viz-swatch-token"><code>--viz-8</code></span>
               </button>
             </li>
@@ -588,24 +615,24 @@
                 <tr><th>Token</th><th>Value</th><th>Role</th></tr>
               </thead>
               <tbody>
-                <tr><td class="token-name">--rba-red</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#C8252D" aria-label="Copy #C8252D"><span class="token-swatch" style="--c: #C8252D" aria-hidden="true"></span><code class="token-hex">#C8252D</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Logo mark only. Never on UI.</td></tr>
-                <tr><td class="token-name">--midnight</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#1D366D" aria-label="Copy #1D366D"><span class="token-swatch" style="--c: #1D366D" aria-hidden="true"></span><code class="token-hex">#1D366D</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Headings, nav, primary buttons.</td></tr>
-                <tr><td class="token-name">--primary-hover</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#2A4A8A" aria-label="Copy #2A4A8A"><span class="token-swatch" style="--c: #2A4A8A" aria-hidden="true"></span><code class="token-hex">#2A4A8A</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Primary button hover.</td></tr>
-                <tr><td class="token-name">--primary-dark</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#162A57" aria-label="Copy #162A57"><span class="token-swatch" style="--c: #162A57" aria-hidden="true"></span><code class="token-hex">#162A57</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Deep navy accents.</td></tr>
-                                <tr><td class="token-name">--action</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#185FA5" aria-label="Copy #185FA5"><span class="token-swatch" style="--c: #185FA5" aria-hidden="true"></span><code class="token-hex">#185FA5</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Links and highlights. Safe on white and on every tint in this palette.</td></tr>
-                                <tr><td class="token-name">--action-hover</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#1D366D" aria-label="Copy #1D366D"><span class="token-swatch" style="--c: #1D366D" aria-hidden="true"></span><code class="token-hex">#1D366D</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Link hover. Deepens to midnight rather than to a fourth blue.</td></tr>
-                <tr><td class="token-name">--accent</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#0D8FA9" aria-label="Copy #0D8FA9"><span class="token-swatch" style="--c: #0D8FA9" aria-hidden="true"></span><code class="token-hex">#0D8FA9</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>CTA buttons, active states.</td></tr>
-                <tr><td class="token-name">--aqua</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#14BADB" aria-label="Copy #14BADB"><span class="token-swatch" style="--c: #14BADB" aria-hidden="true"></span><code class="token-hex">#14BADB</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Decorative only — fails AA for text.</td></tr>
-                <tr><td class="token-name">--soft-blue</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#8EC3DB" aria-label="Copy #8EC3DB"><span class="token-swatch" style="--c: #8EC3DB" aria-hidden="true"></span><code class="token-hex">#8EC3DB</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Decorative.</td></tr>
-                <tr><td class="token-name">--sky-blue</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#BDE4F1" aria-label="Copy #BDE4F1"><span class="token-swatch" style="--c: #BDE4F1" aria-hidden="true"></span><code class="token-hex">#BDE4F1</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Hero-gradient end, backgrounds.</td></tr>
-                <tr><td class="token-name">--white-blue</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#F5FAFC" aria-label="Copy #F5FAFC"><span class="token-swatch" style="--c: #F5FAFC" aria-hidden="true"></span><code class="token-hex">#F5FAFC</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Subtle tinted surface.</td></tr>
-                <tr><td class="token-name">--black</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#333333" aria-label="Copy #333333"><span class="token-swatch" style="--c: #333333" aria-hidden="true"></span><code class="token-hex">#333333</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Body text.</td></tr>
-                <tr><td class="token-name">--dark-grey</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#666666" aria-label="Copy #666666"><span class="token-swatch" style="--c: #666666" aria-hidden="true"></span><code class="token-hex">#666666</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Muted text.</td></tr>
-                <tr><td class="token-name">--med-grey</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#AAAAAA" aria-label="Copy #AAAAAA"><span class="token-swatch" style="--c: #AAAAAA" aria-hidden="true"></span><code class="token-hex">#AAAAAA</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Strong borders.</td></tr>
-                <tr><td class="token-name">--light-grey</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#DDDDDD" aria-label="Copy #DDDDDD"><span class="token-swatch" style="--c: #DDDDDD" aria-hidden="true"></span><code class="token-hex">#DDDDDD</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Default borders.</td></tr>
-                <tr><td class="token-name">--white-grey</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#F5F5F5" aria-label="Copy #F5F5F5"><span class="token-swatch" style="--c: #F5F5F5" aria-hidden="true"></span><code class="token-hex">#F5F5F5</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Alt surface.</td></tr>
-                <tr><td class="token-name">--navy-dark</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#182449" aria-label="Copy #182449"><span class="token-swatch" style="--c: #182449" aria-hidden="true"></span><code class="token-hex">#182449</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Deck dark background, deep sections.</td></tr>
-                <tr><td class="token-name">--bg-dark</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#1A2332" aria-label="Copy #1A2332"><span class="token-swatch" style="--c: #1A2332" aria-hidden="true"></span><code class="token-hex">#1A2332</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Footer, dark CTA.</td></tr>
+                <tr><td class="token-name">--rba-red</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#C8252D" aria-label="Copy #C8252D"><span class="token-swatch" style="--c: #C8252D" aria-hidden="true"></span><code class="token-value">#C8252D</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Logo mark only. Never on UI.</td></tr>
+                <tr><td class="token-name">--midnight</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#1D366D" aria-label="Copy #1D366D"><span class="token-swatch" style="--c: #1D366D" aria-hidden="true"></span><code class="token-value">#1D366D</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Headings, nav, primary buttons.</td></tr>
+                <tr><td class="token-name">--primary-hover</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#2A4A8A" aria-label="Copy #2A4A8A"><span class="token-swatch" style="--c: #2A4A8A" aria-hidden="true"></span><code class="token-value">#2A4A8A</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Primary button hover.</td></tr>
+                <tr><td class="token-name">--primary-dark</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#162A57" aria-label="Copy #162A57"><span class="token-swatch" style="--c: #162A57" aria-hidden="true"></span><code class="token-value">#162A57</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Deep navy accents.</td></tr>
+                                <tr><td class="token-name">--action</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#185FA5" aria-label="Copy #185FA5"><span class="token-swatch" style="--c: #185FA5" aria-hidden="true"></span><code class="token-value">#185FA5</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Links and highlights. Safe on white and on every tint in this palette.</td></tr>
+                                <tr><td class="token-name">--action-hover</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#1D366D" aria-label="Copy #1D366D"><span class="token-swatch" style="--c: #1D366D" aria-hidden="true"></span><code class="token-value">#1D366D</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Link hover. Deepens to midnight rather than to a fourth blue.</td></tr>
+                <tr><td class="token-name">--accent</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#0D8FA9" aria-label="Copy #0D8FA9"><span class="token-swatch" style="--c: #0D8FA9" aria-hidden="true"></span><code class="token-value">#0D8FA9</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>CTA buttons, active states.</td></tr>
+                <tr><td class="token-name">--aqua</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#14BADB" aria-label="Copy #14BADB"><span class="token-swatch" style="--c: #14BADB" aria-hidden="true"></span><code class="token-value">#14BADB</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Decorative only — fails AA for text.</td></tr>
+                <tr><td class="token-name">--soft-blue</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#8EC3DB" aria-label="Copy #8EC3DB"><span class="token-swatch" style="--c: #8EC3DB" aria-hidden="true"></span><code class="token-value">#8EC3DB</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Decorative.</td></tr>
+                <tr><td class="token-name">--sky-blue</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#BDE4F1" aria-label="Copy #BDE4F1"><span class="token-swatch" style="--c: #BDE4F1" aria-hidden="true"></span><code class="token-value">#BDE4F1</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Hero-gradient end, backgrounds.</td></tr>
+                <tr><td class="token-name">--white-blue</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#F5FAFC" aria-label="Copy #F5FAFC"><span class="token-swatch" style="--c: #F5FAFC" aria-hidden="true"></span><code class="token-value">#F5FAFC</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Subtle tinted surface.</td></tr>
+                <tr><td class="token-name">--black</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#333333" aria-label="Copy #333333"><span class="token-swatch" style="--c: #333333" aria-hidden="true"></span><code class="token-value">#333333</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Body text.</td></tr>
+                <tr><td class="token-name">--dark-grey</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#666666" aria-label="Copy #666666"><span class="token-swatch" style="--c: #666666" aria-hidden="true"></span><code class="token-value">#666666</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Muted text.</td></tr>
+                <tr><td class="token-name">--med-grey</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#AAAAAA" aria-label="Copy #AAAAAA"><span class="token-swatch" style="--c: #AAAAAA" aria-hidden="true"></span><code class="token-value">#AAAAAA</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Strong borders.</td></tr>
+                <tr><td class="token-name">--light-grey</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#DDDDDD" aria-label="Copy #DDDDDD"><span class="token-swatch" style="--c: #DDDDDD" aria-hidden="true"></span><code class="token-value">#DDDDDD</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Default borders.</td></tr>
+                <tr><td class="token-name">--white-grey</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#F5F5F5" aria-label="Copy #F5F5F5"><span class="token-swatch" style="--c: #F5F5F5" aria-hidden="true"></span><code class="token-value">#F5F5F5</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Alt surface.</td></tr>
+                <tr><td class="token-name">--navy-dark</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#182449" aria-label="Copy #182449"><span class="token-swatch" style="--c: #182449" aria-hidden="true"></span><code class="token-value">#182449</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Deck dark background, deep sections.</td></tr>
+                <tr><td class="token-name">--bg-dark</td><td><button type="button" class="token-copy js-copy-hex" data-copy="#1A2332" aria-label="Copy #1A2332"><span class="token-swatch" style="--c: #1A2332" aria-hidden="true"></span><code class="token-value">#1A2332</code><span class="material-symbols-rounded token-copy-icon" aria-hidden="true">content_copy</span></button></td><td>Footer, dark CTA.</td></tr>
                 <tr><td class="token-name">--grad-sky</td><td>180° #E6F8FB → #9DDBF6</td><td>Section wash.</td></tr>
                 <tr><td class="token-name">--viz-1 … --viz-8</td><td>Ordered 8-colour set</td><td>Charts. Pair each with a pattern.</td></tr>
               </tbody>

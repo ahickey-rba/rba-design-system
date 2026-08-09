@@ -325,7 +325,7 @@
       // people who don't know our vocabulary — someone hunting the deck template
       // searches "powerpoint", not "templates".
       const INDEX = [
-        { title: 'Colors',            category: 'Foundations', page: 'index.html',     anchor: '#colors',   keywords: 'palette hex swatch red midnight navy aqua blue grey gradient token' },
+        { title: 'Colors',            category: 'Foundations', page: 'index.html',     anchor: '#colors',   keywords: 'palette hex rgb hsl cmyk print css var format swatch red midnight navy aqua blue grey gradient token' },
         { title: 'Typography',        category: 'Foundations', page: 'index.html',     anchor: '#type',     keywords: 'font fonts typeface montserrat libre caslon serif sans type scale heading body' },
         { title: 'Logos',             category: 'Foundations', page: 'index.html',     anchor: '#logo',     keywords: 'logo mark wordmark monogram clear space reversed svg' },
         { title: 'Voice',             category: 'Foundations', page: 'index.html',     anchor: '#voice',    keywords: 'tone voice writing copy words banned jargon buzzwords style wording language proposal' },
@@ -520,31 +520,184 @@
       document.body.removeChild(ta);
       done();
     }
-    // Click-to-copy on tonal-ramp token swatches · copies the displayed hex.
+    // ---- Color formats ------------------------------------------------------
+    // The markup ships hex and nothing else; RGB, HSL, CMYK and the var() form are
+    // all derived from it here. Writing five strings per colour into the HTML would
+    // have been less code and five more places for a palette correction to be
+    // missed — and this page already argues, in the token table, that a colour
+    // should have exactly one authoritative value.
+    function hexToRgb(hex) {
+      const h = String(hex).replace('#', '');
+      const full = h.length === 3 ? h[0] + h[0] + h[1] + h[1] + h[2] + h[2] : h;
+      return [parseInt(full.slice(0, 2), 16),
+              parseInt(full.slice(2, 4), 16),
+              parseInt(full.slice(4, 6), 16)];
+    }
+    function fmtRgb(hex) {
+      const c = hexToRgb(hex);
+      return 'rgb(' + c[0] + ', ' + c[1] + ', ' + c[2] + ')';
+    }
+    function fmtHsl(hex) {
+      const c = hexToRgb(hex).map((v) => v / 255);
+      const max = Math.max(c[0], c[1], c[2]);
+      const min = Math.min(c[0], c[1], c[2]);
+      const d = max - min;
+      const l = (max + min) / 2;
+      let h = 0;
+      if (d) {
+        if (max === c[0]) h = ((c[1] - c[2]) / d) % 6;
+        else if (max === c[1]) h = (c[2] - c[0]) / d + 2;
+        else h = (c[0] - c[1]) / d + 4;
+        h = Math.round(h * 60);
+        if (h < 0) h += 360;
+      }
+      const s = d ? d / (1 - Math.abs(2 * l - 1)) : 0;
+      return 'hsl(' + h + ', ' + Math.round(s * 100) + '%, ' + Math.round(l * 100) + '%)';
+    }
+    // The plain sRGB→CMYK formula, which is a conversion and not a colour match:
+    // it knows nothing about ink, stock or press profile. Published anyway because
+    // a brand palette with no print numbers at all sends people to eyedrop a JPEG,
+    // which is worse — but the hint line under the switch says plainly what this
+    // is, and that caveat travels with the format.
+    function fmtCmyk(hex) {
+      const c = hexToRgb(hex).map((v) => v / 255);
+      const k = 1 - Math.max(c[0], c[1], c[2]);
+      const ink = (v) => (k === 1 ? 0 : Math.round(((1 - v - k) / (1 - k)) * 100));
+      return 'C' + ink(c[0]) + ' M' + ink(c[1]) + ' Y' + ink(c[2]) + ' K' + Math.round(k * 100);
+    }
+
+    // Each format carries the reason you would pick it, not a definition of itself.
+    // "HSL is hue, saturation, lightness" helps nobody standing in front of five
+    // buttons; "the one PowerPoint's colour picker wants" is the actual question.
+    const RBA_FORMATS = {
+      hex:  { value: (hex) => hex,
+              hint: 'What Figma, Office and most web tools expect.' },
+      rgb:  { value: fmtRgb,
+              hint: 'CSS, and the R / G / B boxes in PowerPoint, Word and the Adobe apps.' },
+      hsl:  { value: fmtHsl,
+              hint: 'CSS. Same hue, and you can lighten or darken it by moving one number.' },
+      cmyk: { value: fmtCmyk,
+              hint: 'For print. Converted from sRGB here — a straight conversion, not a press-matched value, so confirm it with your printer before a run.' },
+      var:  { value: (hex, token) => (token ? 'var(' + token + ')' : hex),
+              hint: 'The stylesheet token. Reference this rather than a raw value, so a palette correction lands everywhere at once.' }
+    };
+
+    // Click-to-copy across the Colors section, in whichever format is selected.
     (function () {
-      document.querySelectorAll('.palette-swatch').forEach((swatch) => {
-        const hexEl = swatch.querySelector('.palette-swatch-hex');
-        if (!hexEl) return;
-        const hex = hexEl.textContent.trim();
-        swatch.setAttribute('role', 'button');
-        swatch.setAttribute('tabindex', '0');
-        swatch.setAttribute('aria-label', 'Copy ' + hex);
-        const copy = () => rbaCopy(hex, 'Copied ' + hex);
-        swatch.addEventListener('click', copy);
-        swatch.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(); }
-        });
+      const STORE = 'rba-color-format';
+      const HEX = /^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/i;
+
+      function txt(root, sel) {
+        const el = root.querySelector(sel);
+        return el ? el.textContent.trim() : '';
+      }
+
+      // Three shapes, one behaviour. The palette board and the chart series each
+      // keep their token beside the value; in the token table the token IS the row
+      // heading, so it comes off the row rather than out of the button.
+      const items = [];
+      document.querySelectorAll('.palette-swatch').forEach((el) => {
+        items.push({ el: el,
+                     valueEl: el.querySelector('.palette-swatch-value'),
+                     tokenEl: el.querySelector('.palette-swatch-token'),
+                     name: txt(el, '.palette-swatch-name'),
+                     token: txt(el, '.palette-swatch-token') });
+      });
+      document.querySelectorAll('.viz-swatch-btn').forEach((el) => {
+        items.push({ el: el,
+                     valueEl: el.querySelector('.viz-swatch-value'),
+                     tokenEl: el.querySelector('.viz-swatch-token'),
+                     name: txt(el, '.viz-swatch-name'),
+                     token: txt(el, '.viz-swatch-token') });
+      });
+      document.querySelectorAll('.token-table .token-copy').forEach((el) => {
+        const row = el.closest('tr');
+        const token = row ? txt(row, '.token-name') : '';
+        items.push({ el: el,
+                     valueEl: el.querySelector('.token-value'),
+                     tokenEl: null,
+                     name: token,
+                     token: token });
       });
 
-      // Token table · the whole value cell is a real <button>, so Enter and Space
-      // come free and none of the ARIA scaffolding above is needed. Delegated
-      // because there are nineteen of them and they never change.
+      // Anything whose printed value is not a single hex is left alone — the
+      // gradient row and the "--viz-1 … --viz-8" summary row both describe a set
+      // rather than a colour, and there is nothing to convert.
+      const live = items.filter((it) => it.valueEl && HEX.test(it.valueEl.textContent.trim()));
+      live.forEach((it) => {
+        it.hex = it.valueEl.textContent.trim();
+        // The palette swatches are real <button>s already; joining them to the
+        // delegated handler below is cheaper than a second copy path that has to
+        // be kept in step with this one.
+        it.el.classList.add('js-copy-hex');
+      });
+
+      function apply(key) {
+        const fmt = RBA_FORMATS[key] || RBA_FORMATS.hex;
+        live.forEach((it) => {
+          const value = fmt.value(it.hex, it.token);
+          it.valueEl.textContent = value;
+          it.el.setAttribute('data-copy', value);
+          // The token table's row heading IS the token, so in var() mode the name
+          // and the value are the same string — "Copy --rba-red, var(--rba-red)"
+          // is a screen reader reading one fact twice.
+          const named = it.name && value.indexOf(it.name) < 0;
+          it.el.setAttribute('aria-label', 'Copy ' + (named ? it.name + ', ' : '') + value);
+          // In var() mode the token is the value. Printing it twice on one line
+          // reads as two facts about the colour when it is one.
+          if (it.tokenEl) it.tokenEl.classList.toggle('is-hidden', key === 'var');
+        });
+      }
+
       document.addEventListener('click', (ev) => {
         const btn = ev.target.closest('.js-copy-hex');
         if (!btn) return;
         const value = btn.getAttribute('data-copy');
         if (value) rbaCopy(value, 'Copied ' + value);
       });
+
+      const box = document.querySelector('.format-switch');
+      if (!box) { apply('hex'); return; }
+      const btns = Array.prototype.slice.call(box.querySelectorAll('.format-switch-btn'));
+      const hint = box.querySelector('.format-switch-hint');
+
+      function select(key, moveFocus) {
+        btns.forEach((b) => {
+          const on = b.getAttribute('data-format') === key;
+          b.setAttribute('aria-checked', on ? 'true' : 'false');
+          // Roving tabindex: a radiogroup is one tab stop, and the arrow keys move
+          // within it. Five separate tab stops would put the palette four presses
+          // further from the keyboard than it is now.
+          b.tabIndex = on ? 0 : -1;
+          if (on && moveFocus) b.focus();
+        });
+        if (hint) hint.textContent = (RBA_FORMATS[key] || RBA_FORMATS.hex).hint;
+        apply(key);
+        try { localStorage.setItem(STORE, key); } catch (e) { /* private mode */ }
+      }
+
+      btns.forEach((b) => {
+        b.addEventListener('click', () => select(b.getAttribute('data-format'), false));
+      });
+      box.addEventListener('keydown', (ev) => {
+        const i = btns.indexOf(document.activeElement);
+        if (i < 0) return;
+        let n = -1;
+        if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') n = (i + 1) % btns.length;
+        if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') n = (i - 1 + btns.length) % btns.length;
+        if (ev.key === 'Home') n = 0;
+        if (ev.key === 'End') n = btns.length - 1;
+        if (n < 0) return;
+        ev.preventDefault();
+        select(btns[n].getAttribute('data-format'), true);
+      });
+
+      // Someone who works in print picks CMYK once and wants it still selected
+      // next visit. Same try/catch as the theme toggle — Safari in private mode
+      // throws on setItem rather than returning null.
+      let saved = '';
+      try { saved = localStorage.getItem(STORE) || ''; } catch (e) { /* private mode */ }
+      select(RBA_FORMATS[saved] ? saved : 'hex', false);
     })();
 
     // Version and published date · both stamped at deploy time, neither maintained by hand.
