@@ -35,6 +35,26 @@ Everything goes through `library.json` and then one command:
 | **Add** | Drop `<source>-<id>.<ext>` into `shortlist/`, run `--adopt`, fill in the TODOs. |
 | **Reorder** | Move the entry up or down its category in the array. Rank and priority follow. |
 | **Want** | Add an entry with **no `file` key** — a candidate you have shortlisted but not downloaded. |
+| **Treat** | Set `"style"` to `treated` or `abstract`. Omit it for documentary, which is most of the library. |
+
+### Two axes: what it shows, and how it was made
+
+`cat` is the subject. `style` is the treatment, and they are independent — a graded
+shot of a factory floor is still *Industries in action*.
+
+- `documentary` — a photograph, as shot. **The default; omit the key.**
+- `treated` — a photograph carrying a deliberate grade or graphic overlay.
+- `abstract` — no photographic subject at all: CGI, render, generative.
+
+Splitting by treatment instead would have given every subject family a shadow twin,
+and this library has already learned once that families with overlapping claims make
+the filter useless. The board carries a second filter row for it, built from what the
+manifest actually contains, so it lists `treated` only once something is.
+
+**The tier is what makes treatment safe.** "Use images as supplied" is still the rule
+for documentary work — a graded frame filed as documentary will one day sit beside an
+ungraded one in the same layout and read as a mistake. The full treatment spec, with
+both duotones shown on a real frame, is on the images page under *Treating an image*.
 
 ### Wanted entries
 
