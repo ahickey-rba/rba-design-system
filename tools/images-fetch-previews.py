@@ -10,11 +10,24 @@ images-sync.py merges into the manifest. Run the sync after this one.
 
 WHY THIS EXISTS
 ---------------
-Adobe Stock will not hand previews to an anonymous script. A plain request gets
-403, and a real headless browser gets served an empty page — that is deliberate
-anti-scraping, and the sanctioned way through is an API key rather than a
-cleverer fetch. The Search API is designed for exactly this and returns
-thumbnail URLs as selectable result columns.
+Adobe Stock will not hand previews to an anonymous script: a plain request gets
+403, from every user agent and header combination, because the check is at the
+TLS and JavaScript layer rather than the header one. The Search API is designed
+for exactly this and returns thumbnail URLs as selectable result columns, so an
+API key is the sanctioned way through for anything automated.
+
+IT IS NO LONGER THE ONLY WAY THROUGH
+------------------------------------
+This docstring used to claim that "a real headless browser gets served an empty
+page". That is wrong, and it was wrong in the direction that costs you an API
+key you may not need. Driving an actual browser at stock.adobe.com/images/x/<id>
+renders the page fully, signed out, with the contributor, the real DIMENSIONS,
+the LICENSE TYPE and the 1000_F_ CDN preview URL all present in the DOM. The
+CDN itself has never had a check of any kind.
+
+So this script is the right tool when you want ALL fifty previews in one
+unattended pass, and overkill when you want one image — for that, read the
+fields off the page and hand the CDN address to images-add.py.
 
 GETTING A KEY
 -------------
