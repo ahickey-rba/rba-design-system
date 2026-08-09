@@ -3194,22 +3194,6 @@
       padding-top: var(--space-4);
       border-top: 1px solid var(--border);
     }
-    /* The treatment row sits under the category row and reads as secondary: a lighter
-       top rule and a standing label, so the two are visibly one filter each rather than
-       sixteen chips in a heap. */
-    .lib-filter--style {
-      border-top-style: dashed;
-      align-items: center;
-    }
-    .lib-filter-label {
-      font-family: var(--font-micro);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-right: 2px;
-    }
     /* Squared-off and tinted — a toggle, not an input. The pill radius they used
        to share with the search field made the two read as the same control. */
     .lib-filter-btn {
