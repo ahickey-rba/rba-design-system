@@ -35,7 +35,7 @@ Everything goes through `library.json` and then one command:
 | **Add** | Drop `<source>-<id>.<ext>` into `shortlist/`, run `--adopt`, fill in the TODOs. |
 | **Reorder** | Move the entry up or down its category in the array. Rank and priority follow. |
 | **Want** | Add an entry with **no `file` key** — a candidate you have shortlisted but not downloaded. |
-| **Treat** | File it under **Signature & campaign**. Treatment is a family, not a flag — see below. |
+| **Treat** | File it under **Duotone**. Treatment is a family, not a flag — see below. |
 
 ### Treated frames are a family, not a field
 
@@ -46,7 +46,7 @@ of: the honest question a person arrives with is *show me the campaign imagery*,
 *show me the intersection of a subject and a treatment*. One row of families answers
 that in one click.
 
-So a deliberately graded or overlaid frame goes in **Signature & campaign**. It costs the ability to say "treated
+So a deliberately graded or overlaid frame goes in **Duotone**. It costs the ability to say "treated
 Industries shot", which nothing has needed yet; the day something does, that is the
 day to reconsider, not before.
 
