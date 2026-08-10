@@ -17,4 +17,4 @@ User-agent: *
 Disallow: /assets/images/shortlist/
 Disallow: /images.html
 
-Sitemap: https://adamdhickey-collab.github.io/rba-design-system/
+Sitemap: https://ahickey-rba.github.io/rba-design-system/

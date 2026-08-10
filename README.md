@@ -3,7 +3,7 @@
 RBA Consulting's design system — brand foundations and a downloadable asset library. Static HTML,
 CSS and JavaScript — no build step, no dependencies, no package manager.
 
-**Start here: [the live site](https://adamdhickey-collab.github.io/rba-design-system/).** This
+**Start here: [the live site](https://ahickey-rba.github.io/rba-design-system/).** This
 README is about maintaining the repo; the site is the thing itself.
 
 > **Logos, the palette and the icons are real. Photography is not — it hasn't been bought
