@@ -148,7 +148,7 @@ can't be browsed or cloned as source. The GitHub Pages site is still public —
 private Pages needs GitHub Enterprise Cloud, and on a personal account a private
 repo publishes its Pages site to anyone with the URL anyway. So every icon is
 still individually downloadable from
-`adamdhickey-collab.github.io/rba-design-system`. The URL is unlisted and
+`ahickey-rba.github.io/rba-design-system`. The URL is unlisted and
 unlinked, which makes it obscure rather than private.
 
 Whoever purchased the packs should confirm the licence covers republication. The
