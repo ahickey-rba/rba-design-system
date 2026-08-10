@@ -157,19 +157,6 @@
     },
     {
       "source": "adobe",
-      "id": "2084481537",
-      "file": "adobe-2084481537.webp",
-      "cat": "Client work & collaboration",
-      "title": "Four colleagues around a desk with printed documents and monitors, one seated and talking the others through it",
-      "by": "Marko Geber",
-      "dim": "6720 × 4480",
-      "why": "A real working session in a warm, wood-lined office: paper on the desk, screens in use, four people genuinely in the same conversation. Brighter and more contemporary than the dark flip-chart frame it replaces.",
-      "use": "Delivery, engagement models, About",
-      "crop": "3:2; keep the documents in frame. Crops to 16:9 without losing anyone.",
-      "url": "https://stock.adobe.com/images/x/2084481537"
-    },
-    {
-      "source": "adobe",
       "id": "370855681",
       "file": "adobe-370855681.webp",
       "cat": "Focused expertise",
@@ -809,19 +796,6 @@
     },
     {
       "source": "adobe",
-      "id": "2019530740",
-      "file": "adobe-2019530740.webp",
-      "cat": "Backgrounds & texture",
-      "title": "Aerial View of a Rowing Scull and Motorboat on Calm Water",
-      "by": "blueringmedia",
-      "dim": "3840 × 2160",
-      "why": "Two craft, two wake signatures, one shared surface — coordination and precision, and credibly Upper Midwest.",
-      "use": "Hero with headline",
-      "crop": "Keep both craft and both wakes — one alone loses the idea.",
-      "url": "https://stock.adobe.com/images/x/2019530740"
-    },
-    {
-      "source": "adobe",
       "id": "1847073437",
       "file": "adobe-1847073437.webp",
       "cat": "Backgrounds & texture",
@@ -978,19 +952,6 @@
     },
     {
       "source": "adobe",
-      "id": "444766516",
-      "file": "adobe-444766516.webp",
-      "cat": "Data & AI in practice",
-      "title": "Vertical portrait of a data engineer inspecting cabling",
-      "by": "Seventyfour",
-      "dim": "4480 × 6720",
-      "why": "Systems maintained by hand",
-      "use": "Systems maintained by hand",
-      "crop": "Left of figure. Cabling reads slightly green",
-      "url": "https://stock.adobe.com/images/x/444766516"
-    },
-    {
-      "source": "adobe",
       "id": "300636071",
       "file": "adobe-300636071.webp",
       "cat": "Data & AI in practice",
@@ -1001,19 +962,6 @@
       "use": "Infrastructure expertise",
       "crop": "Rack right. Slightly posed",
       "url": "https://stock.adobe.com/images/x/300636071"
-    },
-    {
-      "source": "adobe",
-      "id": "939614850",
-      "file": "adobe-939614850.webp",
-      "cat": "Data & AI in practice",
-      "title": "Vertical closeup portrait of a man at a computer",
-      "by": "Mediaphotos",
-      "dim": "5504 × 8256",
-      "why": "Focus and absorption",
-      "use": "Focus and absorption",
-      "crop": "Right of face. Tight for a headline",
-      "url": "https://stock.adobe.com/images/x/939614850"
     },
     {
       "source": "adobe",
@@ -1040,19 +988,6 @@
       "use": "Renewable energy fieldwork",
       "crop": "Sky. Blue is sky, not technology",
       "url": "https://stock.adobe.com/images/x/2034063104"
-    },
-    {
-      "source": "adobe",
-      "id": "1570175415",
-      "file": "adobe-1570175415.webp",
-      "cat": "Industries in action",
-      "title": "Technician on a ladder working on a laptop",
-      "by": "dsheremeta",
-      "dim": "3455 × 5182",
-      "why": "Real facility work",
-      "use": "Real facility work",
-      "crop": "Upper area. No blue",
-      "url": "https://stock.adobe.com/images/x/1570175415"
     },
     {
       "source": "adobe",
@@ -1170,19 +1105,6 @@
       "use": "Light sections, documents, anywhere a dark frame will not sit",
       "crop": "1.40. Isolated on white, so it drops onto a page with no scrim and no crop.",
       "url": "https://stock.adobe.com/images/x/255392268"
-    },
-    {
-      "source": "adobe",
-      "id": "1927077599",
-      "file": "adobe-1927077599.webp",
-      "cat": "Natural systems",
-      "title": "Mycelium radiating across stone, a network finding its way outward",
-      "by": "Todayphoto",
-      "dim": "5500 × 3643",
-      "why": "The mycelial network is the closest thing in nature to distributed infrastructure — no centre, no plan, and it still finds the shortest path. Almost no blue, and worth carrying anyway for what it says.",
-      "use": "Concept openers, connectivity and platform pages",
-      "crop": "1.51. Radial from lower left; leave the origin visible or the structure stops making sense.",
-      "url": "https://stock.adobe.com/images/x/1927077599"
     },
     {
       "source": "adobe",
@@ -1339,6 +1261,84 @@
       "use": "Operations, managed services, infrastructure",
       "crop": "3:2. Blue and red cables read as the accent; keep the lit indicator strip in frame.",
       "url": "https://stock.adobe.com/images/x/260802893"
+    },
+    {
+      "source": "adobe",
+      "id": "1597669921",
+      "file": "adobe-1597669921.webp",
+      "cat": "Client work & collaboration",
+      "title": "A colleague leaning in over two people at their monitors in an open office",
+      "by": "qunica.com",
+      "dim": "8062 × 5375",
+      "why": "Somebody standing behind two seated colleagues, looking at what is actually on the screen. Nobody faces the camera and nothing is staged for it — the frame it replaces had a head cropped out of the bottom right corner.",
+      "use": "Delivery, working sessions, engagement models",
+      "crop": "3:2 at 8062px. Bright window wall behind; type sits on the desk surface in the lower third.",
+      "url": "https://stock.adobe.com/images/x/1597669921"
+    },
+    {
+      "source": "adobe",
+      "id": "366450880",
+      "file": "adobe-366450880.webp",
+      "cat": "Data & AI in practice",
+      "title": "Two colleagues at one monitor, framed past the screen edge",
+      "by": "JonoErasmus",
+      "dim": "7872 × 4480",
+      "why": "Shot from behind the display so the two of them are the subject and the screen is the reason. Real absorption rather than a pose, and the composition puts a natural dark band down one side.",
+      "use": "Analytics, advisory, technical pages",
+      "crop": "16:9 at 7872px, the largest in this family. Crop from the left; the screen bezel frames the right.",
+      "url": "https://stock.adobe.com/images/x/366450880"
+    },
+    {
+      "source": "adobe",
+      "id": "1319324393",
+      "file": "adobe-1319324393.webp",
+      "cat": "Data & AI in practice",
+      "title": "Two colleagues with a laptop under a glazed atrium roof",
+      "by": "Flamingo Images",
+      "dim": "5472 × 3648",
+      "why": "Software being used somewhere with real architecture around it, which most of this family lacks — the others are all desks. The height above them gives it air that a close crop cannot.",
+      "use": "Secondary pages, quote panels, lighter sections",
+      "crop": "3:2. The glazed roof is the quiet area; do not crop it out to get closer to the laptop.",
+      "url": "https://stock.adobe.com/images/x/1319324393"
+    },
+    {
+      "source": "adobe",
+      "id": "2086661431",
+      "file": "adobe-2086661431.webp",
+      "cat": "Industries in action",
+      "title": "Two people with a tablet in an aisle of machined parts",
+      "by": "Westend61",
+      "dim": "5600 × 3738",
+      "why": "Industrial without the PPE. Every other candidate in that search was hi-vis and hard hats, which this library bans as reading contractor rather than consulting — this is the same setting in ordinary clothes, with racking receding into shallow focus.",
+      "use": "Manufacturing, operations, supply chain",
+      "crop": "3:2. Shallow depth throughout; the two figures are small, so do not use below half-width.",
+      "url": "https://stock.adobe.com/images/x/2086661431"
+    },
+    {
+      "source": "adobe",
+      "id": "2085857918",
+      "file": "adobe-2085857918.webp",
+      "cat": "Backgrounds & texture",
+      "title": "Salt flats from the air, dried channels dividing cracked pans",
+      "by": "ADDICTIVE STOCK",
+      "dim": "6144 × 4096",
+      "why": "A surface rather than a place: warm tan cells split by dark channels, with no horizon and no scale cue. Replaces an aerial of a rowing scull, which was a subject pretending to be a texture.",
+      "use": "Full-bleed backgrounds, section washes",
+      "crop": "3:2 at 6144px. Crops and tiles in any direction; warm, so pair it with a cool frame rather than another tan one.",
+      "url": "https://stock.adobe.com/images/x/2085857918"
+    },
+    {
+      "source": "adobe",
+      "id": "302651243",
+      "file": "adobe-302651243.webp",
+      "cat": "Natural systems",
+      "title": "An orb web strung with dew against a teal ground",
+      "by": "Kuma Media",
+      "dim": "3898 × 2545",
+      "why": "A network built by one animal to a repeating rule, every node marked out by a water droplet — and it happens to be the right colour, which the mycelium it replaces never was. Structure and palette in the same frame.",
+      "use": "Concept openers, connectivity pages, card images",
+      "crop": "1.53 at 3898px. Radial from lower right; the soft teal upper left is the type area. Card and mid-width use, not full-bleed.",
+      "url": "https://stock.adobe.com/images/x/302651243"
     }
   ]
 }
