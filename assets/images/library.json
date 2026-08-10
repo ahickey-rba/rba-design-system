@@ -34,7 +34,8 @@
     "Culture & careers",
     "Backgrounds & texture",
     "Natural systems",
-    "Lake Minnetonka"
+    "Lake Minnetonka",
+    "Big data technology"
   ],
   "items": [
     {
@@ -1234,6 +1235,110 @@
       "use": "Accent panels, texture, card images",
       "crop": "3:2. Falls off to shadow at the top, which is the type area. Do not brighten it flat.",
       "url": "https://stock.adobe.com/images/x/1922846324"
+    },
+    {
+      "source": "adobe",
+      "id": "311383755",
+      "file": "adobe-311383755.webp",
+      "cat": "Big data technology",
+      "title": "Cyan particle streams curling into a shallow field of focus",
+      "by": "your123",
+      "dim": "6500 × 3656",
+      "why": "The archetype for this family and the bluest of the set at 88%. Thousands of points following a current, with real depth of field rather than a flat vector — which is what stops it reading as clip art.",
+      "use": "Hero panels, section openers, full-bleed backgrounds",
+      "crop": "6500px at 16:9, the largest here. Dark upper left is the type area; do not crop into the swirl.",
+      "url": "https://stock.adobe.com/images/x/311383755"
+    },
+    {
+      "source": "adobe",
+      "id": "303689187",
+      "file": "adobe-303689187.webp",
+      "cat": "Big data technology",
+      "title": "A drift of blue and cyan points resolving into a surface",
+      "by": "Dmitry",
+      "dim": "3840 × 2160",
+      "why": "Scattered data settling into a readable shape — the family idea at its simplest. Cool throughout at 59% blue with no competing hue.",
+      "use": "Backgrounds behind headlines, slide fills",
+      "crop": "16:9. Darker along the bottom edge; set type low rather than centred.",
+      "url": "https://stock.adobe.com/images/x/303689187"
+    },
+    {
+      "source": "adobe",
+      "id": "303689231",
+      "file": "adobe-303689231.webp",
+      "cat": "Big data technology",
+      "title": "Point clouds strung along a wave, DNA and sound-wave register",
+      "by": "Dmitry",
+      "dim": "3840 × 2160",
+      "why": "A companion to the frame above from the same maker, reading as signal rather than surface. Worth knowing it runs violet — 21% blue with a magenta trace — so it is the one frame here that sits slightly outside the blue ladder.",
+      "use": "Accent panels, secondary backgrounds",
+      "crop": "16:9. Violet cast; do not pair it directly with the cooler frames in the same layout.",
+      "url": "https://stock.adobe.com/images/x/303689231"
+    },
+    {
+      "source": "adobe",
+      "id": "226444001",
+      "file": "adobe-226444001.webp",
+      "cat": "Big data technology",
+      "title": "Market data on a tablet, a hand entering the frame at the edge",
+      "by": "leungchopan",
+      "dim": "3603 × 1900",
+      "why": "The only frame in the family with a real object and a real hand in it, and it earns its place for exactly that: it ties the abstract set back to somebody actually reading something. Screen is a plausible chart rather than invented graphics.",
+      "use": "Where the abstract frames need grounding — case studies, service pages",
+      "crop": "1.90. The hand at the top right is the focal point; crop from the left, never through it.",
+      "url": "https://stock.adobe.com/images/x/226444001"
+    },
+    {
+      "source": "adobe",
+      "id": "2090620581",
+      "file": "adobe-2090620581.webp",
+      "cat": "Big data technology",
+      "title": "Blue light trails with particles fanning across black",
+      "by": "Vooper",
+      "dim": "3840 × 2160",
+      "why": "The closest match to the reference set: fine strands, scattered points, deep black ground. Reads as throughput without a single icon or node diagram.",
+      "use": "Hero panels, transitions, motion-suggesting backgrounds",
+      "crop": "16:9. Trails run lower-left to upper-right; align type against that diagonal, not across it.",
+      "url": "https://stock.adobe.com/images/x/2090620581"
+    },
+    {
+      "source": "adobe",
+      "id": "2112216191",
+      "file": "adobe-2112216191.webp",
+      "cat": "Big data technology",
+      "title": "White nodes and connecting lines rising across a dark field",
+      "by": "Manita",
+      "dim": "3840 × 2160",
+      "why": "The simplest frame in the family and the most literal — points joined into a rising structure. 95% blue and almost monochrome, so it takes brand colour applied as type rather than baked in.",
+      "use": "Diagrams, growth and analytics pages, card images",
+      "crop": "16:9. Empty dark corners top-left and bottom-right; either takes a headline.",
+      "url": "https://stock.adobe.com/images/x/2112216191"
+    },
+    {
+      "source": "adobe",
+      "id": "1907035334",
+      "file": "adobe-1907035334.webp",
+      "cat": "Big data technology",
+      "title": "A low polygon mesh receding into haze, nodes picked out in blue",
+      "by": "your123",
+      "dim": "6500 × 3656",
+      "why": "The quietest of the eight. Where the others are dense, this one is mostly empty space with a thin structure running through it — the frame to reach for when the words are doing the work.",
+      "use": "Text-heavy sections, quote panels, subtle fills",
+      "crop": "6500px at 16:9. Low contrast throughout, so type sits almost anywhere on it.",
+      "url": "https://stock.adobe.com/images/x/1907035334"
+    },
+    {
+      "source": "adobe",
+      "id": "2037303460",
+      "file": "adobe-2037303460.webp",
+      "cat": "Big data technology",
+      "title": "A cyan grid running to the horizon, points brightening along the lines",
+      "by": "estar 2020",
+      "dim": "3840 × 2160",
+      "why": "Perspective doing the work: a plane of regularly spaced data receding to a vanishing point. The one frame with a clear horizon, which makes it the natural choice for a full-width band.",
+      "use": "Full-width bands, section dividers, footers",
+      "crop": "16:9. Black sky above the horizon is a generous type area — that is most of the reason to pick this one.",
+      "url": "https://stock.adobe.com/images/x/2037303460"
     }
   ]
 }
