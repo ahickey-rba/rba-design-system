@@ -91,6 +91,12 @@ NAMES = {
     'university-of-south-dakota': 'University of South Dakota',
     'umbraco-certified-master': 'Umbraco Certified Master',
     'umbraco-gold-partner': 'Umbraco Gold Partner',
+    'wex': 'WEX', 'mutual-of-omaha': 'Mutual of Omaha',
+    # Certification badges. The credential's own name, not the issuer's.
+    'pmp': 'PMP', 'pmi-acp': 'PMI-ACP', 'cissp': 'CISSP', 'csm': 'CSM',
+    'aws-certified-solutions-architect': 'AWS Certified Solutions Architect',
+    'microsoft-certified-expert': 'Microsoft Certified — Expert',
+    'microsoft-certified-associate': 'Microsoft Certified — Associate',
 }
 
 SUFFIX = {'alt': '(alt)', 'alt2': '(alt 2)', 'legacy': '(legacy)',

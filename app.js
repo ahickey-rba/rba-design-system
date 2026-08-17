@@ -1804,6 +1804,12 @@
         const links = el.querySelectorAll('.glyph-dl');
         links[0].href = f.svg;
         links[1].href = f.png;
+        // Name the download explicitly rather than leaving download="" to infer it
+        // from the URL. Same result today, but it survives a cache-busting query
+        // string being added to these hrefs later, which would otherwise start
+        // saving files as "cargill.svg?v=2".
+        links[0].setAttribute('download', f.svg.split('/').pop());
+        links[1].setAttribute('download', f.png.split('/').pop());
         const label = el._title + ' — ' + name;
         links[0].setAttribute('aria-label', 'Download ' + label + ' as SVG');
         links[1].setAttribute('aria-label', 'Download ' + label + ' as PNG');

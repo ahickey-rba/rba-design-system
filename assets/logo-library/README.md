@@ -14,7 +14,7 @@ what it came from, and the URL it was fetched from.
 
 ## What you get
 
-**99 logos × 6 files each**, all on transparency bar a few (see
+**108 logos × 6 files each**, all on transparency bar a few (see
 [Backgrounds](#backgrounds)):
 
 | File | What it is |
@@ -29,10 +29,10 @@ row of logos stays consistent whichever way a section flips.
 | Folder | Logos | What's in it |
 |---|---|---|
 | `platforms/` | 34 | Technology marks |
-| `clients/` | 28 | Client marks from case studies, logo strips and the capability deck |
+| `clients/` | 30 | Client marks from case studies, logo strips and the capability deck |
 | `community/` | 21 | Nonprofits from the RBA Cares logo wall |
+| `certifications/` | 15 | Credential badges, issuer marks and partner tier badges |
 | `partnerships/` | 8 | The eight named partner tiers on `/our-partnerships/` |
-| `certifications/` | 8 | Issuer marks and tier badges |
 
 Four folders start with an underscore. That prefix is what keeps them out of the
 gallery *and* out of the download bundles, while still keeping the files:
@@ -55,8 +55,8 @@ it can drive the four colorways.
 
 ## Where the vectors come from
 
-Of the 99 shown: **45 are the owner's own published vector**, **10 arrived as SVG on
-RBA's site**, and **44 were traced** from raster. The `origin` column says which.
+Of the 108 shown: **49 are the owner's own published vector**, **10 arrived as SVG on
+RBA's site**, and **49 were traced** from raster. The `origin` column says which.
 
 Tracing is per-color, not per-pixel. Each logo is quantized to the handful of colors
 actually in it, each color is traced as its own bitmap with `potrace`, and the layers
@@ -68,7 +68,7 @@ Fidelity was checked by rendering every SVG back to bitmap and diffing against i
 source over a mid-grey composite — median difference **0.44/255**. Every viewBox is
 trimmed tight to the artwork, so no file carries transparent padding.
 
-### The 45 that are the owner's own vector
+### The 49 that are the owner's own vector
 
 Two rounds got them here. The first took eight from Wikimedia Commons: Angular,
 .NET, GitHub, JavaScript, Node.js, OpenAI, Snowflake and WordPress.
@@ -159,9 +159,23 @@ marks — RBA's own service icons already live in `_rba-brand/`), and a long tai
 healthcare logos whose owners publish nothing usable (CareWire, LHI, Triplefin,
 Wilderness Health, Medica, Aurora Health Care) plus marks not yet chased down
 (Medtronic, Intel, Allina Health, Perrigo, RSM, Ameriprise, CHS, Mortenson, Braun
-Intertec, NAVIS, Upper Lakes Foods, Riverside, WEX, Mutual of Omaha, University of
-Minnesota, University of Georgia). WEX and Mutual of Omaha publish reversed-only
-vectors, so they need the same treatment the eight white-only clients got.
+Intertec, NAVIS, Upper Lakes Foods, Riverside, University of Minnesota, University
+of Georgia).
+
+**WEX and Mutual of Omaha were the reversed-only pair, and both are now in colour.**
+Mutual of Omaha was easy: `mutual-brand-white.svg` has a `mutual-brand-blue.svg`
+sibling at the same path, in their navy `#003a70`. Guess the sibling before you
+reach for a tracer.
+
+WEX needed a judgement call. They publish a vector *only* in white, and colour *only*
+as a 100×29 raster — too small to trace. So `wex.svg` is their own white vector with
+their own red (`#c8102e`, sampled from that raster) substituted for the white. That is
+a recolour, which this README otherwise warns against, and it is defensible only
+because the two silhouettes were measured against each other first and agree to an
+IoU of **0.969** — the red cut and the white cut are the same artwork. No letterform
+is invented. The grey wedge inside the X is grey only in the reversed cut; WEX's own
+colour artwork has zero grey pixels in that region, so in the colour file it is red.
+If WEX ever ships a real colour vector, take it.
 
 ## What was retired, and what that cost
 
@@ -242,21 +256,41 @@ name. There are no `-alt` or `-legacy` names left in the gallery.
 
 ## Two caveats
 
-**Certifications are issuer marks, not badges.** This category went from 2 entries to
-8 once the capability deck was mined, but read what it holds. ISC2, Scrum Alliance,
-Prosci and Google Analytics are the *issuer's* logo, because none of them publishes
-the individual credential badge (CISSP, CSM, Change Practitioner) as artwork you can
-download — those live on Credly, rendered per person. Two are real tier badges traced
-from the deck: Umbraco Certified Master and Umbraco Gold Partner.
+**Certifications: 2 entries became 15, and Credly is why.** Credly is where the
+issuers host their own badge artwork, publicly, at up to 680px — not behind the
+per-person login the badges appear on. `images.credly.com/size/680x680/images/<uuid>/`
+is the pattern; the uuid is on the issuer's public badge page, e.g.
+`credly.com/org/isc2/badge/certified-information-systems-security-professional-cissp`.
+That got the real **PMP, PMI-ACP, CISSP** and **AWS Certified Solutions Architect**
+badges. Microsoft is easier still and publishes true SVGs at
+`learn.microsoft.com/en-us/media/learn/certification/badges/` — hence
+**Microsoft Certified — Expert** and **— Associate**.
 
-So a slide that needs to show "our people hold CISSP" gets the ISC2 mark plus your
-own typesetting, not a badge. If a real credential badge is ever required, pull it
-from the holder's own Credly page.
+Three things to know before using them:
+
+1. **They are traced, and gradients flatten.** Credly serves PNG only, so the five
+   non-Microsoft badges are traces. PMP's and PMI-ACP's radial gradient becomes one
+   flat colour and AWS's blue gradient is approximated in six steps. CISSP is flat
+   artwork to begin with, so its trace is near-exact. Fine at tile size; don't
+   blow one up to a full slide.
+2. **CSM is the weakest file in the whole library.** Scrum Alliance uses BadgeCert,
+   not Credly, and publishes no standalone badge — the only artwork anywhere is a
+   3×5 sheet of all their badges at 800×874, so the CSM crop is 153px and its
+   "Scrum Alliance" sub-line is soft. Still 3× the deck's 57px version.
+3. **A Microsoft badge names the tier, not the certification.** The shield for Azure
+   Solutions Architect Expert *is* `microsoft-certified-expert`; the certification
+   name lives in Credly metadata, not the artwork. Set it yourself alongside.
+
+The issuer marks are kept alongside the badges on purpose — **ISC2, Scrum Alliance,
+Prosci, Google Analytics** — because a partner wall usually wants the company's logo,
+not a credential seal. Pick by what the slide is claiming: the badge for "our people
+hold this", the issuer mark for "we work in this ecosystem".
 
 Still missing entirely: **Sitecore MVP, Star Tribune Top Workplace 2026, MN365.**
 Those appear only baked into announcement cards, at small size, in
 `_raster-originals/certifications/_announcement-graphics/`. Redraw from the issuer's
-brand kit rather than tracing them.
+brand kit rather than tracing them. **Prosci's Change Practitioner seal** is also
+only an issuer mark so far — Prosci does not use Credly.
 
 **Alt text on the source site is unreliable.** It is copy-pasted between logos — the
 AWS logo carries `alt="Umbraco Gold Partner Logo"`, and the whole RBA Cares wall is
