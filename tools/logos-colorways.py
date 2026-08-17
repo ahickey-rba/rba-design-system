@@ -208,12 +208,99 @@ def trim(src_svg, dest_svg):
     return not tight
 
 
-def ink_mask(png):
-    """(mask, inverted) — True where the one-colour cut should put ink.
+def otsu(values):
+    """Luminance threshold that best splits values into two clusters."""
+    import numpy as np
+    hist, edges = np.histogram(values, bins=64, range=(0, 255))
+    total = hist.sum()
+    if total == 0:
+        return 128.0
+    centres = (edges[:-1] + edges[1:]) / 2
+    cw, cm = np.cumsum(hist), np.cumsum(hist * centres)
+    best, thr = -1.0, 128.0
+    for i in range(1, 64):
+        w0 = cw[i] / total
+        if w0 <= 0 or w0 >= 1:
+            continue
+        m0 = cm[i] / cw[i]
+        m1 = (cm[-1] - cm[i]) / (total - cw[i])
+        var = w0 * (1 - w0) * (m0 - m1) ** 2
+        if var > best:
+            best, thr = var, float(centres[i])
+    return thr
 
-    Ink is opaque and not near-white, so white reads as knockout. If that leaves
-    nothing, the artwork is a reversed cut with no dark content at all, and the
-    whole silhouette becomes the ink instead.
+
+def enclosed_fraction(inner, outer):
+    """What fraction of `inner` is sealed inside `outer` rather than open to the edge.
+
+    Flood-fills the not-`outer` region inward from the image border; anything in
+    `inner` the flood cannot reach is enclosed. This is what separates a knockout
+    from a plain two-tone mark: JavaScript's black JS is completely ringed by its
+    yellow tile, while CISSP's black lettering sits beside its teal bracket with a
+    clear path out to the edge. Majority-of-area alone cannot tell those apart.
+
+    Deliberately dependency-free (a BFS on a downscaled copy) rather than pulling in
+    scipy for one label call.
+    """
+    import numpy as np
+    from collections import deque
+
+    h, w = outer.shape
+    step = max(1, max(h, w) // 320)          # downscale: enclosure is a coarse property
+    o = outer[::step, ::step]
+    i = inner[::step, ::step]
+    if not i.any():
+        return 0.0
+    sh, sw = o.shape
+    open_region = ~o
+    seen = np.zeros_like(open_region, dtype=bool)
+    q = deque()
+    for x in range(sw):
+        for y in (0, sh - 1):
+            if open_region[y, x] and not seen[y, x]:
+                seen[y, x] = True; q.append((y, x))
+    for y in range(sh):
+        for x in (0, sw - 1):
+            if open_region[y, x] and not seen[y, x]:
+                seen[y, x] = True; q.append((y, x))
+    while q:
+        y, x = q.popleft()
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < sh and 0 <= nx < sw and open_region[ny, nx] and not seen[ny, nx]:
+                seen[ny, nx] = True; q.append((ny, nx))
+    return float((i & ~seen).sum()) / float(i.sum())
+
+
+def ink_mask(png, knockout=False):
+    """(mask, mode) — True where the one-colour cut should put ink.
+
+    'flat' — the default. Ink is opaque and not near-white, so white reads as
+    knockout, which is what keeps the hole in the Sitecore ring and the reversed
+    lettering in the Toro badge.
+
+    'inverted' — the artwork is white and nothing else (the reversed cuts this
+    library inherited). There is nothing to knock out, so the whole silhouette
+    becomes the ink and the mark inverts.
+
+    'knockout' — only when asked for. A dark glyph inside a *mid-tone* field:
+    JavaScript is the case, black JS on a yellow tile. Yellow is not near-white, so
+    the flat rule calls the whole tile ink and the black cut comes out a featureless
+    square. Here the field becomes the ink and the glyph is punched out of it.
+
+    WHY THIS IS A FLAG AND NOT AUTOMATIC
+    ------------------------------------
+    It was automatic first, gated on "the light region is the majority, contrasts
+    strongly, and encloses the dark region". That correctly caught JavaScript and
+    correctly left CISSP and OutFront Minnesota alone — their lettering sits beside
+    a device rather than inside it, so the enclosure test failed. But it also fired
+    on `umbraco-platinum-partner-badge`, whose light card genuinely does enclose its
+    U and wordmark, and knocking those out left a near-blank tile with only the word
+    PLATINUM.
+
+    No purely geometric test separates "glyph reversed out of a plate" from "logo
+    composed on a card" — that is a question about meaning. So the caller decides,
+    and `--report` prints which logos look like candidates.
     """
     import numpy as np
     from PIL import Image
@@ -221,10 +308,52 @@ def ink_mask(png):
     rgb, alpha = a[:, :, :3].astype(float), a[:, :, 3]
     opaque = alpha >= 128
     lum = (0.2126 * rgb[:, :, 0] + 0.7152 * rgb[:, :, 1] + 0.0722 * rgb[:, :, 2])
+    total = max(1, opaque.sum())
+
+    if knockout:
+        thr = otsu(lum[opaque])
+        light = opaque & (lum >= thr)
+        if light.any():
+            return light, 'knockout'
+        return opaque, 'inverted'
+
     mask = opaque & (lum < NEAR_WHITE)
-    if mask.sum() < 0.02 * max(1, opaque.sum()):
-        return opaque, True
-    return mask, False
+    if mask.sum() < 0.02 * total:
+        return opaque, 'inverted'
+    return mask, 'flat'
+
+
+def knockout_candidate(png):
+    """Whether this artwork looks like a glyph reversed out of a mid-tone field.
+
+    Advisory only — see ink_mask. Returns (bool, why).
+    """
+    import numpy as np
+    from PIL import Image
+    a = np.array(Image.open(png).convert('RGBA'))
+    rgb, alpha = a[:, :, :3].astype(float), a[:, :, 3]
+    opaque = alpha >= 128
+    lum = (0.2126 * rgb[:, :, 0] + 0.7152 * rgb[:, :, 1] + 0.0722 * rgb[:, :, 2])
+    total = max(1, opaque.sum())
+    if (opaque & (lum < NEAR_WHITE)).sum() <= 0.97 * total:
+        return False, 'white already knocks something out'
+    thr = otsu(lum[opaque])
+    dark, light = opaque & (lum < thr), opaque & (lum >= thr)
+    if not (dark.any() and light.any()):
+        return False, 'single tone'
+    fd, fl = dark.sum() / total, light.sum() / total
+    gap = lum[light].mean() - lum[dark].mean()
+    if fl < 0.55:
+        return False, f'dark is the majority ({fd:.0%}) — the dark IS the mark'
+    if fd < 0.04:
+        return False, f'dark is negligible ({fd:.1%})'
+    if gap < 70:
+        return False, f'weak contrast (gap {gap:.0f})'
+    enc = enclosed_fraction(dark, light)
+    if enc < 0.80:
+        return False, f'dark not enclosed by the field ({enc:.0%})'
+    return True, (f'light field {fl:.0%}, enclosed dark {fd:.0%} at {enc:.0%} — '
+                  f'would fill the field and punch the glyph out')
 
 
 def trace(mask, dest_svg, fill):
@@ -257,7 +386,7 @@ def trace(mask, dest_svg, fill):
     open(dest_svg, 'w', encoding='utf-8').write(text)
 
 
-def build(slug, src, dry=False):
+def build(slug, src, dry=False, knockout=False):
     category, name = slug.split('/', 1)
     outdir = os.path.join(LIB, category)
     os.makedirs(outdir, exist_ok=True)
@@ -270,7 +399,13 @@ def build(slug, src, dry=False):
 
         big = os.path.join(td, 'big.png')
         render(staged, big, height=TRACE_PX)
-        mask, inverted = ink_mask(big)
+        mask, mode = ink_mask(big, knockout=knockout)
+        if not knockout:
+            cand, why = knockout_candidate(big)
+            if cand:
+                print(f'  NOTE {slug}: looks like a knockout — {why}.\n'
+                      f'       Rebuild with --knockout if the glyph should punch '
+                      f'through the field.')
 
         black = os.path.join(td, 'black.svg')
         white = os.path.join(td, 'white.svg')
@@ -284,7 +419,7 @@ def build(slug, src, dry=False):
         ]
         if dry:
             print(f'  would write {len(targets)} svg + 3 png  '
-                  f'(trimmed={cropped}, inverted={inverted})')
+                  f'(trimmed={cropped}, mode={mode})')
             return []
         for a, b in targets:
             shutil.copyfile(a, b)
@@ -307,10 +442,20 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('slug', nargs='?', help='e.g. clients/toro')
     ap.add_argument('source', nargs='?', help='colour SVG to build from')
-    ap.add_argument('--from-json', help='{slug: {src: path}} batch file')
+    ap.add_argument('--from-json', help='{slug: {src: path, knockout: bool}} batch file')
     ap.add_argument('--base', default='.', help='resolve JSON src paths against this')
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--knockout', action='store_true',
+                    help='fill the mid-tone field and punch the glyph out of it, '
+                         'for artwork like JavaScript (black JS on a yellow tile) '
+                         'whose one-colour cut would otherwise be a solid block')
+    ap.add_argument('--report', action='store_true',
+                    help='say which of the shipped logos look like --knockout '
+                         'candidates, and change nothing')
     a = ap.parse_args()
+
+    if a.report:
+        return report()
 
     jobs = []
     if a.from_json:
@@ -318,25 +463,63 @@ def main():
         for slug, s in spec.items():
             if slug.startswith('_'):
                 continue
-            jobs.append((slug, os.path.join(a.base, s['src'])))
+            jobs.append((slug, os.path.join(a.base, s['src']),
+                         bool(s.get('knockout', a.knockout))))
     elif a.slug and a.source:
-        jobs.append((a.slug, a.source))
+        jobs.append((a.slug, a.source, a.knockout))
     else:
-        ap.error('give a slug and source, or --from-json')
+        ap.error('give a slug and source, or --from-json, or --report')
 
     total = 0
-    for slug, src in jobs:
+    for slug, src, knock in jobs:
         if not os.path.exists(src):
             print(f'{slug:<48} ! missing source {src}')
             continue
         try:
-            made = build(slug, src, dry=a.dry_run)
+            made = build(slug, src, dry=a.dry_run, knockout=knock)
         except Exception as e:
             print(f'{slug:<48} ! {type(e).__name__}: {e}')
             continue
         total += len(made)
-        print(f'{slug:<48} {len(made)} file(s)')
+        print(f'{slug:<48} {len(made)} file(s)'
+              + ('  [knockout]' if knock else ''))
     print(f'\n{total} files written')
+
+
+def report():
+    """Name the shipped logos whose one-colour cuts may want --knockout.
+
+    Advisory by design: the geometry cannot tell a glyph reversed out of a plate
+    from a logo composed on a card, and getting that wrong blanks the tile.
+    """
+    import csv
+    manifest = os.path.join(LIB, 'MANIFEST.csv')
+    if not os.path.exists(manifest):
+        sys.exit('no MANIFEST.csv — run tools/logos-sync.py first')
+    rows = [r for r in csv.DictReader(open(manifest))
+            if not r['category'].startswith('_') and r['color_png']]
+    hits = []
+    for r in rows:
+        svg = os.path.join(LIB, r['category'], r['logo'] + '.svg')
+        if not os.path.exists(svg):
+            continue
+        with tempfile.TemporaryDirectory() as td:
+            png = os.path.join(td, 'p.png')
+            try:
+                render(svg, png, height=1200)
+            except Exception:
+                continue
+            cand, why = knockout_candidate(png)
+        if cand:
+            hits.append((f"{r['category']}/{r['logo']}", why))
+    print(f'checked {len(rows)} logos\n')
+    if not hits:
+        print('no knockout candidates')
+        return
+    for slug, why in hits:
+        print(f'{slug}\n    {why}')
+    print('\nReview each by eye before rebuilding: a mark composed ON a light card '
+          '\nlooks identical to this test but must NOT be knocked out.')
 
 
 if __name__ == '__main__':

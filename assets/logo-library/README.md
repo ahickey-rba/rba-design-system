@@ -225,9 +225,34 @@ and it is what keeps the hole in the Sitecore ring, the W in the WordPress badge
 the `.NET` lettering on its tile. Where knocking white out would consume the whole
 mark, the mark is kept whole and inverts.
 
-**One casualty.** `platforms/javascript-black.svg` collapses to a filled square:
-black glyphs on a yellow tile leave no silhouette once color is gone. The white cut
-has the same problem. Redraw by hand if you need it; every other one reads correctly.
+### Knockout artwork: `--knockout`
+
+The rule above has a blind spot, and JavaScript was it. Black `JS` on a yellow tile:
+yellow is not near-white, so "ink is everything not near-white" called the whole tile
+ink and both one-color cuts came out as **a featureless black or white square**. It
+shipped that way until someone looked at the tile.
+
+`tools/logos-colorways.py --knockout` inverts the relationship for that shape — the
+mid-tone field becomes the ink and the glyph is punched out of it, giving a black
+square with `JS` showing through. `MANIFEST.csv` records the flag on the JavaScript
+row, because rebuilding it without the flag silently reintroduces the block.
+
+**It is a flag and not automatic on purpose.** It *was* automatic first, gated on
+"the light region is the majority, contrasts strongly, and encloses the dark region".
+That correctly caught JavaScript and correctly ignored CISSP and OutFront Minnesota —
+their lettering sits *beside* a device rather than inside it, so the enclosure test
+failed. But it also fired on `umbraco-platinum-partner-badge`, whose light card
+genuinely does enclose its U and wordmark, and knocking them out left a near-blank
+tile reading only PLATINUM.
+
+No geometric test separates "glyph reversed out of a plate" from "logo composed on a
+card" — that is a question about meaning, not pixels. So:
+
+    ./tools/logos-colorways.py --report
+
+names the candidates and changes nothing. Look at each one before rebuilding. Today
+it flags exactly two: JavaScript, which needs the flag, and the Umbraco Platinum
+badge, which must not have it.
 
 ## Adding or replacing a logo
 
