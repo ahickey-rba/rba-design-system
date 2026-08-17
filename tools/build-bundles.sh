@@ -32,10 +32,17 @@ mkdir -p downloads
 # bundle would make the common case download seven times what it needs. Splitting
 # also keeps the 8 MB PNG zip out of git history on any revision that only touched
 # vectors.
+#
+# A fourth field is an extra exclude glob, for a collection that has files inside it
+# which are not part of the download. The logo library is the only one so far: `_*/*`
+# skips its two underscore folders — the source rasters it was traced from, and the
+# handful of harvested files that turned out not to be logos.
 COLLECTIONS=(
   "logos:rba-logos:*"
   "icons:rba-icons-svg:*.svg"
   "icons:rba-icons-png:*.png"
+  "logo-library:rba-logo-library-svg:*.svg:_*/*"
+  "logo-library:rba-logo-library-png:*.png:_*/*"
   # No images entry: assets/images/ holds the shortlist workbook and, once
   # anything is licensed, files under shortlist/. Neither is a "download the
   # whole set" collection, and a zip of unlicensed comps would be worse than
@@ -44,7 +51,7 @@ COLLECTIONS=(
 )
 
 for entry in "${COLLECTIONS[@]}"; do
-  IFS=':' read -r name bundle glob <<< "$entry"
+  IFS=':' read -r name bundle glob skip <<< "$entry"
   src="assets/$name"
   out="downloads/$bundle.zip"
 
@@ -56,7 +63,8 @@ for entry in "${COLLECTIONS[@]}"; do
   # Check for content first. zip exits non-zero with "Nothing to do!" on an empty
   # folder, and letting that noise through would train everyone to ignore this
   # script's output — which is where the staleness warnings live.
-  if [ -z "$(find "$src" -type f -name "$glob" ! -name 'README.md' ! -name '.*' -print -quit)" ]; then
+  if [ -z "$(find "$src" -type f -name "$glob" ! -name 'README.md' ! -name '.*' \
+              ${skip:+! -path "$src/$skip"} -print -quit)" ]; then
     echo "empty $out — $src has no $glob files yet, no bundle written"
     continue
   fi
@@ -64,7 +72,8 @@ for entry in "${COLLECTIONS[@]}"; do
   # -x excludes the folder's own instructions and macOS cruft: a README telling
   # you how to add assets is noise inside a bundle of the assets themselves.
   rm -f "$out"
-  ( cd "$src" && zip -q -r "$ROOT/$out" . -i "$glob" -x "README.md" -x ".*" -x "__MACOSX/*" )
+  ( cd "$src" && zip -q -r "$ROOT/$out" . -i "$glob" \
+      -x "README.md" -x "*/README.md" -x ".*" -x "__MACOSX/*" ${skip:+-x "$skip"} )
 
   # The favicons are logo derivatives, so they ride along in the logo bundle rather
   # than becoming a fifth download button for three small PNGs. Nested under

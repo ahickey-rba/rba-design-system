@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.32 61.32">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #00aeef;
+      }
+
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-2 {
+        stroke: #010101;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <circle class="cls-2" cx="30.73" cy="30.66" r="17.59"/>
+      <line class="cls-2" x1="30.72" y1="13.08" x2="30.72" y2="6.48"/>
+      <circle class="cls-2" cx="30.66" cy="3.49" r="2.99"/>
+      <line class="cls-2" x1="30.6" y1="54.85" x2="30.6" y2="48.25"/>
+      <circle class="cls-2" cx="30.66" cy="57.84" r="2.99"/>
+      <polyline class="cls-2" points="54.84 30.73 48.31 30.73 48.25 30.73"/>
+      <circle class="cls-2" cx="57.84" cy="30.66" r="2.99"/>
+      <line class="cls-2" x1="13.07" y1="30.6" x2="6.48" y2="30.6"/>
+      <circle class="cls-2" cx="3.49" cy="30.66" r="2.99"/>
+      <polyline class="cls-2" points="47.81 13.6 43.17 18.24 43.14 18.27"/>
+      <circle class="cls-2" cx="49.88" cy="11.45" r="2.99"/>
+      <line class="cls-2" x1="18.18" y1="43.06" x2="13.51" y2="47.73"/>
+      <circle class="cls-2" cx="11.45" cy="49.88" r="2.99"/>
+      <polyline class="cls-2" points="47.72 47.82 43.08 43.18 43.05 43.15"/>
+      <circle class="cls-2" cx="49.88" cy="49.88" r="2.99"/>
+      <line class="cls-2" x1="18.27" y1="18.18" x2="13.6" y2="13.51"/>
+      <circle class="cls-2" cx="11.45" cy="11.45" r="2.99"/>
+    </g>
+    <g>
+      <circle class="cls-1" cx="30.66" cy="30.66" r="10.03"/>
+      <ellipse class="cls-1" cx="30.66" cy="30.66" rx="4.77" ry="10.03"/>
+      <path class="cls-1" d="M21.36,26.93c1.19.25,2.45.44,3.77.59.33.04.66.07,1,.09,1.46.13,2.98.21,4.53.21s3.09-.07,4.55-.21c.33-.02.66-.06.99-.09,1.31-.14,2.57-.34,3.76-.59"/>
+      <path class="cls-1" d="M39.97,34.4h0c-1.19-.25-2.44-.45-3.76-.59-.32-.04-.66-.07-.99-.09-1.46-.13-2.98-.21-4.55-.21s-3.08.07-4.53.21c-.33.02-.66.06-1,.09-1.32.14-2.58.34-3.77.59h0"/>
+    </g>
+  </g>
+</svg>

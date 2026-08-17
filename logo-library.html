@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Logo library · Connect Design System</title>
+  <meta name="description" content="The Connect Design System — brand foundations and downloadable assets for RBA Consulting — colors, typography, logos, icons, images and templates." />
+  <!-- Unlisted, site-wide. See robots.txt. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..700,0..1,-25..0&display=block" />
+  <link rel="icon" href="assets/favicons/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="assets/favicons/favicon-16.png" sizes="16x16" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/favicons/apple-touch-180.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- The RBA mark, imported verbatim from the brand's own SVG (assets/logos/). The
+       wordmark and the linked-rings device are a SINGLE color: every path is
+       fill="currentColor", so `color` alone drives all four colorways and there is no
+       second custom property to keep in step. Do not recolor the paths individually.
+
+       The block lockup below is a separate ASSET, not a colorway — a red field with the
+       mark knocked out of it — so it carries its own fixed fills. -->
+  <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false">
+    <symbol id="rba-logo" viewBox="0 0 736 187">
+      <path d="M355.643 109.492V111.963L390.222 157.249V183.596L387.751 186.066H372.112L367.171 183.596L312.828 115.264L307.886 112.793H281.55L279.079 115.264V183.596L276.609 186.066H244.506L242.035 183.596V4.1158L244.506 1.64515H331.772C368.822 1.64515 395.173 19.7597 395.173 56.804C395.625 68.7852 391.945 80.5577 384.752 90.1497C377.558 99.7416 367.287 106.57 355.658 109.492M331.772 32.928H281.555L279.084 35.3986V77.3841L281.555 79.8547H331.772C347.416 79.8547 358.119 74.9135 358.119 55.9787C358.119 37.044 347.416 32.928 331.772 32.928Z" fill="currentColor"></path>
+      <path d="M507.126 186.881H417.394L414.923 184.411V4.1158L417.394 1.64515H501.365C527.711 1.64515 554.053 14.8185 554.053 49.3921C554.053 67.5066 545.821 83.9707 527.706 88.9069V91.3775C549.111 97.139 559.814 112.783 559.814 136.664C559.814 173.708 533.468 186.881 507.126 186.881ZM496.439 32.928H454.438L451.967 35.3986V72.4479L454.438 74.9185H496.439C501.543 75.3316 506.611 73.7676 510.595 70.5497C514.579 67.3319 517.174 62.7063 517.844 57.6291V54.3383C517.844 41.165 512.903 32.928 496.439 32.928ZM496.439 107.026H454.438L451.967 109.497V151.483L454.438 153.953H496.439C514.553 153.953 522.785 145.721 522.785 130.077C522.785 114.433 514.553 107.026 496.439 107.026Z" fill="currentColor"></path>
+      <path d="M732.704 186.881H708.828L706.358 184.411L693.189 149.832L688.248 147.362H622.387L617.446 149.832L603.452 183.586L600.982 186.056H577.111L574.64 183.586V157.239L635.56 4.1158L638.041 1.64515H672.609L675.08 4.1158L736 157.244V183.591L732.704 186.881ZM656.155 49.3921H652.865L628.984 112.788L631.454 115.259H676.74L679.211 112.788L656.155 49.3921Z" fill="currentColor"></path>
+      <path d="M186.056 79.0348C183.346 73.6881 179.233 69.1785 174.158 65.9879C169.083 62.7973 163.237 61.0457 157.244 60.9202C148.732 60.9096 140.571 57.5233 134.552 51.5042C128.533 45.4851 125.147 37.3245 125.136 28.8122C125.181 22.7816 123.5 16.8641 120.29 11.7586C117.08 6.65307 112.476 2.5729 107.021 0H79.0346C73.6879 2.71052 69.1783 6.82296 65.9877 11.8978C62.7971 16.9726 61.0455 22.819 60.9201 28.8122V29.6374C60.7368 38.0196 57.2693 45.9947 51.2641 51.8456C45.2589 57.6965 37.1963 60.9552 28.8121 60.9202C22.7816 60.875 16.8641 62.5566 11.7586 65.7665C6.65307 68.9764 2.57289 73.5804 0 79.0348V107.027C2.62397 112.442 6.71602 117.011 11.81 120.213C16.904 123.416 22.795 125.123 28.8121 125.141C37.1963 125.106 45.2589 128.365 51.2641 134.216C57.2693 140.067 60.7368 148.042 60.9201 156.424V157.249C60.8748 163.28 62.5564 169.197 65.7663 174.303C68.9762 179.408 73.5802 183.489 79.0346 186.061H107.847C114.689 182.561 120.085 176.77 123.093 169.699C126.102 162.627 126.533 154.724 124.311 147.367L104.556 127.607C101.342 126.66 98.0255 126.107 94.6785 125.961H93.033C84.6508 125.778 76.6758 122.311 70.8249 116.305C64.9741 110.3 61.7153 102.238 61.7503 93.8535C61.8538 85.5114 65.1579 77.5278 70.9798 71.5523C76.8017 65.5768 84.6965 62.0661 93.033 61.7454C101.291 61.6648 109.258 64.7975 115.249 70.4818C121.24 76.1661 124.788 83.9568 125.141 92.208V93.0333C125.287 96.3803 125.84 99.6971 126.786 102.911L147.366 122.671C150.58 123.617 153.897 124.17 157.244 124.316C163.274 124.361 169.192 122.68 174.297 119.47C179.403 116.26 183.483 111.656 186.056 106.202V79.0348Z" fill="currentColor"></path>
+    </symbol>
+    <!-- The linked-rings device on its own, lifted verbatim from #rba-logo's fourth
+         path so there is one source of truth for the geometry. Cropped to its own
+         187x187 box so it can be placed as a standalone mark; still currentColor. -->
+    <symbol id="rba-connect" viewBox="0 0 187 187">
+      <path d="M186.056 79.0348C183.346 73.6881 179.233 69.1785 174.158 65.9879C169.083 62.7973 163.237 61.0457 157.244 60.9202C148.732 60.9096 140.571 57.5233 134.552 51.5042C128.533 45.4851 125.147 37.3245 125.136 28.8122C125.181 22.7816 123.5 16.8641 120.29 11.7586C117.08 6.65307 112.476 2.5729 107.021 0H79.0346C73.6879 2.71052 69.1783 6.82296 65.9877 11.8978C62.7971 16.9726 61.0455 22.819 60.9201 28.8122V29.6374C60.7368 38.0196 57.2693 45.9947 51.2641 51.8456C45.2589 57.6965 37.1963 60.9552 28.8121 60.9202C22.7816 60.875 16.8641 62.5566 11.7586 65.7665C6.65307 68.9764 2.57289 73.5804 0 79.0348V107.027C2.62397 112.442 6.71602 117.011 11.81 120.213C16.904 123.416 22.795 125.123 28.8121 125.141C37.1963 125.106 45.2589 128.365 51.2641 134.216C57.2693 140.067 60.7368 148.042 60.9201 156.424V157.249C60.8748 163.28 62.5564 169.197 65.7663 174.303C68.9762 179.408 73.5802 183.489 79.0346 186.061H107.847C114.689 182.561 120.085 176.77 123.093 169.699C126.102 162.627 126.533 154.724 124.311 147.367L104.556 127.607C101.342 126.66 98.0255 126.107 94.6785 125.961H93.033C84.6508 125.778 76.6758 122.311 70.8249 116.305C64.9741 110.3 61.7153 102.238 61.7503 93.8535C61.8538 85.5114 65.1579 77.5278 70.9798 71.5523C76.8017 65.5768 84.6965 62.0661 93.033 61.7454C101.291 61.6648 109.258 64.7975 115.249 70.4818C121.24 76.1661 124.788 83.9568 125.141 92.208V93.0333C125.287 96.3803 125.84 99.6971 126.786 102.911L147.366 122.671C150.58 123.617 153.897 124.17 157.244 124.316C163.274 124.361 169.192 122.68 174.297 119.47C179.403 116.26 183.483 111.656 186.056 106.202V79.0348Z" fill="currentColor"></path>
+    </symbol>
+    <symbol id="rba-logo-block" viewBox="0 0 344 344">
+      <path d="M344 0H0V344H344V0Z" fill="#C8252D"></path>
+      <path d="M167.342 262.628V263.586L180.745 281.139V291.352L179.787 292.309H173.725L171.81 291.352L150.746 264.865L148.83 263.908H138.622L137.664 264.865V291.352L136.707 292.309H124.263L123.305 291.352V221.783L124.263 220.825H158.089C172.45 220.825 182.664 227.846 182.664 242.205C182.839 246.849 181.413 251.413 178.625 255.131C175.836 258.849 171.855 261.496 167.348 262.628M158.089 232.951H138.624L137.666 233.908V250.182L138.624 251.14H158.089C164.153 251.14 168.301 249.225 168.301 241.885C168.301 234.546 164.153 232.951 158.089 232.951Z" fill="white"></path>
+      <path d="M226.055 292.625H191.273L190.316 291.668V221.783L191.273 220.825H223.822C234.034 220.825 244.245 225.931 244.245 239.332C244.245 246.354 241.054 252.736 234.032 254.649V255.607C242.329 257.84 246.478 263.904 246.478 273.16C246.478 287.519 236.266 292.625 226.055 292.625ZM221.912 232.951H205.632L204.675 233.908V248.269L205.632 249.227H221.912C223.891 249.387 225.855 248.781 227.4 247.533C228.944 246.286 229.95 244.493 230.21 242.525V241.25C230.21 236.143 228.294 232.951 221.912 232.951ZM221.912 261.672H205.632L204.675 262.63V278.904L205.632 279.862H221.912C228.934 279.862 232.125 276.671 232.125 270.607C232.125 264.543 228.934 261.672 221.912 261.672Z" fill="white"></path>
+      <path d="M313.492 292.625H304.237L303.28 291.668L298.175 278.265L296.26 277.307H270.731L268.816 278.265L263.392 291.348L262.434 292.306H253.181L252.224 291.348V281.136L275.837 221.783L276.799 220.825H290.198L291.156 221.783L314.769 281.137V291.35L313.492 292.625ZM283.82 239.332H282.545L273.288 263.906L274.246 264.863H291.799L292.757 263.906L283.82 239.332Z" fill="white"></path>
+      <path d="M101.604 250.822C100.553 248.75 98.9591 247.002 96.992 245.765C95.0249 244.528 92.7587 243.849 90.4357 243.801C87.1362 243.796 83.973 242.484 81.6399 240.151C79.3068 237.818 77.9942 234.655 77.9901 231.355C78.0076 229.017 77.3558 226.724 76.1116 224.745C74.8674 222.766 73.0828 221.184 70.9686 220.187H60.1204C58.048 221.238 56.3 222.832 55.0633 224.799C53.8265 226.766 53.1476 229.032 53.099 231.355V231.675C53.0279 234.924 51.6838 238.015 49.3561 240.283C47.0284 242.551 43.9032 243.814 40.6534 243.801C38.3158 243.783 36.0221 244.435 34.0431 245.679C32.0642 246.923 30.4826 248.708 29.4853 250.822V261.672C30.5024 263.771 32.0886 265.542 34.0631 266.784C36.0376 268.025 38.3211 268.687 40.6534 268.694C43.9032 268.68 47.0284 269.943 49.3561 272.211C51.6838 274.479 53.0279 277.57 53.099 280.819V281.139C53.0814 283.477 53.7332 285.771 54.9774 287.75C56.2217 289.729 58.0062 291.31 60.1204 292.307H71.2885C73.9405 290.951 76.0321 288.706 77.1984 285.965C78.3647 283.224 78.5317 280.16 77.6702 277.309L70.0129 269.649C68.7673 269.282 67.4816 269.068 66.1843 269.012H65.5465C62.2974 268.941 59.2061 267.597 56.9382 265.269C54.6704 262.941 53.4072 259.816 53.4208 256.566C53.4609 253.333 54.7416 250.238 56.9983 247.922C59.2549 245.606 62.3151 244.245 65.5465 244.12C68.7476 244.089 71.8355 245.304 74.1578 247.507C76.4801 249.71 77.855 252.73 77.9921 255.928V256.248C78.0487 257.545 78.2628 258.831 78.6298 260.077L86.607 267.736C87.8527 268.103 89.1383 268.317 90.4357 268.374C92.7732 268.391 95.0669 267.74 97.0459 266.495C99.0249 265.251 100.606 263.467 101.604 261.352V250.822Z" fill="white"></path>
+    </symbol>
+  </svg>
+
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="sidebar-brand-link"><svg class="brand-logo brand-logo--primary" viewBox="0 0 736 187" role="img" aria-label="RBA"><use href="#rba-logo"/></svg></a>
+        <span class="sidebar-brand-title">Connect <span class="wordmark-soft">Design System</span></span>
+        <div class="theme-toggle-row">
+          <button type="button" id="theme-toggle" class="theme-toggle" role="switch" aria-checked="false" aria-label="Light mode">
+            <span class="theme-toggle-track" aria-hidden="true">
+              <span class="theme-toggle-thumb"></span>
+              <span class="theme-toggle-opt theme-toggle-opt--light">
+                <span class="material-symbols-rounded theme-toggle-glyph">light_mode</span>
+                <span class="theme-toggle-opt-label">Light</span>
+              </span>
+              <span class="theme-toggle-opt theme-toggle-opt--dark">
+                <span class="material-symbols-rounded theme-toggle-glyph">dark_mode</span>
+                <span class="theme-toggle-opt-label">Dark</span>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-search">
+        <button type="button" class="sidebar-search-trigger" id="search-trigger" aria-haspopup="dialog">
+          <span class="material-symbols-rounded" aria-hidden="true">search</span>
+          <span class="sidebar-search-trigger-label">Search</span>
+          <span class="sidebar-search-kbd">⌘K</span>
+        </button>
+      </div>
+
+      <!-- Grouped by what kind of thing each destination is — the same three
+           categories the search palette reports. Labels only, deliberately not
+           collapsible: an earlier collapsing version cost ~90 lines of CSS and JS
+           to navigate eight links, and the headings alone carry the grouping. -->
+      <nav class="sidebar-nav" aria-label="Design system">
+        <span class="sidebar-group-label">Foundations</span>
+        <a href="index.html#colors" class="sidebar-link">Colors</a>
+        <a href="index.html#type" class="sidebar-link">Typography</a>
+        <a href="index.html#logo" class="sidebar-link">RBA logos</a>
+        <a href="index.html#voice" class="sidebar-link">Voice</a>
+        <span class="sidebar-group-label">Library</span>
+        <a href="icons.html" class="sidebar-link">Icons</a>
+        <a href="logo-library.html" class="sidebar-link sidebar-link--active" aria-current="page">Logo library</a>
+        <a href="images.html" class="sidebar-link">Brand images</a>
+        <a href="templates.html" class="sidebar-link">Templates &amp; decks</a>
+        <span class="sidebar-group-label">Build</span>
+        <a href="components.html" class="sidebar-link">Components</a>
+      </nav>
+
+      <div class="sidebar-foot">
+        <span class="js-release">—</span>
+      </div>
+    </aside>
+
+    <main class="app-main" id="main-content" tabindex="-1">
+
+      <!-- The device is decoration, not content: aria-hidden, and it sits behind the
+           container rather than inside it so it can bleed past the text column. -->
+      <header class="hero">
+        <svg class="hero-mark" viewBox="0 0 187 187" aria-hidden="true" focusable="false"><use href="#rba-connect"/></svg>
+        <div class="container">
+          <h1 class="hero-title">Logo library</h1>
+          <p class="hero-sub">Partner, platform, client and community marks, as they appear across rbaconsulting.com. Every one in color, one-color black and one-color white, as an SVG or a 512px PNG.</p>
+        </div>
+      </header>
+
+      <section class="block" id="logos">
+        <div class="container lib-scope">
+
+          <div class="callout">
+            <span class="material-symbols-rounded" aria-hidden="true">info</span>
+            <div class="callout-body">
+              <p><strong>These are other people&rsquo;s trademarks.</strong> Use them to say who we work with &mdash; a partner wall, a client list, a platform row &mdash; and follow the owner&rsquo;s brand guidelines on clear space and minimum size. Don&rsquo;t recolor them, and don&rsquo;t imply a partnership we don&rsquo;t have. RBA&rsquo;s own mark lives under <a href="index.html#logo">RBA logos</a>, not here.</p>
+            </div>
+          </div>
+
+          <!-- Same three zones as the icon page: narrow it, then switch colorway,
+               then take it. The colorway switch drives the tiles AND their two
+               download pills, so whichever version you are looking at is the one the
+               buttons hand you. Two pills per tile, not four — a tile at this size
+               cannot carry four without the name losing the room it needs. -->
+          <div class="lib-toolbar">
+            <div class="lib-toolbar-row">
+              <label class="lib-search">
+                <span class="material-symbols-rounded" aria-hidden="true">search</span>
+                <input type="search" class="lib-search-input" placeholder="Search logos — try sitecore, azure, united way…" aria-label="Search logos by name or category" autocomplete="off" />
+              </label>
+              <span class="lib-count" role="status" aria-live="polite"></span>
+              <div class="lib-bundle">
+                <span class="lib-bundle-label">Download all</span>
+                <a class="lib-bundle-btn" href="downloads/rba-logo-library-svg.zip" download>SVG</a>
+                <a class="lib-bundle-btn" href="downloads/rba-logo-library-png.zip" download>PNG</a>
+              </div>
+            </div>
+            <div class="lib-filter" role="group" aria-label="Filter logos by category"></div>
+            <div class="lib-filter lib-filter--variant" role="group" aria-label="Colorway">
+              <span class="lib-filter-label" id="logo-variant-label">Colorway</span>
+              <button type="button" class="lib-filter-btn js-logo-variant" data-variant="color" aria-pressed="true">Color</button>
+              <button type="button" class="lib-filter-btn js-logo-variant" data-variant="black" aria-pressed="false">Black</button>
+              <button type="button" class="lib-filter-btn js-logo-variant" data-variant="white" aria-pressed="false">White</button>
+            </div>
+          </div>
+
+          <div class="logo-grid" id="logo-grid"></div>
+          <p class="lib-empty" hidden>No logos match that. Try a shorter word, or pick a category above.</p>
+
+          <noscript>
+            <p class="lib-empty">
+              The logo grid is rendered from the manifest below, which needs JavaScript.
+              You can still take the set as a zip &mdash;
+              <a href="downloads/rba-logo-library-svg.zip" download>rba-logo-library-svg.zip</a> or
+              <a href="downloads/rba-logo-library-png.zip" download>rba-logo-library-png.zip</a>
+              &mdash; or browse the files under <code>assets/logo-library/</code> in the
+              repository, where each category has its own folder.
+            </p>
+          </noscript>
+
+          <h3 class="subhead">Using one of these</h3>
+          <div class="token-table-scroll" tabindex="0" role="region" aria-label="Logo usage rules, scrollable">
+            <table class="table">
+              <thead><tr><th>Rule</th><th>Requirement</th></tr></thead>
+              <tbody>
+                <tr><td>Which format</td><td>SVG unless something refuses it. The PNG is 512px on its long edge, on transparency &mdash; fine for a slide, too small for print.</td></tr>
+                <tr><td>Which colorway</td><td>Color on white or a light surface. Black where the layout is one-ink, or where a row of partner logos in six different brand colors would fight the page. White on a dark fill or over photography &mdash; it is the same silhouette as the black one, so a row stays consistent whichever way the section flips.</td></tr>
+                <tr><td>Don&rsquo;t recolor</td><td>Brand colors belong to their owners. Color, black or white &mdash; those are the three, and the two one-color cuts are already the sanctioned way to drop the color.</td></tr>
+                <tr><td>Clear space</td><td>Every viewBox is trimmed tight to the artwork, so the file gives you none. Add at least the height of the mark&rsquo;s shortest letterform on all sides.</td></tr>
+                <tr><td>Sizing a row</td><td>Match logos on optical weight, not bounding box. A wide wordmark and a square badge set to the same width will not look the same size &mdash; scale until they read evenly.</td></tr>
+                <tr><td>Accessibility</td><td>Give the image real <code>alt</code> text naming the company. Mark it <code>alt=""</code> only when the name is already in adjacent text.</td></tr>
+                <tr><td>Provenance</td><td><code>assets/logo-library/MANIFEST.csv</code> records where every file came from and whether it was traced. Check it before using a mark somewhere it matters.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="subhead">Where these came from</h3>
+          <p class="prose">Harvested from rbaconsulting.com, then identity-checked by eye &mdash; the alt text on the source site is copy-pasted between logos and cannot be trusted. 30 were already vectors; 88 were traced from raster with <code>potrace</code>, one color at a time. A trace is an approximation: for any brand still in active use, the owner&rsquo;s own SVG beats anything derived from a web PNG. See <code>assets/logo-library/README.md</code> for the full account, including the ten files that were deliberately not traced.</p>
+
+        </div>
+      </section>
+
+      <footer>
+        <div class="container footer-inner">
+          <div>
+            <p class="footer-mark">Connect <span class="wordmark-soft">Design System</span></p>
+            <p class="footer-meta u-mt-xs">Brand foundations &amp; asset library</p>
+          </div>
+          <p class="footer-meta">Added a logo? Drop the four files into <code>assets/logo-library/&lt;category&gt;/</code> and run <code>tools/logos-sync.py</code>.</p>
+        </div>
+      </footer>
+
+  <!-- Logo manifest · GENERATED. Run tools/logos-sync.py to rewrite this block.
+
+       Name plus category only. The four files each logo ships are derived in app.js
+       from that pair, because the naming is a contract — <name>.svg, <name>.png,
+       <name>-black.svg, <name>-black.png. "d":1 marks artwork light enough to vanish
+       on a white tile, so the tile gets a dark stage; it is measured by the sync
+       script, not guessed from the filename. -->
+  <script type="application/json" id="logo-manifest">
+{
+"categories": [{"s":"partnerships","l":"Partnerships"},{"s":"platforms","l":"Platforms"},{"s":"clients","l":"Clients"},{"s":"certifications","l":"Certifications"},{"s":"community","l":"Community"}],
+"logos": [
+  {"n":"aws--provider","t":"AWS \u2014 Provider","c":0},
+  {"n":"bigcommerce--partner","t":"BigCommerce \u2014 Partner","c":0},
+  {"n":"coveo--partner","t":"Coveo \u2014 Partner","c":0},
+  {"n":"databricks--partner","t":"Databricks \u2014 Partner","c":0},
+  {"n":"microsoft--solutions-provider","t":"Microsoft \u2014 Solutions Provider","c":0},
+  {"n":"optimizely--partner","t":"Optimizely \u2014 Partner","c":0},
+  {"n":"sitecore--gold-partner","t":"Sitecore \u2014 Gold Partner","c":0},
+  {"n":"umbraco--platinum-partner","t":"Umbraco \u2014 Platinum Partner","c":0},
+  {"n":"angular","t":"Angular","c":1},
+  {"n":"aws","t":"AWS","c":1},
+  {"n":"azure","t":"Azure","c":1},
+  {"n":"bigcommerce","t":"BigCommerce","c":1},
+  {"n":"coveo","t":"Coveo","c":1},
+  {"n":"cursor","t":"Cursor","c":1},
+  {"n":"dbt","t":"dbt Labs","c":1},
+  {"n":"dotnet","t":".NET","c":1},
+  {"n":"figma","t":"Figma","c":1},
+  {"n":"github","t":"GitHub","c":1},
+  {"n":"java","t":"Java","c":1},
+  {"n":"javascript","t":"JavaScript","c":1},
+  {"n":"microsoft","t":"Microsoft","c":1},
+  {"n":"microsoft-365","t":"Microsoft 365","c":1},
+  {"n":"microsoft-365-waffle-icons","t":"Microsoft 365 app icons","c":1},
+  {"n":"microsoft-copilot","t":"Microsoft Copilot","c":1},
+  {"n":"microsoft-fabric","t":"Microsoft Fabric","c":1},
+  {"n":"moz","t":"Moz","c":1},
+  {"n":"nodejs","t":"Node.js","c":1},
+  {"n":"openai","t":"OpenAI","c":1},
+  {"n":"optimizely","t":"Optimizely","c":1},
+  {"n":"power-bi","t":"Power BI","c":1},
+  {"n":"power-platform","t":"Power Platform","c":1},
+  {"n":"python","t":"Python","c":1},
+  {"n":"react","t":"React","c":1},
+  {"n":"semrush","t":"Semrush","c":1},
+  {"n":"sitecore","t":"Sitecore","c":1},
+  {"n":"sitecore-experience-commerce","t":"Sitecore Experience Commerce","c":1},
+  {"n":"snowflake","t":"Snowflake","c":1},
+  {"n":"umbraco","t":"Umbraco","c":1},
+  {"n":"umbraco-blue","t":"Umbraco (blue)","c":1},
+  {"n":"wordpress","t":"WordPress","c":1},
+  {"n":"advantage-solutions","t":"Advantage Solutions","c":2},
+  {"n":"banner-bank","t":"Banner Bank","c":2,"d":1},
+  {"n":"bcu","t":"BCU","c":2},
+  {"n":"best-buy","t":"Best Buy","c":2,"d":1},
+  {"n":"caleres","t":"Caleres","c":2,"d":1},
+  {"n":"cargill","t":"Cargill","c":2,"d":1},
+  {"n":"edina-realty","t":"Edina Realty","c":2},
+  {"n":"famous-footwear","t":"Famous Footwear","c":2},
+  {"n":"fastenal","t":"Fastenal","c":2,"d":1},
+  {"n":"hb-fuller","t":"H.B. Fuller","c":2},
+  {"n":"nutrition-incentive-hub","t":"Nutrition Incentive Hub","c":2},
+  {"n":"nutrition-incentive-hub-gscn","t":"Nutrition Incentive Hub (GSCN)","c":2,"d":1},
+  {"n":"panda-health","t":"Panda Health","c":2},
+  {"n":"post-consumer-brands","t":"Post Consumer Brands","c":2,"d":1},
+  {"n":"toppan-merrill","t":"Toppan Merrill","c":2},
+  {"n":"toro","t":"Toro","c":2,"d":1},
+  {"n":"glassdoor","t":"Glassdoor","c":3},
+  {"n":"umbraco-platinum-partner-badge","t":"Umbraco Platinum Partner badge","c":3},
+  {"n":"black-girls-code","t":"Black Girls Code","c":4},
+  {"n":"breaking-free","t":"Breaking Free","c":4},
+  {"n":"breast-cancer-research-foundation","t":"Breast Cancer Research Foundation","c":4},
+  {"n":"bridging","t":"Bridging","c":4},
+  {"n":"camp-knutson","t":"Camp Knutson","c":4},
+  {"n":"cios-against-cancer","t":"CIOs Against Cancer","c":4},
+  {"n":"gifts-for-seniors","t":"Gifts For Seniors","c":4},
+  {"n":"greater-twin-cities-united-way","t":"Greater Twin Cities United Way","c":4},
+  {"n":"head-of-the-lakes-united-way","t":"Head Of The Lakes United Way","c":4},
+  {"n":"heroes-on-the-hill","t":"Heroes On The Hill","c":4},
+  {"n":"hope-chest","t":"Hope Chest","c":4},
+  {"n":"lels","t":"LELS","c":4},
+  {"n":"lutheran-social-service-mn","t":"Lutheran Social Service Mn","c":4},
+  {"n":"movember","t":"Movember","c":4},
+  {"n":"outfront-minnesota","t":"Outfront Minnesota","c":4},
+  {"n":"pavsa","t":"PAVSA","c":4},
+  {"n":"science-from-scientists","t":"Science From Scientists","c":4},
+  {"n":"second-harvest","t":"Second Harvest","c":4},
+  {"n":"semper-fi-fund","t":"Semper Fi Fund","c":4},
+  {"n":"trevor-project","t":"Trevor Project","c":4},
+  {"n":"vail-communities","t":"Vail Communities","c":4}
+]
+}
+  </script>
+    </main><!-- /.app-main -->
+  </div><!-- /.app-layout -->
+
+  <div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-label="Search the Connect Design System" hidden>
+    <div class="search-panel">
+      <div class="search-input-row">
+        <span class="material-symbols-rounded" aria-hidden="true">search</span>
+        <input type="text" class="search-field" id="search-input" placeholder="Search colors, type, logos, icons, templates…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="search-results" aria-label="Search the Connect Design System" />
+        <kbd class="search-esc">Esc</kbd>
+      </div>
+      <div class="search-results" id="search-results" role="listbox" aria-label="Search results"></div>
+      <div class="search-foot" aria-hidden="true">
+        <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> navigate</span>
+        <span><kbd>&crarr;</kbd> open</span>
+        <span><kbd>Esc</kbd> close</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

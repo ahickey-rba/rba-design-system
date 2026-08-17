@@ -292,6 +292,7 @@
     .lib-scope > p { max-width: 68ch; }
     .lib-scope > .lib-toolbar,
     .lib-scope > .shot-grid,
+    .lib-scope > .logo-grid,
     .lib-scope > .glyph-grid { max-width: none; }
 
     /* Skip link — first focusable element; visible only on keyboard focus */
@@ -1999,6 +2000,110 @@
     @media (hover: none) { .token-copy-icon { opacity: 1; } }
 
     /* ---------- Asset download (JS-injected hover button on any asset tile) ---------- */
+    /* ---- Logo library -------------------------------------------------------
+       Wider cells than the icon grid, because these are wordmarks: "Post Consumer
+       Brands" and "Breast Cancer Research Foundation" need horizontal room that a
+       140px icon tile does not have.
+
+       The preview is an <img>, not the mask the icon tiles use. These are other
+       people's brand colors and have to render as themselves — a mask would
+       flatten every one of them to a single fill. */
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-3);
+    }
+    .logo-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: var(--space-3);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--corner-radius-base);
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+    .logo-cell[hidden] { display: none; }
+    .logo-cell:hover,
+    .logo-cell:focus-within {
+      border-color: var(--brand);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Fixed-height stage with the logo contained inside it. These marks range from
+       a 6:1 wordmark to a square badge; without a fixed stage every row would set
+       its own height and the grid would look like rubble. */
+    /* The stage does NOT follow the theme, and that is the whole point of it.
+       These are fixed-color images we are not allowed to recolor, so the surface
+       under them has to suit the artwork rather than the page. Let it go dark with
+       the theme and every black wordmark — GitHub, OpenAI, BigCommerce — disappears
+       in dark mode, which is the same bug as a white mark on a white tile, just
+       inverted. A literal value, not a token, so a future theme cannot reintroduce
+       it. */
+    .logo-cell-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 76px;
+      padding: var(--space-2);
+      border-radius: 6px;
+      background: #F4F5F7;
+    }
+    .logo-cell-img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* Which tiles need a dark stage depends on the colorway, so both rules below are
+       scoped to it. Getting this wrong is invisible in one mode and ruins another:
+       the per-logo flag describes the COLOR artwork, and applying it in the black
+       colorway put black marks on navy, where they all but disappeared.
+
+       color — only the marks whose color artwork is itself white (Cargill, Best Buy,
+               Toro: RBA's site only ever carried the reversed cut). Measured from the
+               artwork by tools/logos-sync.py, not guessed from the filename.
+       black — never. Every mark is black; the light stage is always right.
+       white — always. Every mark is white, so the flag stops being the right unit and
+               the whole grid flips on one attribute instead of 79 class toggles. */
+    .logo-grid[data-variant="color"] .logo-cell--dark .logo-cell-stage { background: #182449; }
+    .logo-grid[data-variant="white"] .logo-cell-stage { background: #182449; }
+
+    .logo-cell-name {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 17px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .logo-cell-cat {
+      font-family: var(--font-micro);
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      color: var(--text-muted);
+      margin-top: -2px;
+    }
+    .logo-cell .glyph-cell-actions { justify-content: flex-start; }
+
+    /* The colorway switch sits on its own row under the category chips and carries a
+       label, because two buttons reading "Color" and "Black" directly below a row
+       of category chips would otherwise look like two more categories. */
+    .lib-filter--variant {
+      align-items: center;
+      margin-top: var(--space-3);
+      padding-top: var(--space-3);
+    }
+    .lib-filter-label {
+      font-family: var(--font-micro);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-right: 2px;
+    }
+
     /* .glyph-cell is here for its own corner Copy button; the icon tiles carry
        explicit SVG/PNG links of their own. */
     .logo-card, .glyph-cell, .photo-card-img { position: relative; }

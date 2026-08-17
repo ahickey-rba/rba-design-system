@@ -327,10 +327,11 @@
       const INDEX = [
         { title: 'Colors',            category: 'Foundations', page: 'index.html',     anchor: '#colors',   keywords: 'palette hex rgb hsl cmyk print css var format swatch red midnight navy aqua blue grey gradient token' },
         { title: 'Typography',        category: 'Foundations', page: 'index.html',     anchor: '#type',     keywords: 'font fonts typeface montserrat libre caslon serif sans type scale heading body' },
-        { title: 'Logos',             category: 'Foundations', page: 'index.html',     anchor: '#logo',     keywords: 'logo mark wordmark monogram clear space reversed svg' },
+        { title: 'RBA logos',         category: 'Foundations', page: 'index.html',     anchor: '#logo',     keywords: 'logo logos mark wordmark monogram clear space reversed colorway svg rba' },
         { title: 'Voice',             category: 'Foundations', page: 'index.html',     anchor: '#voice',    keywords: 'tone voice writing copy words banned jargon buzzwords style wording language proposal' },
         { title: 'Components',        category: 'Build',       page: 'components.html', anchor: '',         keywords: 'button buttons card cards cta stat stats bullet list layout spacing padding radius corner shadow spec token tokens accent line bar section' },
         { title: 'Icons',             category: 'Library',     page: 'icons.html',     anchor: '',          keywords: 'icon iconography glyph symbol svg png outline line download library chart people finance data document technology' },
+        { title: 'Logo library',      category: 'Library',     page: 'logo-library.html', anchor: '',      keywords: 'logo logos partner partners partnership platform platforms client clients customer vendor technology stack certification badge accreditation microsoft azure aws sitecore umbraco optimizely coveo databricks snowflake bigcommerce wordpress github react python java nonprofit community rba cares black color color mono svg png trademark download' },
         { title: 'Brand images',      category: 'Library',     page: 'images.html',    anchor: '',          keywords: 'photo photography image picture illustration stock download' },
         { title: 'Templates & decks', category: 'Library',     page: 'templates.html', anchor: '',          keywords: 'powerpoint pptx deck slides word docx template letterhead document download' },
         { title: 'Device mockups',    category: 'Library',     page: 'templates.html', anchor: '#mockups',  keywords: 'mockup mockups phone tablet browser device frame shots screenshot status bar' },
@@ -1727,4 +1728,198 @@
       //
       // Nothing for brand images: the shortlist cards are links out to Adobe
       // Stock, and there is no local file to download until one is licensed.
+    })();
+
+    // ---------------------------------------------------------------------------
+    // Logo library (logo-library.html)
+    //
+    // Same shape as the icon grid — build the tiles once, then filter by toggling
+    // .hidden — but with two differences that matter.
+    //
+    //   1. The preview is an <img>, not a CSS mask. These marks are the owners'
+    //      colors and must render as themselves; masking would flatten every one
+    //      of them to a single fill, which is the opposite of the point.
+    //   2. A colorway switch drives the tiles AND their download links together, so
+    //      the file you get is always the one you are looking at.
+    // ---------------------------------------------------------------------------
+    (function () {
+      const grid = document.getElementById('logo-grid');
+      const dataEl = document.getElementById('logo-manifest');
+      if (!grid || !dataEl) return;                 // no-ops on every other page
+
+      let cats = [], logos = [];
+      try {
+        const data = JSON.parse(dataEl.textContent) || {};
+        cats = data.categories || [];
+        logos = data.logos || [];
+      } catch (e) {
+        grid.innerHTML = '<p class="lib-empty">The logo manifest could not be read. ' +
+                         'View source and check the <code>#logo-manifest</code> block.</p>';
+        return;
+      }
+      if (!logos.length) return;
+
+      const flatten = s => s.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+      const BASE = 'assets/logo-library/';
+
+      // The six paths are derived, not stored — see the note on the manifest block.
+      const paths = it => {
+        const dir = BASE + cats[it.c].s + '/' + it.n;
+        return { color: { svg: dir + '.svg',        png: dir + '.png' },
+                 black: { svg: dir + '-black.svg',  png: dir + '-black.png' },
+                 white: { svg: dir + '-white.svg',  png: dir + '-white.png' } };
+      };
+
+      const items = logos.map(it => ({
+        raw: it,
+        title: it.t,
+        cat: cats[it.c],
+        dark: !!it.d,
+        files: paths(it),
+        hay: ' ' + flatten(it.t + ' ' + it.n + ' ' + cats[it.c].l) + ' '
+      }));
+
+      let variant = 'color';
+
+      // Lazily point each <img> at its file as the tile nears the viewport. 117 logos
+      // x 512px PNG is several megabytes; loading it all on paint would spend the
+      // whole request budget before anyone has scrolled.
+      const io = 'IntersectionObserver' in window
+        ? new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (!entry.isIntersecting) return;
+              const img = entry.target;
+              if (img.dataset.src) { img.src = img.dataset.src; delete img.dataset.src; }
+              io.unobserve(img);
+            });
+          }, { rootMargin: '400px 0px' })
+        : null;
+
+      function setVariant(el, name) {
+        const f = el._files[name];
+        const img = el.querySelector('.logo-cell-img');
+        // Only swap what is already loaded; a tile still below the fold keeps its
+        // pending data-src so the observer fetches the right colorway when it lands.
+        if (img.dataset.src) img.dataset.src = f.png; else img.src = f.png;
+        const links = el.querySelectorAll('.glyph-dl');
+        links[0].href = f.svg;
+        links[1].href = f.png;
+        const label = el._title + ' — ' + name;
+        links[0].setAttribute('aria-label', 'Download ' + label + ' as SVG');
+        links[1].setAttribute('aria-label', 'Download ' + label + ' as PNG');
+      }
+
+      function logoTile(item) {
+        const cell = document.createElement('div');
+        cell.className = 'logo-cell' + (item.dark ? ' logo-cell--dark' : '');
+        cell._files = item.files;
+        cell._title = item.title;
+
+        const stage = document.createElement('div');
+        stage.className = 'logo-cell-stage';
+
+        const img = document.createElement('img');
+        img.className = 'logo-cell-img';
+        img.alt = item.title + ' logo';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.dataset.src = item.files.color.png;
+        if (io) io.observe(img); else img.src = item.files.color.png;
+        stage.appendChild(img);
+
+        const name = document.createElement('span');
+        name.className = 'logo-cell-name';
+        name.textContent = item.title;
+
+        const cat = document.createElement('span');
+        cat.className = 'logo-cell-cat';
+        cat.textContent = item.cat.l;
+
+        const actions = document.createElement('span');
+        actions.className = 'glyph-cell-actions';
+        ['SVG', 'PNG'].forEach(kind => {
+          const a = document.createElement('a');
+          a.className = 'glyph-dl';
+          a.setAttribute('download', '');
+          a.textContent = kind;
+          actions.appendChild(a);
+        });
+
+        cell.append(stage, name, cat, actions);
+        setVariant(cell, 'color');
+        return cell;
+      }
+
+      const frag = document.createDocumentFragment();
+      items.forEach(item => { item.el = logoTile(item); frag.appendChild(item.el); });
+      grid.appendChild(frag);
+      grid.dataset.variant = variant;
+
+      const scope = grid.closest('.lib-scope') || document;
+      const search = scope.querySelector('.lib-search-input');
+      const chips = scope.querySelector('.lib-filter:not(.lib-filter--variant)');
+      const count = scope.querySelector('.lib-count');
+      const empty = scope.querySelector('.lib-empty');
+      let activeCat = 'all';
+
+      if (chips) {
+        const mk = (value, label, pressed) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'lib-filter-btn';
+          b.setAttribute('data-filter', value);
+          b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+          b.textContent = label;
+          return b;
+        };
+        chips.appendChild(mk('all', 'All', true));
+        cats.forEach(c => chips.appendChild(mk(c.s, c.l, false)));
+        chips.addEventListener('click', ev => {
+          const btn = ev.target.closest('.lib-filter-btn');
+          if (!btn) return;
+          activeCat = btn.getAttribute('data-filter');
+          chips.querySelectorAll('.lib-filter-btn').forEach(b => {
+            b.setAttribute('aria-pressed', String(b === btn));
+          });
+          apply();
+        });
+      }
+
+      scope.querySelectorAll('.js-logo-variant').forEach(btn => {
+        btn.addEventListener('click', () => {
+          variant = btn.getAttribute('data-variant');
+          scope.querySelectorAll('.js-logo-variant').forEach(b => {
+            b.setAttribute('aria-pressed', String(b === btn));
+          });
+          // The stage colour is decided in CSS from this one attribute, because which
+          // tiles need a dark backing depends on the colorway, not on the logo alone.
+          grid.dataset.variant = variant;
+          items.forEach(it => setVariant(it.el, variant));
+        });
+      });
+
+      function apply() {
+        const terms = flatten(search ? search.value : '').split(' ').filter(Boolean);
+        let shown = 0;
+        items.forEach(it => {
+          const inScope = activeCat === 'all' || it.cat.s === activeCat;
+          const hit = inScope && terms.every(t => it.hay.indexOf(t) >= 0);
+          it.el.hidden = !hit;
+          if (hit) shown++;
+        });
+        if (count) {
+          count.textContent = shown === items.length
+            ? items.length + ' logos'
+            : shown + ' of ' + items.length;
+        }
+        if (empty) empty.hidden = shown !== 0;
+      }
+
+      // The placeholder carries the count so it cannot drift from the manifest the
+      // way a number typed into the HTML would.
+      if (search) {
+        search.placeholder = 'Search ' + items.length + ' logos \u2014 try sitecore, azure, united way\u2026';
+        search.addEventListener('input', apply);
+      }
+      apply();
     })();
