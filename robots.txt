@@ -1,20 +1,27 @@
-# The image library is a review board, not a picture source.
+# The whole site is unlisted, not just the image board.
 #
-# Everything in assets/images/shortlist/ is a WATERMARKED ADOBE STOCK COMP —
-# unlicensed, evaluation-only. The comp licence covers reviewing an image, and
-# this site is reachable without a login, so the exposure worth closing is not
-# someone opening the page on purpose: it is a hundred unlicensed frames being
-# crawled and served up in image search to people who never came here.
+# This host has no login, so the link is the only thing standing between the site
+# and anyone at all. That was an acceptable trade while the only real exposure was
+# the shortlist — a hundred watermarked, unlicensed Adobe Stock comps that must not
+# end up in image search. It stopped being acceptable once the ask became that the
+# site not be findable at all: an internal brand system, on a personal GitHub
+# account, indexed under a name anyone can guess.
 #
-# So the board stays usable for anyone with the link, and stays out of the index.
-# images.html carries a matching <meta name="robots" content="noindex"> — this
-# file stops the crawl, that stops the listing, and neither works alone.
+# Google currently returns nothing for site:ahickey-rba.github.io. That is luck, not
+# policy — nothing public links here yet. The moment something does, the crawl
+# follows. This file is the policy.
 #
-# Nothing else on the site is restricted; the design system itself is meant to
-# be found.
+# Every page carries a matching <meta name="robots" content="noindex"> and needs to:
+# this file stops the crawl, the meta tag stops the listing, and a page linked from
+# elsewhere can still be indexed on the strength of those links alone if only the
+# crawl is blocked. images.html keeps the stronger noimageindex on top, because that
+# is the directive that covers the pictures rather than the page.
+#
+# None of this is access control. It is a request that well-behaved crawlers honour,
+# and the page stays readable to anyone with the link and to any bot that ignores
+# this file. Gating actual access is the Cloudflare Pages Access work, not this.
+#
+# No Sitemap: line. A sitemap is an invitation, and there is nothing to invite.
 
 User-agent: *
-Disallow: /assets/images/shortlist/
-Disallow: /images.html
-
-Sitemap: https://ahickey-rba.github.io/rba-design-system/
+Disallow: /
