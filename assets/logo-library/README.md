@@ -14,7 +14,7 @@ what it came from, and the URL it was fetched from.
 
 ## What you get
 
-**79 logos × 6 files each**, all on transparency bar one (see
+**99 logos × 6 files each**, all on transparency bar a few (see
 [Backgrounds](#backgrounds)):
 
 | File | What it is |
@@ -28,11 +28,11 @@ row of logos stays consistent whichever way a section flips.
 
 | Folder | Logos | What's in it |
 |---|---|---|
-| `platforms/` | 32 | Technology marks |
+| `platforms/` | 34 | Technology marks |
+| `clients/` | 28 | Client marks from case studies, logo strips and the capability deck |
 | `community/` | 21 | Nonprofits from the RBA Cares logo wall |
-| `clients/` | 16 | Client marks from case studies and logo strips |
 | `partnerships/` | 8 | The eight named partner tiers on `/our-partnerships/` |
-| `certifications/` | 2 | See the caveat below |
+| `certifications/` | 8 | Issuer marks and tier badges |
 
 Four folders start with an underscore. That prefix is what keeps them out of the
 gallery *and* out of the download bundles, while still keeping the files:
@@ -55,7 +55,7 @@ it can drive the four colorways.
 
 ## Where the vectors come from
 
-Of the 79 shown: **25 are the owner's own published vector**, **10 arrived as SVG on
+Of the 99 shown: **45 are the owner's own published vector**, **10 arrived as SVG on
 RBA's site**, and **44 were traced** from raster. The `origin` column says which.
 
 Tracing is per-color, not per-pixel. Each logo is quantized to the handful of colors
@@ -68,7 +68,7 @@ Fidelity was checked by rendering every SVG back to bitmap and diffing against i
 source over a mid-grey composite — median difference **0.44/255**. Every viewBox is
 trimmed tight to the artwork, so no file carries transparent padding.
 
-### The 25 that are the owner's own vector
+### The 45 that are the owner's own vector
 
 Two rounds got them here. The first took eight from Wikimedia Commons: Angular,
 .NET, GitHub, JavaScript, Node.js, OpenAI, Snowflake and WordPress.
@@ -95,10 +95,13 @@ match the existing site should pull the old cut from `_retired/`:
 
 ### What could not be replaced, and why
 
-Published nowhere reachable, so still traced: **Sitecore, Optimizely, dbt,
-Microsoft Fabric, Power Platform, Microsoft Copilot.** Their vendors gate brand
-kits behind a request form or a JS-driven page. Sitecore and Optimizely matter
-most, since both are named partners.
+Published nowhere reachable, so still traced: **Optimizely, dbt, Microsoft Fabric,
+Power Platform, Microsoft Copilot.** Their vendors gate brand kits behind a request
+form or a JS-driven page. Optimizely matters most, since it is a named partner.
+
+**Sitecore was on this list until the capability deck was checked.** Both the
+Sitecore mark and its Gold Partner badge were sitting inside `Logo library.pptx` as
+embedded vectors. Before concluding a vendor publishes nothing, look in the decks.
 
 Deliberately kept as traces: **Figma, Power BI, React.** Published vectors exist,
 but each is the glyph *alone* — swapping them would drop the wordmark RBA's lockups
@@ -135,6 +138,30 @@ are kept under `_raster-originals/clients/`.
 time. It reads the palette off the *native* pixels before upscaling: quantising the
 upscaled image averages the resampled shades, which is how Banner Bank's `#0260af`
 navy and `#ee3742` red first came back as a muddy `#6290c0` and `#994265`.
+
+### The capability deck, which beat the web
+
+20 of these logos came from `Logo library.pptx`, an RBA capability deck — and it was a
+better source than the open web for three separate reasons worth remembering:
+
+1. **Decks carry embedded vectors.** PowerPoint keeps whatever was pasted in, so the
+   deck held true SVGs of Sitecore, its Gold Partner badge, Essentia Health and
+   Surescripts. Sitecore had been written off here as unobtainable.
+2. **Decks name things the web does not.** Most of its rasters are 29×9 to 150px and
+   useless as artwork, but they *identified* marks nobody would have thought to look
+   for — Target, Optum, UnitedHealthcare, Boston Scientific, C.H. Robinson, Andersen,
+   Ford, Thomson Reuters, Patterson, Siteimprove, Salesforce and the certifications.
+   Each was then fetched properly from its owner.
+3. **Internal decks hold the tier badges** vendors bury behind partner-portal logins.
+
+The deck's other contents were deliberately skipped: 12 cyan role icons (not brand
+marks — RBA's own service icons already live in `_rba-brand/`), and a long tail of
+healthcare logos whose owners publish nothing usable (CareWire, LHI, Triplefin,
+Wilderness Health, Medica, Aurora Health Care) plus marks not yet chased down
+(Medtronic, Intel, Allina Health, Perrigo, RSM, Ameriprise, CHS, Mortenson, Braun
+Intertec, NAVIS, Upper Lakes Foods, Riverside, WEX, Mutual of Omaha, University of
+Minnesota, University of Georgia). WEX and Mutual of Omaha publish reversed-only
+vectors, so they need the same treatment the eight white-only clients got.
 
 ## What was retired, and what that cost
 
@@ -215,10 +242,19 @@ name. There are no `-alt` or `-legacy` names left in the gallery.
 
 ## Two caveats
 
-**Certifications barely exist as artwork.** The site carries exactly one real badge —
-`umbraco-platinum-partner-badge.svg` — plus the Glassdoor mark. Everything else RBA
-claims (Sitecore MVP, Umbraco Certified Master, Star Tribune Top Workplace 2026,
-MN365) appears only baked into announcement cards, at small size. Those cards are in
+**Certifications are issuer marks, not badges.** This category went from 2 entries to
+8 once the capability deck was mined, but read what it holds. ISC2, Scrum Alliance,
+Prosci and Google Analytics are the *issuer's* logo, because none of them publishes
+the individual credential badge (CISSP, CSM, Change Practitioner) as artwork you can
+download — those live on Credly, rendered per person. Two are real tier badges traced
+from the deck: Umbraco Certified Master and Umbraco Gold Partner.
+
+So a slide that needs to show "our people hold CISSP" gets the ISC2 mark plus your
+own typesetting, not a badge. If a real credential badge is ever required, pull it
+from the holder's own Credly page.
+
+Still missing entirely: **Sitecore MVP, Star Tribune Top Workplace 2026, MN365.**
+Those appear only baked into announcement cards, at small size, in
 `_raster-originals/certifications/_announcement-graphics/`. Redraw from the issuer's
 brand kit rather than tracing them.
 

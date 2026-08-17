@@ -85,6 +85,12 @@ NAMES = {
     'sitecore-experience-commerce': 'Sitecore Experience Commerce',
     'umbraco-platinum-partner-badge': 'Umbraco Platinum Partner badge',
     'wordpress': 'WordPress', 'best-buy': 'Best Buy',
+    # From the Logo library deck.
+    'ch-robinson': 'C.H. Robinson', 'isc2': 'ISC2',
+    'unitedhealthcare': 'UnitedHealthcare',
+    'university-of-south-dakota': 'University of South Dakota',
+    'umbraco-certified-master': 'Umbraco Certified Master',
+    'umbraco-gold-partner': 'Umbraco Gold Partner',
 }
 
 SUFFIX = {'alt': '(alt)', 'alt2': '(alt 2)', 'legacy': '(legacy)',
