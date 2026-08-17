@@ -51,8 +51,26 @@ jobs:
           grep -n "RBA_VERSION\|RBA_PUBLISHED" app.js | head -2
 
       - uses: actions/configure-pages@v6
+
+      # The artifact name carries the attempt number, and deploy-pages is told to
+      # fetch that exact name.
+      #
+      # WHY: artifacts persist per *run*, not per attempt. Hit "re-run" on a failed
+      # run and attempt 2 uploads a second artifact alongside attempt 1's, both
+      # called github-pages — then deploy-pages finds two, cannot tell which is
+      # current, and fails the whole run with "Multiple artifacts named
+      # github-pages were unexpectedly found". That is exactly how run
+      # 32050396148 failed: the commit that added the logo library never published,
+      # and the site sat on an older hand-triggered deploy until someone noticed.
+      #
+      # The failure mode is nasty because re-running is the obvious response to a
+      # flake, and it is guaranteed to fail a second time — so a transient error
+      # turns into a permanently stuck deploy that only a fresh commit clears.
       - uses: actions/upload-pages-artifact@v5
         with:
           path: .
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
       - id: deployment
         uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
