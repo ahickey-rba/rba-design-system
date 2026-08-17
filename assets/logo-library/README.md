@@ -14,7 +14,8 @@ what it came from, and the URL it was fetched from.
 
 ## What you get
 
-**79 logos × 6 files each**, all on transparency:
+**79 logos × 6 files each**, all on transparency bar one (see
+[Backgrounds](#backgrounds)):
 
 | File | What it is |
 |---|---|
@@ -54,8 +55,8 @@ it can drive the four colorways.
 
 ## Where the vectors come from
 
-Of the 79 shown: **8 are the owner's own published vector**, **11 arrived as SVG on
-RBA's site**, and **60 were traced** from raster. The `origin` column says which.
+Of the 79 shown: **25 are the owner's own published vector**, **10 arrived as SVG on
+RBA's site**, and **44 were traced** from raster. The `origin` column says which.
 
 Tracing is per-color, not per-pixel. Each logo is quantized to the handful of colors
 actually in it, each color is traced as its own bitmap with `potrace`, and the layers
@@ -67,27 +68,73 @@ Fidelity was checked by rendering every SVG back to bitmap and diffing against i
 source over a mid-grey composite — median difference **0.44/255**. Every viewBox is
 trimmed tight to the artwork, so no file carries transparent padding.
 
-### The eight replaced with published vectors
+### The 25 that are the owner's own vector
 
-Angular, .NET, GitHub, JavaScript, Node.js, OpenAI, Snowflake and WordPress use the
-artwork their owners publish, taken from Wikimedia Commons (public domain except
-Node.js, which is MIT). Each displaced trace is in `_retired/`.
+Two rounds got them here. The first took eight from Wikimedia Commons: Angular,
+.NET, GitHub, JavaScript, Node.js, OpenAI, Snowflake and WordPress.
 
-**Angular is a rebrand, not just a better file.** RBA's site still uses the pre-2023
-red shield; the published vector is the current pink-to-purple wordmark. If a page
-has to match the existing site, the old mark is in `_retired/`.
+The second round went after the traces whose letterforms `potrace` had visibly
+softened, and found 17 more — ten on Commons (**Azure, Cursor, Moz, Python,
+Semrush, Best Buy, Cargill, Fastenal, AWS, Glassdoor**, every one filed under the
+brand's own name as the author) and seven straight off the owner's site
+(**BigCommerce, Coveo, Post Consumer Brands, Caleres, Nutrition Incentive Hub
+(GSCN), Black Girls Code**, plus BigCommerce again for the partner tile). Each
+displaced trace is in `_retired/`.
+
+**Check that a vendor's "SVG" is actually a vector.** `banner-bank-logo.svg` on
+Banner Bank's own site is a base64 PNG in an SVG wrapper — 267×75, with a white
+background baked in. It counts as a raster here, not a published vector.
+
+Two of those are a different lockup, not just a cleaner file, and a page that has to
+match the existing site should pull the old cut from `_retired/`:
+
+- **Angular** — RBA's site still uses the pre-2023 red shield; the vector is the
+  current pink-to-purple wordmark.
+- **Azure** — the current official lockup is a flat blue A and the word *Azure*.
+  The trace it replaced was the older gradient A reading *Microsoft Azure*.
 
 ### What could not be replaced, and why
 
-Not on Wikimedia Commons at all, so still traced: **Sitecore, Optimizely,
-BigCommerce, dbt, Cursor, Microsoft Fabric, Semrush, Power Platform, Microsoft
-Copilot.** Their vendors publish brand kits behind a request form or a JS-driven
-page; worth pulling by hand, and Sitecore, Optimizely and BigCommerce matter most
-since they are named partners.
+Published nowhere reachable, so still traced: **Sitecore, Optimizely, dbt,
+Microsoft Fabric, Power Platform, Microsoft Copilot.** Their vendors gate brand
+kits behind a request form or a JS-driven page. Sitecore and Optimizely matter
+most, since both are named partners.
 
-Deliberately kept as traces: **Azure, Figma, Power BI, Python, React.** Published
-vectors exist, but every one is the glyph *alone* — swapping them would drop the
-wordmark RBA's lockups use, which is a downgrade.
+Deliberately kept as traces: **Figma, Power BI, React.** Published vectors exist,
+but each is the glyph *alone* — swapping them would drop the wordmark RBA's lockups
+use, which is a downgrade.
+
+Three more were checked and deliberately left alone, because the owner's own web
+asset is a *thinner* mark than the trace already here — a reminder that "official
+file" and "better file" are not the same test:
+
+- **OutFront Minnesota** — their header SVG drops both the arrow glyph and the
+  brand purple.
+- **Second Harvest Heartland** — their header SVG drops the tagline.
+- **BCRF** — their header SVG drops the *BCRF* acronym, carrying only the
+  spelled-out name. Their full lockup exists as a 1274px PNG, but on an opaque
+  dusty-pink field (`#deb4b4`) that would have to come off first, for a modest gain
+  over the 800px raster this was traced from. Worth revisiting.
+
+### The two retraces
+
+Where the owner publishes no usable vector, the trace stays — but off the owner's
+own artwork instead of whatever RBA's site happened to carry. Both source rasters
+are kept under `_raster-originals/clients/`.
+
+- **Toro.** No reachable SVG at all: the investor site is PNG-only and the consumer
+  site's media handler returns a 91×60 thumbnail. The badge is now traced from
+  Toro's own 2104px corporate lockup, cropped out of it, rather than a 154px web
+  PNG — which is where its letterforms came back.
+- **Banner Bank.** Traced from the 267×75 raster inside their wrapped "SVG", with
+  the baked white field flood-filled away and its edge feathered. Low resolution,
+  but it is their own color artwork rather than the white-only cut RBA carried.
+  Worth replacing if a real vector ever surfaces.
+
+`../../tools/logos-trace.py` is what did both, and is the tool to reach for next
+time. It reads the palette off the *native* pixels before upscaling: quantising the
+upscaled image averages the resampled shades, which is how Banner Bank's `#0260af`
+navy and `#ee3742` red first came back as a muddy `#6290c0` and `#994265`.
 
 ## What was retired, and what that cost
 
@@ -112,10 +159,19 @@ flood-filled away at the source raster and its anti-aliased edge feathered, so n
 white halo is left. Of those, only the four partnership tiles are still in the
 gallery; the rest were retired.
 
-Some marks are white-on-transparent (Cargill, Best Buy, Toro, Post Consumer Brands
-and a few more) because RBA's site only ever carried the reversed cut. Their "color"
-file is therefore white and looks empty on a light background. The site measures this
-and gives those tiles a dark stage.
+**Eight marks used to be white-on-transparent** — Banner Bank, Best Buy, Caleres,
+Cargill, Fastenal, Nutrition Incentive Hub (GSCN), Post Consumer Brands and Toro —
+because RBA's site only ever carried the reversed cut of them, so their "color" file
+was white and looked empty on a light tile. All eight now carry real brand color,
+sourced as described above, and **no logo in the gallery needs a dark stage any
+more**: `logos-sync.py` measures it and now reports zero. The dark-tile code path is
+still there, and still correct, for whatever gets added next.
+
+Two marks are an opaque colored plate rather than transparency, and that is correct
+for both: `clients/caleres.svg` on midnight `#24356e` and
+`clients/post-consumer-brands.svg` on red `#db1c2b`. Each is reversed *out of* its
+plate in the owner's own artwork — the plate is the logo. Cutting the wordmark out
+and recoloring it would invent a mark neither company publishes.
 
 ## How the one-color variants were made
 
@@ -131,6 +187,21 @@ mark, the mark is kept whole and inverts.
 **One casualty.** `platforms/javascript-black.svg` collapses to a filled square:
 black glyphs on a yellow tile leave no silhouette once color is gone. The white cut
 has the same problem. Redraw by hand if you need it; every other one reads correctly.
+
+## Adding or replacing a logo
+
+`../../tools/logos-colorways.py` is this step, written down — the original six-file
+set was built by an ad-hoc script that did not survive, which is how the library
+ended up with colorways nobody could reproduce. Give it one color vector and it
+emits all six files, trimmed and named to the contract:
+
+    ./tools/logos-colorways.py clients/acme path/to/acme.svg
+    ./tools/logos-colorways.py --from-json replacements.json --base .
+
+Then run `./tools/logos-sync.py` to rewrite the manifest the page renders from, and
+add a row to `MANIFEST.csv` recording where the artwork came from. It needs
+`rsvg-convert`, `potrace`, `numpy` and `pillow`; `logos-sync.py` needs `numpy` too,
+and silently mis-measures the dark flag without it.
 
 ## Naming
 
