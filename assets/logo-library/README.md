@@ -14,7 +14,7 @@ what it came from, and the URL it was fetched from.
 
 ## What you get
 
-**108 logos × 6 files each**, all on transparency bar a few (see
+**121 logos × 6 files each**, all on transparency bar a few (see
 [Backgrounds](#backgrounds)):
 
 | File | What it is |
@@ -29,7 +29,7 @@ row of logos stays consistent whichever way a section flips.
 | Folder | Logos | What's in it |
 |---|---|---|
 | `platforms/` | 34 | Technology marks |
-| `clients/` | 30 | Client marks from case studies, logo strips and the capability deck |
+| `clients/` | 43 | Client marks from case studies, logo strips and the capability deck |
 | `community/` | 21 | Nonprofits from the RBA Cares logo wall |
 | `certifications/` | 15 | Credential badges, issuer marks and partner tier badges |
 | `partnerships/` | 8 | The eight named partner tiers on `/our-partnerships/` |
@@ -55,8 +55,8 @@ it can drive the four colorways.
 
 ## Where the vectors come from
 
-Of the 108 shown: **49 are the owner's own published vector**, **10 arrived as SVG on
-RBA's site**, and **49 were traced** from raster. The `origin` column says which.
+Of the 121 shown: **58 are the owner's own published vector**, **10 arrived as SVG on
+RBA's site**, and **53 were traced** from raster. The `origin` column says which.
 
 Tracing is per-color, not per-pixel. Each logo is quantized to the handful of colors
 actually in it, each color is traced as its own bitmap with `potrace`, and the layers
@@ -68,7 +68,7 @@ Fidelity was checked by rendering every SVG back to bitmap and diffing against i
 source over a mid-grey composite — median difference **0.44/255**. Every viewBox is
 trimmed tight to the artwork, so no file carries transparent padding.
 
-### The 49 that are the owner's own vector
+### The 58 that are the owner's own vector
 
 Two rounds got them here. The first took eight from Wikimedia Commons: Angular,
 .NET, GitHub, JavaScript, Node.js, OpenAI, Snowflake and WordPress.
@@ -119,6 +119,14 @@ file" and "better file" are not the same test:
   dusty-pink field (`#deb4b4`) that would have to come off first, for a modest gain
   over the 800px raster this was traced from. Worth revisiting.
 
+**Ford is a warning about gradients.** Commons' `Ford Motor Company Logo.svg` is the
+chrome-and-gradient badge, and its one-color cuts came out shredded: the script is a
+white-to-grey gradient, so the near-white parts knocked out while the mid-tone parts
+stayed as ink and the lettering broke into fragments. `Ford logo flat.svg` — also
+Ford's own, also public domain — is the flat cut and reduces cleanly. **When a mark
+exists in flat and gradient versions, take the flat one**; gradients and one-color
+reduction do not mix.
+
 ### The two retraces
 
 Where the owner publishes no usable vector, the trace stays — but off the owner's
@@ -134,6 +142,13 @@ are kept under `_raster-originals/clients/`.
   but it is their own color artwork rather than the white-only cut RBA carried.
   Worth replacing if a real vector ever surfaces.
 
+  Its one-color cuts also need `--gap-colour #0260af`. The navy wordmark sits *on
+  top of* the red swoosh, so once both become the same ink the leading B is
+  swallowed and the mark reads **ANNER BANK**. Luminance cannot separate them —
+  the navy is 82 and the red is 95 — so the caller names the colour of the element
+  on top, which is then dilated and subtracted from the rest to leave the hairline
+  knockout outline a designer would draw by hand. `MANIFEST.csv` records the flag.
+
 `../../tools/logos-trace.py` is what did both, and is the tool to reach for next
 time. It reads the palette off the *native* pixels before upscaling: quantising the
 upscaled image averages the resampled shades, which is how Banner Bank's `#0260af`
@@ -141,7 +156,7 @@ navy and `#ee3742` red first came back as a muddy `#6290c0` and `#994265`.
 
 ### The capability deck, which beat the web
 
-20 of these logos came from `Logo library.pptx`, an RBA capability deck — and it was a
+35 of these logos came from `Logo library.pptx`, an RBA capability deck — and it was a
 better source than the open web for three separate reasons worth remembering:
 
 1. **Decks carry embedded vectors.** PowerPoint keeps whatever was pasted in, so the
@@ -154,13 +169,30 @@ better source than the open web for three separate reasons worth remembering:
    Each was then fetched properly from its owner.
 3. **Internal decks hold the tier badges** vendors bury behind partner-portal logins.
 
-The deck's other contents were deliberately skipped: 12 cyan role icons (not brand
-marks — RBA's own service icons already live in `_rba-brand/`), and a long tail of
-healthcare logos whose owners publish nothing usable (CareWire, LHI, Triplefin,
-Wilderness Health, Medica, Aurora Health Care) plus marks not yet chased down
-(Medtronic, Intel, Allina Health, Perrigo, RSM, Ameriprise, CHS, Mortenson, Braun
-Intertec, NAVIS, Upper Lakes Foods, Riverside, University of Minnesota, University
-of Georgia).
+A third pass then cleared most of the tail: **Medtronic, Intel, CHS, Allina Health,
+Perrigo, Ameriprise, University of Minnesota, University of Minnesota Physicians**
+and **Mortenson** as the owner's own vector, plus **Riverside Healthcare, Upper Lakes
+Foods, RSM** and **Aurora Health Care** traced from the owners' own header artwork.
+
+That pass needed a third scraper (`site_scrape3.py`) because the first two only
+looked for `.svg` *URLs*. These sites either ship a PNG header logo or inline the
+`<svg>` straight into the markup — the University of Minnesota's block M is inlined,
+which is why two passes had reported nothing there.
+
+Still not found, and why:
+
+- **CareWire, Triplefin, Wilderness Health, Medica** — sites yielded nothing
+  scrapeable at all. Ask the client contact for artwork.
+- **LHI** — folded into Optum Serve, so the mark is retired. Commons' "LHI" hits are
+  an Icelandic university and a Dürer rhinoceros.
+- **NAVIS** — renamed **Kaleris**. Their site serves the Kaleris logo, which is a
+  different mark and would be wrong to file under Navis.
+- **University of Georgia** — Commons carries UGA's *colleges*, West Georgia, Georgia
+  State and Georgia Tech, but not the plain university mark. UGA gates its identity
+  files behind a login.
+
+The deck's 12 cyan role icons were skipped on purpose: they are not brand marks, and
+RBA's own service icons already live in `_rba-brand/`.
 
 **WEX and Mutual of Omaha were the reversed-only pair, and both are now in colour.**
 Mutual of Omaha was easy: `mutual-brand-white.svg` has a `mutual-brand-blue.svg`

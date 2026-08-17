@@ -272,6 +272,53 @@ def enclosed_fraction(inner, outer):
     return float((i & ~seen).sum()) / float(i.sum())
 
 
+def dilate(mask, radius):
+    """Grow a boolean mask by radius pixels (PIL MaxFilter, no scipy needed)."""
+    import numpy as np
+    from PIL import Image, ImageFilter
+    if radius < 1:
+        return mask
+    size = radius * 2 + 1
+    im = Image.fromarray(np.where(mask, 255, 0).astype('uint8'), 'L')
+    # MaxFilter caps at size 5 per pass in some builds; iterate for larger radii.
+    while size > 5:
+        im = im.filter(ImageFilter.MaxFilter(5))
+        size -= 4
+    if size > 1:
+        im = im.filter(ImageFilter.MaxFilter(size))
+    return np.array(im) > 127
+
+
+def gap_mask(png, gap_colour, gap_px):
+    """Ink with a hairline knockout gap where gap_colour overlaps everything else.
+
+    Banner Bank is the case this exists for. Its navy wordmark sits *on top of* a red
+    swoosh, and in one colour both become the same ink, so the leading B is swallowed
+    and the mark reads "ANNER BANK". Luminance cannot separate them either — the navy
+    is 82 and the red is 95, near enough to land in the same cluster.
+
+    So the caller names the colour of the element that sits on top. That element is
+    dilated and subtracted from the rest, leaving the thin knockout outline a designer
+    would draw by hand for a one-colour cut, and the wordmark stays legible.
+    """
+    import numpy as np
+    from PIL import Image
+    a = np.array(Image.open(png).convert('RGBA'))
+    rgb, alpha = a[:, :, :3].astype(int), a[:, :, 3]
+    opaque = alpha >= 128
+    lum = (0.2126 * rgb[:, :, 0] + 0.7152 * rgb[:, :, 1] + 0.0722 * rgb[:, :, 2])
+    ink = opaque & (lum < NEAR_WHITE)
+
+    target = np.array([int(gap_colour[i:i + 2], 16) for i in (1, 3, 5)])
+    dist = np.sqrt(((rgb - target) ** 2).sum(axis=2))
+    top = ink & (dist <= 60)
+    if top.sum() < 0.005 * max(1, ink.sum()):
+        raise SystemExit(f'--gap-colour {gap_colour} matches almost nothing '
+                         f'({top.sum()} px) — check the colour against the artwork')
+    rest = ink & ~top
+    return (rest & ~dilate(top, gap_px)) | top
+
+
 def ink_mask(png, knockout=False):
     """(mask, mode) — True where the one-colour cut should put ink.
 
@@ -386,7 +433,7 @@ def trace(mask, dest_svg, fill):
     open(dest_svg, 'w', encoding='utf-8').write(text)
 
 
-def build(slug, src, dry=False, knockout=False):
+def build(slug, src, dry=False, knockout=False, gap_colour=None, gap_px=6):
     category, name = slug.split('/', 1)
     outdir = os.path.join(LIB, category)
     os.makedirs(outdir, exist_ok=True)
@@ -399,7 +446,10 @@ def build(slug, src, dry=False, knockout=False):
 
         big = os.path.join(td, 'big.png')
         render(staged, big, height=TRACE_PX)
-        mask, mode = ink_mask(big, knockout=knockout)
+        if gap_colour:
+            mask, mode = gap_mask(big, gap_colour, gap_px), 'gap'
+        else:
+            mask, mode = ink_mask(big, knockout=knockout)
         if not knockout:
             cand, why = knockout_candidate(big)
             if cand:
@@ -449,6 +499,13 @@ def main():
                     help='fill the mid-tone field and punch the glyph out of it, '
                          'for artwork like JavaScript (black JS on a yellow tile) '
                          'whose one-colour cut would otherwise be a solid block')
+    ap.add_argument('--gap-colour', '--gap-color', dest='gap_colour',
+                    help='hex fill of the element that sits ON TOP of the others '
+                         '(e.g. #0260af for Banner Bank\'s wordmark). The one-colour '
+                         'cuts get a hairline knockout gap around it, so an overlap '
+                         'stays legible once the colours are gone')
+    ap.add_argument('--gap-px', dest='gap_px', type=int, default=6,
+                    help='width of that gap, in pixels of the 2400px trace render')
     ap.add_argument('--report', action='store_true',
                     help='say which of the shipped logos look like --knockout '
                          'candidates, and change nothing')
@@ -464,25 +521,29 @@ def main():
             if slug.startswith('_'):
                 continue
             jobs.append((slug, os.path.join(a.base, s['src']),
-                         bool(s.get('knockout', a.knockout))))
+                         bool(s.get('knockout', a.knockout)),
+                         s.get('gap_colour', a.gap_colour),
+                         int(s.get('gap_px', a.gap_px))))
     elif a.slug and a.source:
-        jobs.append((a.slug, a.source, a.knockout))
+        jobs.append((a.slug, a.source, a.knockout, a.gap_colour, a.gap_px))
     else:
         ap.error('give a slug and source, or --from-json, or --report')
 
     total = 0
-    for slug, src, knock in jobs:
+    for slug, src, knock, gapc, gappx in jobs:
         if not os.path.exists(src):
             print(f'{slug:<48} ! missing source {src}')
             continue
         try:
-            made = build(slug, src, dry=a.dry_run, knockout=knock)
+            made = build(slug, src, dry=a.dry_run, knockout=knock,
+                         gap_colour=gapc, gap_px=gappx)
         except Exception as e:
             print(f'{slug:<48} ! {type(e).__name__}: {e}')
             continue
         total += len(made)
         print(f'{slug:<48} {len(made)} file(s)'
-              + ('  [knockout]' if knock else ''))
+              + ('  [knockout]' if knock else '')
+              + (f'  [gap {gapc}]' if gapc else ''))
     print(f'\n{total} files written')
 
 

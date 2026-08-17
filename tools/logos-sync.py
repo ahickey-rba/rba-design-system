@@ -92,6 +92,9 @@ NAMES = {
     'umbraco-certified-master': 'Umbraco Certified Master',
     'umbraco-gold-partner': 'Umbraco Gold Partner',
     'wex': 'WEX', 'mutual-of-omaha': 'Mutual of Omaha',
+    'chs': 'CHS', 'rsm': 'RSM',
+    'university-of-minnesota': 'University of Minnesota',
+    'university-of-minnesota-physicians': 'University of Minnesota Physicians',
     # Certification badges. The credential's own name, not the issuer's.
     'pmp': 'PMP', 'pmi-acp': 'PMI-ACP', 'cissp': 'CISSP', 'csm': 'CSM',
     'aws-certified-solutions-architect': 'AWS Certified Solutions Architect',
