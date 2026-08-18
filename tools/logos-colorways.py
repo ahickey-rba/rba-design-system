@@ -36,6 +36,11 @@ Where knocking white out would consume the whole mark (artwork that is white and
 nothing else, like the reversed cuts this library inherited), there is nothing to
 knock out, so the mark is kept whole and inverts instead.
 
+A mid-tone plate carrying a name — the PMP and PMI-ACP badges — is neither ink nor
+white, and filling it loses the only part of the badge that says which badge it is.
+`--plate-above` knocks out mid-tones the flood cannot reach from outside the mark,
+so a sealed name plate opens up while a gradient running off the edge stays whole.
+
 Requires: rsvg-convert, potrace, numpy, pillow.
 """
 
@@ -230,6 +235,55 @@ def otsu(values):
     return thr
 
 
+def reach_from_border(free):
+    """Which cells of `free` a flood starting at the image border can get to.
+
+    The one primitive behind both enclosure questions this file asks: what is sealed
+    inside the mark, and what has a path out to the edge. A BFS rather than a scipy
+    label call, to keep the dependency list at numpy and pillow.
+    """
+    import numpy as np
+    from collections import deque
+
+    h, w = free.shape
+    seen = np.zeros_like(free, dtype=bool)
+    q = deque()
+    for x in range(w):
+        for y in (0, h - 1):
+            if free[y, x] and not seen[y, x]:
+                seen[y, x] = True; q.append((y, x))
+    for y in range(h):
+        for x in (0, w - 1):
+            if free[y, x] and not seen[y, x]:
+                seen[y, x] = True; q.append((y, x))
+    while q:
+        y, x = q.popleft()
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < h and 0 <= nx < w and free[ny, nx] and not seen[ny, nx]:
+                seen[ny, nx] = True; q.append((ny, nx))
+    return seen
+
+
+def shrink_all(mask, step):
+    """Downscale `mask` by `step`, keeping a cell True only if every pixel in it is.
+
+    Subsampling with mask[::step, ::step] is wrong for a region the flood must not
+    escape: it can drop a one-pixel ink barrier and let the fill leak into a sealed
+    plate. Requiring the whole block keeps every barrier, so the flood errs towards
+    calling things sealed-off rather than reachable.
+    """
+    import numpy as np
+    if step < 2:
+        return mask
+    h, w = mask.shape
+    ph, pw = -h % step, -w % step
+    if ph or pw:
+        mask = np.pad(mask, ((0, ph), (0, pw)), constant_values=False)
+    H, W = mask.shape
+    return mask.reshape(H // step, step, W // step, step).all(axis=(1, 3))
+
+
 def enclosed_fraction(inner, outer):
     """What fraction of `inner` is sealed inside `outer` rather than open to the edge.
 
@@ -238,37 +292,14 @@ def enclosed_fraction(inner, outer):
     from a plain two-tone mark: JavaScript's black JS is completely ringed by its
     yellow tile, while CISSP's black lettering sits beside its teal bracket with a
     clear path out to the edge. Majority-of-area alone cannot tell those apart.
-
-    Deliberately dependency-free (a BFS on a downscaled copy) rather than pulling in
-    scipy for one label call.
     """
-    import numpy as np
-    from collections import deque
-
     h, w = outer.shape
     step = max(1, max(h, w) // 320)          # downscale: enclosure is a coarse property
     o = outer[::step, ::step]
     i = inner[::step, ::step]
     if not i.any():
         return 0.0
-    sh, sw = o.shape
-    open_region = ~o
-    seen = np.zeros_like(open_region, dtype=bool)
-    q = deque()
-    for x in range(sw):
-        for y in (0, sh - 1):
-            if open_region[y, x] and not seen[y, x]:
-                seen[y, x] = True; q.append((y, x))
-    for y in range(sh):
-        for x in (0, sw - 1):
-            if open_region[y, x] and not seen[y, x]:
-                seen[y, x] = True; q.append((y, x))
-    while q:
-        y, x = q.popleft()
-        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            ny, nx = y + dy, x + dx
-            if 0 <= ny < sh and 0 <= nx < sw and open_region[ny, nx] and not seen[ny, nx]:
-                seen[ny, nx] = True; q.append((ny, nx))
+    seen = reach_from_border(~o)
     return float((i & ~seen).sum()) / float(i.sum())
 
 
@@ -287,6 +318,50 @@ def dilate(mask, radius):
     if size > 1:
         im = im.filter(ImageFilter.MaxFilter(size))
     return np.array(im) > 127
+
+
+def knock_out_plates(png, mask, plate_above):
+    """Knock the sealed mid-tone plates out of an already-computed ink mask.
+
+    The PMI badges are the case this exists for. Each is a dark disc carrying a
+    light rounded plate with the certification name on it — PMP, PMI-ACP — and the
+    name is the one part of the badge that identifies it. The flat rule calls
+    everything below NEAR_WHITE ink, so the plate fills solid and takes the name
+    down with it: both badges came out as featureless black discs.
+
+    A plain luminance cut cannot fix that. PMI-ACP's disc is a brown-to-tan gradient
+    whose bottom is #be9577 — the exact tone of the plate it carries — so any
+    threshold low enough to knock the plate out also erases the bottom of the disc
+    and the word PRACTITIONER with it.
+
+    What separates them is not tone but position. The plate is sealed inside the
+    ink; the gradient runs off the edge of the disc into open space. So a mid-tone
+    is treated as a plate only where the flood cannot reach it from outside the
+    mark, and the tone threshold just says which mid-tones are candidates. Glyphs
+    sitting on the plate are darker than it, so they stay ink and read as the plate's
+    own lettering — which is the whole point.
+    """
+    import numpy as np
+    from PIL import Image
+    a = np.array(Image.open(png).convert('RGBA'))
+    rgb = a[:, :, :3].astype(float)
+    lum = (0.2126 * rgb[:, :, 0] + 0.7152 * rgb[:, :, 1] + 0.0722 * rgb[:, :, 2])
+
+    mid = mask & (lum >= plate_above)
+    if not mid.any():
+        raise SystemExit(f'--plate-above {plate_above:g} matches no ink — '
+                         f'check the value against the artwork')
+
+    # Free = anything that is not solid ink, so the flood runs through the
+    # background and through candidate plates but stops at darker ink.
+    free = ~mask | mid
+    h, w = free.shape
+    step = max(1, max(h, w) // 800)
+    seen = reach_from_border(shrink_all(free, step))
+    if step > 1:
+        seen = np.array(Image.fromarray((seen * 255).astype('uint8'), 'L')
+                        .resize((w, h), Image.NEAREST)) > 127
+    return mask & ~(mid & ~seen)
 
 
 def gap_mask(png, gap_colour, gap_px):
@@ -433,7 +508,8 @@ def trace(mask, dest_svg, fill):
     open(dest_svg, 'w', encoding='utf-8').write(text)
 
 
-def build(slug, src, dry=False, knockout=False, gap_colour=None, gap_px=6):
+def build(slug, src, dry=False, knockout=False, gap_colour=None, gap_px=6,
+          plate_above=None):
     category, name = slug.split('/', 1)
     outdir = os.path.join(LIB, category)
     os.makedirs(outdir, exist_ok=True)
@@ -450,6 +526,8 @@ def build(slug, src, dry=False, knockout=False, gap_colour=None, gap_px=6):
             mask, mode = gap_mask(big, gap_colour, gap_px), 'gap'
         else:
             mask, mode = ink_mask(big, knockout=knockout)
+        if plate_above is not None:
+            mask, mode = knock_out_plates(big, mask, plate_above), mode + '+plate'
         if not knockout:
             cand, why = knockout_candidate(big)
             if cand:
@@ -504,6 +582,13 @@ def main():
                          '(e.g. #0260af for Banner Bank\'s wordmark). The one-colour '
                          'cuts get a hairline knockout gap around it, so an overlap '
                          'stays legible once the colours are gone')
+    ap.add_argument('--plate-above', dest='plate_above', type=float,
+                    help='luminance (0-255) at or above which a mid-tone SEALED '
+                         'inside the ink is a plate carrying a glyph, and is knocked '
+                         'out rather than filled (e.g. 100 for the PMP badge, whose '
+                         'name plate would otherwise vanish into a solid disc). '
+                         'Mid-tones open to the outside are left alone, so a '
+                         'gradient running off the edge of the mark survives')
     ap.add_argument('--gap-px', dest='gap_px', type=int, default=6,
                     help='width of that gap, in pixels of the 2400px trace render')
     ap.add_argument('--report', action='store_true',
@@ -523,27 +608,30 @@ def main():
             jobs.append((slug, os.path.join(a.base, s['src']),
                          bool(s.get('knockout', a.knockout)),
                          s.get('gap_colour', a.gap_colour),
-                         int(s.get('gap_px', a.gap_px))))
+                         int(s.get('gap_px', a.gap_px)),
+                         s.get('plate_above', a.plate_above)))
     elif a.slug and a.source:
-        jobs.append((a.slug, a.source, a.knockout, a.gap_colour, a.gap_px))
+        jobs.append((a.slug, a.source, a.knockout, a.gap_colour, a.gap_px,
+                     a.plate_above))
     else:
         ap.error('give a slug and source, or --from-json, or --report')
 
     total = 0
-    for slug, src, knock, gapc, gappx in jobs:
+    for slug, src, knock, gapc, gappx, plate in jobs:
         if not os.path.exists(src):
             print(f'{slug:<48} ! missing source {src}')
             continue
         try:
             made = build(slug, src, dry=a.dry_run, knockout=knock,
-                         gap_colour=gapc, gap_px=gappx)
+                         gap_colour=gapc, gap_px=gappx, plate_above=plate)
         except Exception as e:
             print(f'{slug:<48} ! {type(e).__name__}: {e}')
             continue
         total += len(made)
         print(f'{slug:<48} {len(made)} file(s)'
               + ('  [knockout]' if knock else '')
-              + (f'  [gap {gapc}]' if gapc else ''))
+              + (f'  [gap {gapc}]' if gapc else '')
+              + (f'  [plate {plate:g}]' if plate is not None else ''))
     print(f'\n{total} files written')
 
 

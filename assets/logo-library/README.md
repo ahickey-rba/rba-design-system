@@ -142,12 +142,17 @@ are kept under `_raster-originals/clients/`.
   but it is their own color artwork rather than the white-only cut RBA carried.
   Worth replacing if a real vector ever surfaces.
 
-  Its one-color cuts also need `--gap-colour #0260af`. The navy wordmark sits *on
-  top of* the red swoosh, so once both become the same ink the leading B is
+  Its one-color cuts also need `--gap-colour #0260af --gap-px 20`. The navy wordmark
+  sits *on top of* the red swoosh, so once both become the same ink the leading B is
   swallowed and the mark reads **ANNER BANK**. Luminance cannot separate them —
   the navy is 82 and the red is 95 — so the caller names the colour of the element
   on top, which is then dilated and subtracted from the rest to leave the hairline
   knockout outline a designer would draw by hand. `MANIFEST.csv` records the flag.
+
+  The width matters as much as the flag. The cuts shipped for a while with no gap at
+  all, and the default 6px of a 2400px trace is a gap you can only see at full size —
+  in the grid tile the B closes up again and it is back to ANNER BANK. 20px is what
+  survives the tile. Judge any change to it at tile size, not zoomed in.
 
 `../../tools/logos-trace.py` is what did both, and is the tool to reach for next
 time. It reads the palette off the *native* pixels before upscaling: quantising the
@@ -285,6 +290,29 @@ card" — that is a question about meaning, not pixels. So:
 names the candidates and changes nothing. Look at each one before rebuilding. Today
 it flags exactly two: JavaScript, which needs the flag, and the Umbraco Platinum
 badge, which must not have it.
+
+### Sealed name plates: `--plate-above`
+
+The same blind spot, one step subtler, and the PMI badges were it. `pmp` and
+`pmi-acp` are dark discs each carrying a light rounded plate with the certification
+name on it. That name is the only thing distinguishing the two badges, and because
+the plate is not near-white the flat rule filled it solid: both cuts shipped as
+**featureless black discs**, the ring text intact and the name gone.
+
+Lowering the near-white threshold does not fix it. PMI-ACP's disc is a brown-to-tan
+gradient whose bottom is `#be9577` — the exact tone of the plate it carries — so any
+cut low enough to open the plate also erases the bottom of the disc and the word
+PRACTITIONER with it.
+
+What separates them is position, not tone. The plate is sealed inside the ink; the
+gradient runs off the edge of the disc into open space. So:
+
+    ./tools/logos-colorways.py certifications/pmp <src.svg> --plate-above 100
+
+knocks out mid-tones at or above that luminance *only where the flood cannot reach
+them from outside the mark*. The plate opens up, the gradient survives, and glyphs
+sitting on the plate are darker than it so they stay ink and read as its lettering.
+`MANIFEST.csv` records the flag on both badge rows.
 
 ## Adding or replacing a logo
 
