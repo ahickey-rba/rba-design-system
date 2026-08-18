@@ -36,6 +36,10 @@ Where knocking white out would consume the whole mark (artwork that is white and
 nothing else, like the reversed cuts this library inherited), there is nothing to
 knock out, so the mark is kept whole and inverts instead.
 
+Where the owner publishes a real one-colour mark of their own, none of that guessing
+is needed and `--cuts-from` traces the cuts from it directly, leaving the colour file
+alone. That is always the better answer when such a mark exists.
+
 A mid-tone plate carrying a name — the PMP and PMI-ACP badges — is neither ink nor
 white, and filling it loses the only part of the badge that says which badge it is.
 `--plate-above` knocks out mid-tones the flood cannot reach from outside the mark,
@@ -367,7 +371,9 @@ def knock_out_plates(png, mask, plate_above):
 def gap_mask(png, gap_colour, gap_px):
     """Ink with a hairline knockout gap where gap_colour overlaps everything else.
 
-    Banner Bank is the case this exists for. Its navy wordmark sits *on top of* a red
+    Banner Bank is the case this was built for — though its shipped cuts now come
+    from the owner's own one-colour mark via --cuts-from, so this is the fallback for
+    it rather than what it uses. Its navy wordmark sits *on top of* a red
     swoosh, and in one colour both become the same ink, so the leading B is swallowed
     and the mark reads "ANNER BANK". Luminance cannot separate them either — the navy
     is 82 and the red is 95, near enough to land in the same cluster.
@@ -508,8 +514,35 @@ def trace(mask, dest_svg, fill):
     open(dest_svg, 'w', encoding='utf-8').write(text)
 
 
+def cut_bitmap(src, out, td):
+    """Render whatever the one-colour cuts are traced from to a bitmap.
+
+    Normally that is the trimmed colour vector. With --cuts-from it can be the
+    owner's own one-colour mark, and those arrive as often in raster as in vector —
+    which rsvg cannot open, so a raster is cropped to its artwork and scaled here
+    instead of going through render().
+    """
+    if src.lower().endswith('.svg'):
+        staged = os.path.join(td, 'cuts.svg')
+        trim(src, staged)
+        render(staged, out, height=TRACE_PX)
+        return
+
+    from PIL import Image
+    im = Image.open(src).convert('RGBA')
+    bb = alpha_bbox(src)
+    if bb:
+        im = im.crop(bb)
+    # Trace above native resolution so potrace's curves stay smooth, but never
+    # downscale a source that is already larger — that throws away real detail.
+    if im.height < TRACE_PX:
+        w = max(1, round(im.width * TRACE_PX / im.height))
+        im = im.resize((w, TRACE_PX), Image.LANCZOS)
+    im.save(out)
+
+
 def build(slug, src, dry=False, knockout=False, gap_colour=None, gap_px=6,
-          plate_above=None):
+          plate_above=None, cuts_from=None):
     category, name = slug.split('/', 1)
     outdir = os.path.join(LIB, category)
     os.makedirs(outdir, exist_ok=True)
@@ -521,13 +554,15 @@ def build(slug, src, dry=False, knockout=False, gap_colour=None, gap_px=6,
         cropped = trim(src, staged)
 
         big = os.path.join(td, 'big.png')
-        render(staged, big, height=TRACE_PX)
+        cut_bitmap(cuts_from or staged, big, td)
         if gap_colour:
             mask, mode = gap_mask(big, gap_colour, gap_px), 'gap'
         else:
             mask, mode = ink_mask(big, knockout=knockout)
         if plate_above is not None:
             mask, mode = knock_out_plates(big, mask, plate_above), mode + '+plate'
+        if cuts_from:
+            mode += ' from ' + os.path.basename(cuts_from)
         if not knockout:
             cand, why = knockout_candidate(big)
             if cand:
@@ -582,6 +617,12 @@ def main():
                          '(e.g. #0260af for Banner Bank\'s wordmark). The one-colour '
                          'cuts get a hairline knockout gap around it, so an overlap '
                          'stays legible once the colours are gone')
+    ap.add_argument('--cuts-from', dest='cuts_from',
+                    help='build the one-colour cuts from THIS artwork instead of '
+                         'from the colour source (SVG or raster). For a logo whose '
+                         'owner publishes a real one-colour mark — Banner Bank\'s '
+                         'stacked black lockup — which beats any trace of the colour '
+                         'version. The colour file still comes from `source`')
     ap.add_argument('--plate-above', dest='plate_above', type=float,
                     help='luminance (0-255) at or above which a mid-tone SEALED '
                          'inside the ink is a plate carrying a glyph, and is knocked '
@@ -609,21 +650,27 @@ def main():
                          bool(s.get('knockout', a.knockout)),
                          s.get('gap_colour', a.gap_colour),
                          int(s.get('gap_px', a.gap_px)),
-                         s.get('plate_above', a.plate_above)))
+                         s.get('plate_above', a.plate_above),
+                         (os.path.join(a.base, s['cuts_from'])
+                          if s.get('cuts_from') else a.cuts_from)))
     elif a.slug and a.source:
         jobs.append((a.slug, a.source, a.knockout, a.gap_colour, a.gap_px,
-                     a.plate_above))
+                     a.plate_above, a.cuts_from))
     else:
         ap.error('give a slug and source, or --from-json, or --report')
 
     total = 0
-    for slug, src, knock, gapc, gappx, plate in jobs:
+    for slug, src, knock, gapc, gappx, plate, cuts in jobs:
         if not os.path.exists(src):
             print(f'{slug:<48} ! missing source {src}')
             continue
+        if cuts and not os.path.exists(cuts):
+            print(f'{slug:<48} ! missing --cuts-from source {cuts}')
+            continue
         try:
             made = build(slug, src, dry=a.dry_run, knockout=knock,
-                         gap_colour=gapc, gap_px=gappx, plate_above=plate)
+                         gap_colour=gapc, gap_px=gappx, plate_above=plate,
+                         cuts_from=cuts)
         except Exception as e:
             print(f'{slug:<48} ! {type(e).__name__}: {e}')
             continue
@@ -631,7 +678,8 @@ def main():
         print(f'{slug:<48} {len(made)} file(s)'
               + ('  [knockout]' if knock else '')
               + (f'  [gap {gapc}]' if gapc else '')
-              + (f'  [plate {plate:g}]' if plate is not None else ''))
+              + (f'  [plate {plate:g}]' if plate is not None else '')
+              + (f'  [cuts {os.path.basename(cuts)}]' if cuts else ''))
     print(f'\n{total} files written')
 
 

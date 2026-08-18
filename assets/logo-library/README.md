@@ -142,17 +142,22 @@ are kept under `_raster-originals/clients/`.
   but it is their own color artwork rather than the white-only cut RBA carried.
   Worth replacing if a real vector ever surfaces.
 
-  Its one-color cuts also need `--gap-colour #0260af --gap-px 20`. The navy wordmark
-  sits *on top of* the red swoosh, so once both become the same ink the leading B is
-  swallowed and the mark reads **ANNER BANK**. Luminance cannot separate them —
-  the navy is 82 and the red is 95 — so the caller names the colour of the element
-  on top, which is then dilated and subtracted from the rest to leave the hairline
-  knockout outline a designer would draw by hand. `MANIFEST.csv` records the flag.
+  Its one-color cuts do **not** come from that trace. They are built with
+  `--cuts-from _raster-originals/clients/banner-bank-stacked-onecolor.png` — Banner
+  Bank's own stacked black lockup, which is real one-color artwork and beats any
+  cut derived from the color version. It is a *different layout* from the horizontal
+  color file: swoosh above, wordmark on two lines below. That is deliberate, and it
+  means the black and white tiles preview smaller than the color one, because the
+  grid stage is a wide letterbox and a portrait mark is height-constrained in it —
+  the same way the certification badges sit.
 
-  The width matters as much as the flag. The cuts shipped for a while with no gap at
-  all, and the default 6px of a 2400px trace is a gap you can only see at full size —
-  in the grid tile the B closes up again and it is back to ANNER BANK. 20px is what
-  survives the tile. Judge any change to it at tile size, not zoomed in.
+  Rebuilding the cuts from the color art instead needs `--gap-colour #0260af
+  --gap-px 20`. The navy wordmark sits *on top of* the red swoosh, so once both
+  become the same ink the leading B is swallowed and the mark reads **ANNER BANK**.
+  Luminance cannot separate them — the navy is 82 and the red is 95 — so the caller
+  names the colour of the element on top, which is dilated and subtracted from the
+  rest. The width matters as much as the flag: the default 6px of a 2400px trace is
+  a gap you can only see at full size, and in the tile the B closes up again.
 
 `../../tools/logos-trace.py` is what did both, and is the tool to reach for next
 time. It reads the palette off the *native* pixels before upscaling: quantising the
@@ -290,6 +295,25 @@ card" — that is a question about meaning, not pixels. So:
 names the candidates and changes nothing. Look at each one before rebuilding. Today
 it flags exactly two: JavaScript, which needs the flag, and the Umbraco Platinum
 badge, which must not have it.
+
+### The owner's own one-color mark: `--cuts-from`
+
+Everything above is inference — rules for deciding what a one-color cut of a color
+logo should look like. When the owner publishes a real one-color mark, none of it is
+needed and none of it is as good:
+
+    ./tools/logos-colorways.py clients/banner-bank <colour.svg> \\
+        --cuts-from _raster-originals/clients/banner-bank-stacked-onecolor.png
+
+builds `-black` and `-white` from that artwork and leaves the color file alone. The
+source may be a vector or a raster; a raster is cropped to its artwork and scaled up
+before tracing, since rsvg cannot open one.
+
+Banner Bank is the first entry to use it, and it is worth saying what that changes:
+the cuts are no longer the same *layout* as the color file. Six files per logo was
+always a naming contract, never a promise that all six are one artwork. Record the
+second source in `MANIFEST.csv` — with two sources in play and one `source_url`
+column, the note is the only place the difference is written down.
 
 ### Sealed name plates: `--plate-above`
 
