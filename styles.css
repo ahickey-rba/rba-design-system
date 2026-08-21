@@ -734,6 +734,10 @@
       border-bottom: 1px solid var(--border);
       scroll-margin-top: var(--space-5);
     }
+    /* A subhead that is itself an anchor target (the Links spec, whose own
+       specimen links point at it) needs the same breathing room a section gets,
+       or the jump lands it just past the top edge. */
+    .subhead[id] { scroll-margin-top: var(--space-5); }
     .section-head {
       display: flex;
       flex-direction: column;
